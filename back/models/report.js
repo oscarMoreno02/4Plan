@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Report.init({
-    type: DataTypes.ENUM,
+    type: DataTypes.STRING,
     resume: DataTypes.TEXT,
     status: DataTypes.INTEGER,
     idReporter: DataTypes.INTEGER,

@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     idCompany: DataTypes.INTEGER,
     idUser: DataTypes.INTEGER,
     status: DataTypes.INTEGER,
-    processor: DataTypes.INTEGER
+    idProcessor: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'UnregisterRequest',

@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
     newHiredHours: DataTypes.INTEGER,
     newSalary: DataTypes.INTEGER,
     status: DataTypes.INTEGER,
-    processor: DataTypes.INTEGER
+    idProcessor: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'RegisterRequest',

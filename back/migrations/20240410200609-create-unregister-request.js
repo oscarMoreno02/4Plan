@@ -32,7 +32,7 @@ module.exports = {
       status: {
         type: Sequelize.INTEGER
       },
-      processor: {
+      idProcessor: {
         type: Sequelize.INTEGER,
         references: {
           model: {
