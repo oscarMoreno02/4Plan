@@ -26,27 +26,28 @@ module.exports = {
         allowNull: false,
       },
       access: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: false,
       },
       hiredHours: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       idCompany: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: {
             tableName: 'companies'
           },
           key: 'id'
         },
-        onDelete:'CASCADE'
+        onDelete:'CASCADE',
+        defaultValue:null
       },
       salary: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,
