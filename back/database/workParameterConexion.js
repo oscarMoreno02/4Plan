@@ -7,34 +7,34 @@ const {
     where
 } = require('sequelize');
 const models = require('../models/index.js');
-const Conexion =require('../database/connection')
+const Conexion =require('./connection.js')
 
-class WorkAreaConexion{
+class WorkParameterConexion{
     constructor() {
  
         this.con= new Conexion()
     }
    
 
-    getAllWorkAreas = async () => {
+    getAllWorkParameters = async () => {
         try{
             let resultado = [];
             this.con.conectar();
             
-            resultado = await models.WorkArea.findAll();
+            resultado = await models.WorkParameter.findAll();
             return resultado;
         }catch(error){
           throw error
         }finally{
-            // this.con.desconectar();
+     
             this.con.desconectar()
         }
     }
-    getWorkAreaById = async (id) => {
+    getWorkParameterById = async (id) => {
         try{
             let resultado = [];
             this.con.conectar();
-            resultado = await models.WorkArea.findByPk(id);
+            resultado = await models.WorkParameter.findByPk(id);
             if (!resultado) {
                 throw new Error('error');
             }
@@ -47,13 +47,13 @@ class WorkAreaConexion{
         }
     }
    
-    insertWorkArea = async (body) => {
+    insertWorkParameter = async (body) => {
         let resultado = 0;
         this.con.conectar();
         try {
-            const WorkArea = new models.WorkArea(body);
-            await WorkArea.save();
-            return WorkArea.id
+            const WorkParameter = new models.WorkParameter(body);
+            await WorkParameter.save();
+            return WorkParameter.id
         } catch (error) {
             throw error;
         } finally {
@@ -61,10 +61,10 @@ class WorkAreaConexion{
         }
     }
 
-    deleteWorkArea = async (id) => {
+    deleteWorkParameter = async (id) => {
         try{
             this.con.conectar();
-            let resultado = await models.WorkArea.findByPk(id);
+            let resultado = await models.WorkParameter.findByPk(id);
             if (!resultado) {
                 throw error;
             }
@@ -76,12 +76,12 @@ class WorkAreaConexion{
             this.con.desconectar()
         }
     }
-    updateFullWorkArea= async (id,body) => {
+    updateFullWorkParameter= async (id,body) => {
         try{
             let resultado = 0
             this.con.conectar();
-            let WorkArea = await models.WorkArea.findByPk(id);
-            await WorkArea.update(body)
+            let WorkParameter = await models.WorkParameter.findByPk(id);
+            await WorkParameter.update(body)
             return resultado
         }catch(error){
             throw error
@@ -92,4 +92,4 @@ class WorkAreaConexion{
    
 }
 
-module.exports = WorkAreaConexion;
+module.exports = WorkParameterConexion;

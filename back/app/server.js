@@ -8,6 +8,7 @@ class Server {
         this.app = express();
         this.serverExpress = require('http').createServer(this.app);
         this.areaPath = '/api/area';
+        this.parameterPath = '/api/parameter';
         this.middlewares();
         this.routes();
 
@@ -23,6 +24,8 @@ class Server {
     }
     routes() {
          this.app.use(this.areaPath, require('../routes/workAreaRoutes'));
+         this.app.use(this.parameterPath, require('../routes/workParameterRoutes'));
+
     }
 
     listen() {
