@@ -11,6 +11,7 @@ class Server {
         this.parameterPath = '/api/parameter';
         this.timePath = '/api/time';
         this.positionPath = '/api/position';
+        this.assignmentPath = '/api/assignment';
         this.middlewares();
         this.routes();
 
@@ -29,6 +30,7 @@ class Server {
          this.app.use(this.parameterPath, require('../routes/workParameterRoutes'));
          this.app.use(this.timePath, require('../routes/timeZoneRoutes'));
          this.app.use(this.positionPath, require('../routes/workPositionRoutes'));
+         this.app.use(this.assignmentPath, require('../routes/assignmentRoutes'));
     }
 
     listen() {
