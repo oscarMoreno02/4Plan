@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { MenubarModule } from 'primeng/menubar';
 @Component({
@@ -6,7 +6,8 @@ import { MenubarModule } from 'primeng/menubar';
   standalone: true,
   imports: [MenubarModule],
   templateUrl: './cabecera.component.html',
-  styleUrl: './cabecera.component.css'
+  styleUrl: './cabecera.component.css',
+  encapsulation:ViewEncapsulation.None
 })
 export class CabeceraComponent {
   items: MenuItem[] | undefined;
@@ -15,23 +16,20 @@ export class CabeceraComponent {
       this.items = [
           {
               label: 'Inicio',
-              icon: 'pi pi-fw pi-file',
+              icon: 'pi pi-fw pi-home',
+
           },
           {
-              label: 'Turno',
-              icon: 'pi pi-fw pi-pencil'
-          },
-          {
-              label: 'Turno',
-              icon: 'pi pi-fw pi-user',
+              label: 'Turnos',
+              icon: 'pi pi-fw pi-calendar'
           },
           {
               label: 'Peticiones',
-              icon: 'pi pi-fw pi-calendar',
+              icon: 'pi pi-fw pi-book',
           },
           {
-              label: 'Vacaciones',
-              icon: 'pi pi-fw pi-power-off'
+              label: 'Vacantes',
+              icon: 'pi pi-fw pi-search'
           }
       ];
   }

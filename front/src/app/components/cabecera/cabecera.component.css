@@ -1,0 +1,26 @@
+.p-menubar {
+    padding: 0.5rem;
+    background: #290a0a;
+    color: #573b8a;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    background: #eee;
+	border-radius: 60% / 10%;
+  }
+  .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-content .p-menuitem-link .p-menuitem-text {
+    color: #573b8a;
+    font-size: 1em;
+	font-weight: bold;
+  }
+  .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-content .p-menuitem-link .p-menuitem-text:hover {
+    color: #000000;
+    font-size: 1em;
+	font-weight: bold;
+  }
+ *:hover{
+    color: #000000;
+ }
+.p-menuitem-list{
+    display: flex;
+    align-self: space-between;
+}
