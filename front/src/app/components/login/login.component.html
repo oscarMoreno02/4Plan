@@ -6,11 +6,11 @@
 				
 					<label for="chk" aria-hidden="true">Inicio de Sesión</label>
                     <label for="" style="font-size: 20px;">Email</label>
-					<input type="email" name="email" placeholder="Email" required="">
+					<input type="email" name="email" [(ngModel)]="loginData.email" placeholder="Email" >
                     <label for="" style="font-size: 20px;">Contraseña</label>
-					<input type="password" name="pswd" placeholder="Contraseña" required="">
+					<input type="password" name="pswd" [(ngModel)]="loginData.password" placeholder="Contraseña">
 					<button (click)="login()">Inciar Sesión</button>
-				
+					<p style="margin: auto; display: flex;">{{error}}</p>
 			</div>
 
 		

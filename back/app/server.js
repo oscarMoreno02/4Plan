@@ -13,6 +13,7 @@ class Server {
         this.positionPath = '/api/position';
         this.assignmentPath = '/api/assignment';
         this.detailPath = '/api/detail';
+        this.authPath = '/api/auth';
         this.middlewares();
         this.routes();
 
@@ -33,6 +34,7 @@ class Server {
          this.app.use(this.positionPath, require('../routes/workPositionRoutes'));
          this.app.use(this.assignmentPath, require('../routes/assignmentRoutes'));
          this.app.use(this.detailPath, require('../routes/parameterDetailRoutes'));
+         this.app.use(this.authPath, require('../routes/authRoutes'));
     }
 
     listen() {
