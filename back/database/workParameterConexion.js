@@ -30,6 +30,26 @@ class WorkParameterConexion{
             this.con.desconectar()
         }
     }
+    getAllWorkParametersWithTimeZone = async () => {
+        try{
+            let resultado = [];
+            this.con.conectar();
+            
+            resultado = await models.WorkParameter.findAll({
+                include: [{
+                    model: models.TimeZone,
+                    as: 'timeZone',
+                }, ]
+            });
+            return resultado;
+        }catch(error){
+            console.log(error)
+          throw error
+        }finally{
+     
+            this.con.desconectar()
+        }
+    }
     getWorkParameterById = async (id) => {
         try{
             let resultado = [];

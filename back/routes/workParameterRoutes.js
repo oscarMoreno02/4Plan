@@ -3,6 +3,7 @@ const {Router} = require('express');
 const router = Router();
 const controller=require('../controllers/workParameterController')
 
+router.get('/timezone',controller.listAllWorkParametersWithTimeZone)
     router.get('/:id',controller.listWorkParameter)
     router.get('/',controller.listAllWorkParameters)
     router.delete('/:id',controller.removeWorkParameter)
