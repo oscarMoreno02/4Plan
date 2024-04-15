@@ -18,7 +18,7 @@ export class AuthService  {
       this.t=this.getToken()
       if(this.t.length>1){
         this.payload=jwtDecode<any>(this.t)
-        this.abilities=this.payload.abilities
+
       }
     }catch(e){
       sessionStorage.clear()
@@ -28,74 +28,63 @@ export class AuthService  {
   private _isLoggedIn: boolean = false;
  t?
  payload?
- abilities?
+
  login(email:string,password:string): Observable<any | undefined> {
   let body={email:email,password:password}
   return this.http.put<any>(this.baseUrl+environment.urlLogin,body)
 }
 
-  hasRol(rol:Array<String>):boolean{
+  hasRol(rol:Array<string>):boolean{
   
     let pasa=false
+    this.refresh()
     for (let i =0;i<rol.length;i++){
-      if(this.abilities?.includes(rol[i])){      
+      if(this.payload.access==rol[i]){      
         pasa=true
       }
     }
+   
     return pasa
   }
 
   getToken(): string   {
     const serializedObj = sessionStorage.getItem('token');
- 
     if (serializedObj) {
       return serializedObj
     }else{
       return ''
     }
   }
-  getRoles(){
-    this.t=this.getToken()
-    this.payload=jwtDecode<any>(this.t)
-    this.abilities=this.payload.abilities
-   
-      return this.abilities
+  getAccess(){
+    this.refresh()
+      return this.payload.access
   }
   getUid(){
-    this.t=this.getToken()
-    this.payload=jwtDecode<any>(this.t)
-    this.abilities=this.payload.abilities
+    this.refresh()
     return this.payload.uid
   }
   getName(){
-    this.t=this.getToken()
-    this.payload=jwtDecode<any>(this.t)
-    this.abilities=this.payload.abilities
-
+    this.refresh()
     return this.payload.uname
   }
   loginOn() {
     this._isLoggedIn = true;
+    this.refresh()
   }
-changeAccess(acceso:string){
-  sessionStorage.setItem('access',acceso)
-}
-clearAccess(){
-  sessionStorage.removeItem('access')
-}
-get getAccess():string{
-  const serializedObj = sessionStorage.getItem('access');
+  refresh(){
+    try{
 
-  if (serializedObj) {
-    return serializedObj
-  }else{
-    return ''
+      this.t=this.getToken()
+      this.payload=jwtDecode<any>(this.t)
+    }catch(e){
+      this.logout()
+    }
   }
- 
-}
+
+
   logout() {
     sessionStorage.removeItem('token');
-    sessionStorage.removeItem('access')
+    window.location.href=''
   }
   get isLoggedIn(): boolean {
    if(this.getToken().length>1){

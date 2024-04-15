@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
@@ -11,13 +11,18 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent {
+export class LoginComponent  {
   constructor(public router:Router,public servicioAuth:AuthService){
     this.loginData.email=''
     this.loginData.password=''
     this.error=''
-
+    
+   if (this.servicioAuth.isLoggedIn)
+    {
+      this.router.navigate(['/home'])
+    }
 }
+
 loginData={
   email:'',
   password:''
@@ -30,6 +35,7 @@ loginData={
      
         sessionStorage.setItem('token',data.token)
         this.servicioAuth.loginOn()
+        
        this.router.navigate(['/home'])
       },
       error:(err)=>{
