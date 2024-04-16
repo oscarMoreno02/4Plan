@@ -21,7 +21,7 @@
                 <th style="width:40%">Volumen</th>
                 <th style="width:30%">Hora Inicio</th>
                 <th style="width:20%">Hora fin</th>
-                <th style="width:10%">Nuevo</th>
+                <th style="width:10%"><app-new-work-pameter></app-new-work-pameter></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-parameter>
@@ -29,7 +29,7 @@
                 <td>{{ parameter.expectedVolume}}</td>
                 <td>{{ parameter.timeZone.start}}</td>
                 <td>{{ parameter.timeZone.end}}</td>
-                <td></td>
+                <td><app-edit-work-pameter [editParameter]="parameter"></app-edit-work-pameter></td>
             </tr>
         </ng-template>
         <ng-template pTemplate="paginatorleft">

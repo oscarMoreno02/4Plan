@@ -1,26 +1,24 @@
-
-import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
-import { MessageService } from 'primeng/api';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { ToastModule } from 'primeng/toast';
-import { DynamicDialogModule } from 'primeng/dynamicdialog';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { DialogModule } from 'primeng/dialog';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { InputTextModule } from 'primeng/inputtext';
+import { ToastModule } from 'primeng/toast';
 import { ConfirmComponent } from '../confirm/confirm.component';
 import { DropdownModule } from 'primeng/dropdown';
-import { Pipe, PipeTransform } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { WorkParametersService } from '../../services/work-parameters.service';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { WorkParameter } from '../../interfaces/work-parameter';
 import { TimeZone } from '../../interfaces/time-zone';
+import { Subscription } from 'rxjs';
+import { WorkParametersService } from '../../services/work-parameters.service';
 import { AuthService } from '../../services/auth.service';
 import { TimeZoneService } from '../../services/time-zone.service';
-import { InputNumberModule } from 'primeng/inputnumber';
+import { MessageService } from 'primeng/api';
+import { DialogService } from 'primeng/dynamicdialog';
+
 @Component({
-  selector: 'app-new-work-pameter',
+  selector: 'app-edit-work-pameter',
   standalone: true,
   imports: [
     FormsModule,
@@ -32,13 +30,12 @@ import { InputNumberModule } from 'primeng/inputnumber';
     ConfirmComponent,
     DropdownModule,
     InputNumberModule
-  
   ],
-  templateUrl: './new-work-pameter.component.html',
-  styleUrl: './new-work-pameter.component.css',
   providers: [DialogService, MessageService],
+  templateUrl: './edit-work-pameter.component.html',
+  styleUrl: './edit-work-pameter.component.css'
 })
-export class NewWorkPameterComponent {
+export class EditWorkPameterComponent {
   constructor(
     public messageService: MessageService,
     private workParameterService: WorkParametersService,
@@ -49,13 +46,13 @@ export class NewWorkPameterComponent {
  @Input() visible: boolean = false;
  @Input() tipo=0
  @Output() cerrarModal = new EventEmitter<void>();
+ @Input()editParameter:WorkParameter={expectedVolume:0,idCompany:this.authService.getCompany(),idTimeZone:0}
 
  value=''
  subscription: Subscription=new Subscription;
  workParameterList:Array<WorkParameter>=[]
  timeZoneList:Array<TimeZone>=[]
 
- newParameter:WorkParameter={expectedVolume:0,idCompany:this.authService.getCompany(),idTimeZone:0}
  styleValidTimeZone=''
  styleValidVolume=''
 
@@ -69,6 +66,9 @@ export class NewWorkPameterComponent {
           this.timeZoneList=data
           for (const t of this.timeZoneList){
             t.formated=t.start+' - '+t.end
+            if(t.id==this.editParameter.idTimeZone){
+              this.editParameter.timeZone=t
+            }
           }
         },
         error:(err)=>{
@@ -89,18 +89,18 @@ export class NewWorkPameterComponent {
 cerrar(): void {
  this.cerrarModal.emit();
 }
- crear(b:Boolean){
+ editar(b:Boolean){
    if(b){
 
 
      if(this.validarCampos()){
-    this.newParameter.idTimeZone=this.newParameter.timeZone!.id
-     this.messageService.add({ severity: 'info', summary: 'Crear Parametro', detail: 'En curso', life: 3000 });
-     this.workParameterService.insertWorkParameter(this.newParameter).subscribe({
+    this.editParameter.idTimeZone=this.editParameter.timeZone!.id
+     this.messageService.add({ severity: 'info', summary: 'editar Parametro', detail: 'En curso', life: 3000 });
+     this.workParameterService.updateWorkParameter(this.editParameter).subscribe({
        next: (u:any) => {
-        console.log(this.newParameter)
+        console.log(this.editParameter)
              setTimeout(() => {
-               this.messageService.add({ severity: 'success', summary: 'Crear Parametro', detail: 'Completado', life: 3000 });
+               this.messageService.add({ severity: 'success', summary: 'editar Parametro', detail: 'Completado', life: 3000 });
                setTimeout(() => {
                  window.location.reload()
              }, 1000); 
@@ -109,31 +109,48 @@ cerrar(): void {
        },
        error: (err) => {
     
-         this.messageService.add({ severity:'error', summary: 'Crear Parametro', detail: 'Cancelado', life: 3000 });
+         this.messageService.add({ severity:'error', summary: 'editar Parametro', detail: 'Cancelado', life: 3000 });
        }
      })
    }
  }
  }
+ eliminar(b:Boolean){
+  this.messageService.add({ severity: 'info', summary: 'Eliminar Parametro', detail: 'En curso', life: 3000 });
+  this.workParameterService.deleteWorkParameter(this.editParameter.id!).subscribe({
+    next:(data:any)=>{
+      setTimeout(() => {
+              this.visible=false
+              this.messageService.add({ severity: 'success', summary: 'Eliminar Parametro', detail: 'Completado', life: 3000 });
+              setTimeout(() => {
+              window.location.reload()
+            }, 1000);
+          }, 1000); 
+    },
+      error: (err) => {
+        this.messageService.add({ severity:'error', summary: 'Eliminar Parametro', detail: 'Cancelado', life: 3000 });
+      }
+  })
+}
  validarCampos():Boolean{
    let valido = true
-   if(this.newParameter.timeZone?.id==null){
+   if(this.editParameter.timeZone?.id==null){
      this.styleValidTimeZone='ng-invalid ng-dirty'
      valido=false
-     this.messageService.add({ severity: 'warn', summary: 'Crear Parametro', detail: 'Franja Horaria no especificada', life: 3000 });
+     this.messageService.add({ severity: 'warn', summary: 'Editar Parametro', detail: 'Franja Horaria no especificada', life: 3000 });
    }else{
      this.styleValidTimeZone=''
-     if(this.newParameter.expectedVolume==0){
+     if(this.editParameter.expectedVolume==0){
         
      this.styleValidVolume='ng-invalid ng-dirty'
      valido=false
-     this.messageService.add({ severity: 'warn', summary: 'Crear Parametro', detail: 'Debe introducir un volumen válido', life: 3000 });
+     this.messageService.add({ severity: 'warn', summary: 'editar Parametro', detail: 'Debe introducir un volumen válido', life: 3000 });
      }else{
       this.styleValidVolume=''
       this.styleValidTimeZone=''
        if(!this.checkUnico()){
          valido=false
-         this.messageService.add({ severity: 'warn', summary: 'Crear Parametro', detail: 'Ya existe una parametro con esos valores', life: 3000 });
+         this.messageService.add({ severity: 'warn', summary: 'editar Parametro', detail: 'Ya existe una parametro con esos valores', life: 3000 });
          this.styleValidTimeZone='ng-invalid ng-dirty'
          this.styleValidVolume='ng-invalid ng-dirty'
         }else{
@@ -150,8 +167,8 @@ cerrar(): void {
    let valido=true
    for(const parameter of this.workParameterList){
 
-     if(parameter.expectedVolume==this.newParameter.expectedVolume 
-      && parameter.idTimeZone==this.newParameter.idTimeZone){
+     if(parameter.expectedVolume==this.editParameter.expectedVolume 
+      && parameter.idTimeZone==this.editParameter.idTimeZone){
        valido=false
       }
       
@@ -159,6 +176,4 @@ cerrar(): void {
     return valido
   }
 
-
 }
-

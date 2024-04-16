@@ -5,10 +5,12 @@ import { WorkParametersService } from '../../services/work-parameters.service';
 import { Subscription } from 'rxjs';
 import { CabeceraComponent } from '../cabecera/cabecera.component';
 import { TableModule } from 'primeng/table';
+import { NewWorkPameterComponent } from '../new-work-pameter/new-work-pameter.component';
+import { EditWorkPameterComponent } from '../edit-work-pameter/edit-work-pameter.component';
 @Component({
   selector: 'app-work-parameters',
   standalone: true,
-  imports: [CabeceraComponent,TableModule],
+  imports: [CabeceraComponent,TableModule,NewWorkPameterComponent,EditWorkPameterComponent],
   templateUrl: './work-parameters.component.html',
   styleUrl: './work-parameters.component.css'
 })
@@ -23,6 +25,7 @@ ngOnInit(): void {
     next:(data:Array<WorkParameter>)=>{
       this.workParametersList=data
       console.log(this.workParametersList)
+
     },
     error:(err)=>{
       
