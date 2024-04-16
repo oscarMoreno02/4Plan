@@ -16,7 +16,17 @@ const listAllTimeZones= (req, res = response) => {
             res.status(404).json()
         })
 }
+const listAllTimeZonesOfCompany= (req, res = response) => {
+    const conexion = new Conexion()
+    conexion.getAllTimeZonesOfCompany(req.params.id)
+        .then(data => {
+            res.status(200).json(data)
+        })
+        .catch(err => {
 
+            res.status(404).json()
+        })
+}
 const listTimeZone= (req, res = response) => {
     const conexion = new Conexion()
     conexion.getTimeZoneById(req.params.id)
@@ -74,5 +84,6 @@ module.exports={
    editTimeZone,
    createTimeZone,
    listAllTimeZones,
-   listTimeZone
+   listTimeZone,
+   listAllTimeZonesOfCompany
 }

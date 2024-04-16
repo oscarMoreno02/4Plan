@@ -19,7 +19,7 @@ constructor(public authService:AuthService,private workParameterService:WorkPara
 workParametersList:Array<WorkParameter>=[]
 subscripcion=new Subscription()
 ngOnInit(): void {
-  this.subscripcion=this.workParameterService.getAllWorkParametersWithTimeZoneOfCompany().subscribe({
+  this.subscripcion=this.workParameterService.getAllWorkParametersWithTimeZoneOfCompany(this.authService.getCompany()).subscribe({
     next:(data:Array<WorkParameter>)=>{
       this.workParametersList=data
       console.log(this.workParametersList)

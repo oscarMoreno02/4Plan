@@ -10,7 +10,7 @@ import { AuthService } from './auth.service';
 })
 export class WorkParametersService {
   baseUrl=environment.baseUrl+environment.urlWorkParameters
-  constructor(private http:HttpClient,private authService :AuthService) { }
+  constructor(private http:HttpClient) { }
 
 
   getAllWorkParameters(): Observable<any | undefined> {
@@ -21,8 +21,8 @@ export class WorkParametersService {
     )
   }
 
-  getAllWorkParametersWithTimeZoneOfCompany(): Observable<any | undefined> {
-    return this.http.get<any>(this.baseUrl+'/timezone/'+this.authService.getCompany()).pipe(
+  getAllWorkParametersWithTimeZoneOfCompany(id:number): Observable<any | undefined> {
+    return this.http.get<any>(this.baseUrl+'/timezone/'+id).pipe(
       catchError((error) =>{
         return of(undefined)
       })

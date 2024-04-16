@@ -1,5 +1,5 @@
 <p-toast></p-toast>
-<!-- //Óscar -->
+
 <div style="" class=" card flex justify-content-center">
   @if(tipo==0){
   <p-button  label="Nueva" severity="success" [raised]="true" [outlined]="true" (click)="showDialog()" icon="pi pi-plus" label="Nueva"></p-button>
@@ -22,7 +22,7 @@
 
                 <div class="flex flex-column subcategoria-seleccionada">
                     <label for="username2">Categoria principal</label>
-                    <p-dropdown  class="{{estiloValidacionDependiente}}" [options]="listaCategorias" [(ngModel)]="timeZoneAssigned" optionLabel="nombre" [showClear]="true" placeholder="Selecciona una categoria"></p-dropdown>
+                    <p-dropdown  class="{{styleValidTimeZone}}" [options]="" [(ngModel)]="timeZoneAssigned" optionLabel="nombre" [showClear]="true" placeholder="Selecciona una categoria"></p-dropdown>
                     <small id="username-help2">Indíca la categoria a la que pertenece esta subcategoria</small>
                 </div>
             

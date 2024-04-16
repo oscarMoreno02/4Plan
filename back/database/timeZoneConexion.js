@@ -30,6 +30,20 @@ class TimeZoneConexion{
             this.con.desconectar()
         }
     }
+    getAllTimeZonesOfCompany = async (id) => {
+        try{
+            let resultado = [];
+            this.con.conectar();
+            
+            resultado = await models.TimeZone.findAll({where:{idCompany:id}});
+            return resultado;
+        }catch(error){
+          throw error
+        }finally{
+            // this.con.desconectar();
+            this.con.desconectar()
+        }
+    }
     getTimeZoneById = async (id) => {
         try{
             let resultado = [];

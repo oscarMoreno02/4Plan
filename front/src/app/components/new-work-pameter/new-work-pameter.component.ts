@@ -17,6 +17,7 @@ import { WorkParametersService } from '../../services/work-parameters.service';
 import { WorkParameter } from '../../interfaces/work-parameter';
 import { TimeZone } from '../../interfaces/time-zone';
 import { AuthService } from '../../services/auth.service';
+import { TimeZoneService } from '../../services/time-zone.service';
 
 @Component({
   selector: 'app-new-work-pameter',
@@ -40,7 +41,8 @@ export class NewWorkPameterComponent {
   constructor(
     public messageService: MessageService,
     private workParameterService: WorkParametersService,
-    public authService:AuthService
+    public authService:AuthService,
+    private timeZoneService:TimeZoneService
     ) {}
 
  @Input() visible: boolean = false;
@@ -50,15 +52,25 @@ export class NewWorkPameterComponent {
  value=''
  subscription: Subscription=new Subscription;
  workParameterList:Array<WorkParameter>=[]
+ timeZoneList:Array<TimeZone>
  timeZoneAssigned?:TimeZone
  newParameter:WorkParameter={expectedVolume:0,idCompany:this.authService.getCompany(),idTimeZone:0}
  styleValidTimeZone=''
  styleValidVolume=''
 
  ngOnInit(): void {
-   this.subscription = this.workParameterService.getAllWorkParametersWithTimeZoneOfCompany().subscribe({
+   this.subscription = this.workParameterService.getAllWorkParametersWithTimeZoneOfCompany(this.authService.getCompany()).subscribe({
      next: (data: any) => {
        this.workParameterList=data
+
+       this.timeZoneService.getAllTimeZonesOfCompany(this.authService.getCompany()).subscribe({
+        next:(data)=>{
+          this.timeZoneList=data
+        },
+        error:(err)=>{
+          
+        }
+       })
      },
      error: (err) => {
 
