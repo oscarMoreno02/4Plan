@@ -3,6 +3,7 @@ import { MenuItem } from 'primeng/api';
 import { MenubarModule } from 'primeng/menubar';
 import { AuthService } from '../../services/auth.service';
 import { ProfileIconComponent } from '../profile-icon/profile-icon.component';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-cabecera',
   standalone: true,
@@ -14,17 +15,22 @@ import { ProfileIconComponent } from '../profile-icon/profile-icon.component';
 export class CabeceraComponent {
   items: MenuItem[] | undefined;
   adminItems: MenuItem[] | undefined;
-constructor(public authService:AuthService){}
+constructor(public authService:AuthService,private router:Router){}
   ngOnInit() {
       this.items = [
           {
               label: 'Inicio',
               icon: 'pi pi-fw pi-home',
-
+              command:()=>{
+                this.router.navigate(['/home'])
+              }
           },
           {
               label: 'Turnos',
-              icon: 'pi pi-fw pi-calendar'
+              icon: 'pi pi-fw pi-calendar',
+              command:()=>{
+                this.router.navigate(['/shifts'])
+              }
           },
           {
               label: 'Peticiones',
@@ -36,7 +42,12 @@ constructor(public authService:AuthService){}
           }
       ];
       if(this.authService.hasRol(['owner'])){
-        this.items.push({label:'Plantilla',icon:'pi pi-fw pi-users'},{label:'Parametros',icon:'pi pi-fw pi-sliders-h'})
+        this.items.push(
+          {label:'Plantilla',icon:'pi pi-fw pi-users'}
+          ,{label:'Parametros',icon:'pi pi-fw pi-sliders-h'
+          ,command:()=>{
+            this.router.navigate(['/parameters'])
+          }})
       }
       this.adminItems = [
         {

@@ -16,9 +16,9 @@ const listAllWorkParameters= (req, res = response) => {
             res.status(404).json()
         })
 }
-const listAllWorkParametersWithTimeZone= (req, res = response) => {
+const listAllWorkParametersWithTimeZoneOfCompany= (req, res = response) => {
     const conexion = new Conexion()
-    conexion.getAllWorkParametersWithTimeZone()
+    conexion.getAllWorkParametersWithTimeZoneOfCompany(req.params.id)
         .then(data => {
             res.status(200).json(data)
         })
@@ -85,5 +85,5 @@ module.exports={
    createWorkParameter,
    listAllWorkParameters,
    listWorkParameter,
-   listAllWorkParametersWithTimeZone
+   listAllWorkParametersWithTimeZoneOfCompany
 }

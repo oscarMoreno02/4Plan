@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { CabeceraComponent } from './components/cabecera/cabecera.component';
 import { LoginComponent } from './components/login/login.component';
+import { WorkParametersComponent } from './components/work-parameters/work-parameters.component';
 
 export const routes: Routes = [
 
@@ -13,5 +14,9 @@ export const routes: Routes = [
     {
         path:'home',
         component:CabeceraComponent
+    },
+    {
+        path:'parameters',
+        component:WorkParametersComponent
     }
 ];

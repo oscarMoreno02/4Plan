@@ -13,7 +13,7 @@ const login =  (req, res = response) => {
               
                 bcrypt.compare(password, usu.password, (err, result) => {
                     if (result) {
-                            const token = generarJWT(usu.id,usu.access,usu.firstName)
+                            const token = generarJWT(usu.id,usu.access,usu.firstName,usu.idCompany)
                             res.status(200).json({token});
                 
                     } else {

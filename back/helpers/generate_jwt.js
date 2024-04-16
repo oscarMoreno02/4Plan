@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken')
 
 
-const generarJWT = (uid,access,uname) => {
+const generarJWT = (uid,access,uname,company) => {
     
-    let token = jwt.sign({ uid, access,uname }, process.env.TOKENKEYWORD, {
+    let token = jwt.sign({ uid, access,uname ,company}, process.env.TOKENKEYWORD, {
       });
     return token;
 }

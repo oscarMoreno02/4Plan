@@ -3,17 +3,26 @@ import { environment } from '../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, of } from 'rxjs';
 import { WorkParameter } from '../interfaces/work-parameter';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WorkParametersService {
   baseUrl=environment.baseUrl+environment.urlWorkParameters
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient,private authService :AuthService) { }
 
 
   getAllWorkParameters(): Observable<any | undefined> {
     return this.http.get<any>(this.baseUrl).pipe(
+      catchError((error) =>{
+        return of(undefined)
+      })
+    )
+  }
+
+  getAllWorkParametersWithTimeZoneOfCompany(): Observable<any | undefined> {
+    return this.http.get<any>(this.baseUrl+'/timezone/'+this.authService.getCompany()).pipe(
       catchError((error) =>{
         return of(undefined)
       })

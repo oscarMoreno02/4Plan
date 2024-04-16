@@ -67,6 +67,10 @@ export class AuthService  {
     this.refresh()
     return this.payload.uname
   }
+  getCompany(){
+    this.refresh()
+    return this.payload.company
+  }
   loginOn() {
     this._isLoggedIn = true;
     this.refresh()
