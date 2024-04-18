@@ -83,6 +83,7 @@ export class NewWorkPameterComponent {
    });
  }
  showDialog() {
+  this.newParameter={expectedVolume:0,idCompany:this.authService.getCompany(),idTimeZone:0}
      this.visible = true;
  }
 

@@ -42,11 +42,11 @@ export class EditWorkPameterComponent {
     public authService:AuthService,
     private timeZoneService:TimeZoneService
     ) {}
-
+@Input() id:number=0
  @Input() visible: boolean = false;
  @Input() tipo=0
  @Output() cerrarModal = new EventEmitter<void>();
- @Input()editParameter:WorkParameter={expectedVolume:0,idCompany:this.authService.getCompany(),idTimeZone:0}
+ editParameter:WorkParameter={expectedVolume:0,idCompany:this.authService.getCompany(),idTimeZone:0}
 
  value=''
  subscription: Subscription=new Subscription;
@@ -57,36 +57,51 @@ export class EditWorkPameterComponent {
  styleValidVolume=''
 
  ngOnInit(): void {
-   this.subscription = this.workParameterService.getAllWorkParametersWithTimeZoneOfCompany(this.authService.getCompany()).subscribe({
-     next: (data: any) => {
-       this.workParameterList=data
+  this.subscription = this.workParameterService.getAllWorkParametersWithTimeZoneOfCompany(this.authService.getCompany()).subscribe({
+    next: (data: any) => {
+      this.workParameterList=data
 
-       this.timeZoneService.getAllTimeZonesOfCompany(this.authService.getCompany()).subscribe({
-        next:(data)=>{
-          this.timeZoneList=data
-          for (const t of this.timeZoneList){
-            t.formated=t.start+' - '+t.end
-            if(t.id==this.editParameter.idTimeZone){
-              this.editParameter.timeZone=t
-            }
-          }
-        },
-        error:(err)=>{
-          
-        }
-       })
-     },
-     error: (err) => {
+      this.timeZoneService.getAllTimeZonesOfCompany(this.authService.getCompany()).subscribe({
+       next:(data)=>{
+         this.timeZoneList=data
+         for (const t of this.timeZoneList){
+           t.formated=t.start+' - '+t.end
+           if(t.id==this.editParameter.idTimeZone){
+             this.editParameter.timeZone=t
+           }
+         }
+         this.getParameter()
+       
+       },
+       error:(err)=>{
+         
+       }
+      })
+    },
+    error: (err) => {
 
-     }
-     
-   });
+    }
+    
+  });
+
+ }
+ getParameter(){
+  this.workParameterService.getWorkParameter(this.id).subscribe({
+    next:(data=>{
+      this.editParameter=data
+    }),
+    error:(error=>{
+
+    })
+  })
  }
  showDialog() {
+  this.getParameter()
      this.visible = true;
  }
 
 cerrar(): void {
+
  this.cerrarModal.emit();
 }
  editar(b:Boolean){

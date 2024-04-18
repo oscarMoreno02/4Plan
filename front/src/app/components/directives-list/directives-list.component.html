@@ -1,0 +1,31 @@
+
+
+
+  <div class="card">
+    <div class="flex justify-content-center">
+        <p-button type="button" badge="{{directivesList.length}}" (click)="showDialog()"  icon="pi pi-external-link" label="Directivas"></p-button>
+    </div>
+    <p-dialog header="Header" [resizable]="false" [modal]="true" [maximizable]="true" appendTo="body" [(visible)]="visible" [style]="{width: '70vw'}" [contentStyle]="{height: '300px'}">
+        <p-table [value]="directivesList" [scrollable]="true" scrollHeight="flex" [tableStyle]="{'min-width': '70rem'}">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Posicion</th>
+                    <th>Area</th>
+                    <th>Rendimiento Esperado</th>
+                    <th>Añadir</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-directive>
+                <tr>
+                    <td [width]="25">{{directive.position.description}}</td>
+                    <td [width]="25">Añadir area</td>
+                    <td [width]="25">{{directive.expectedValuation}}</td>
+                    <td [width]="25">editar</td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <ng-template pTemplate="footer">
+            <button type="button" pButton pRipple icon="pi pi-times" (click)="visible=false" label="Cerrar" class="p-button-text"></button>
+        </ng-template>
+    </p-dialog>
+</div>

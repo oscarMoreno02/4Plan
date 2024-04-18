@@ -67,12 +67,23 @@ const removeParameterDetail= (req, res = response) => {
             res.status(203).json('Error en la eliminacion')
         })
 }
+const listAllParameterDetailsWithDataOfParameter= (req, res = response) => {
+    const conexion = new Conexion()
+    conexion.getAllParameterDetailsWithDataOfParameter(req.params.id)
+        .then(data => {
+            res.status(200).json(data)
+        })
+        .catch(err => {
 
+            res.status(404).json()
+        })
+}
 
 module.exports={
    removeParameterDetail,
    editParameterDetail,
    createParameterDetail,
    listAllParameterDetails,
-   listParameterDetail
+   listParameterDetail,
+   listAllParameterDetailsWithDataOfParameter
 }

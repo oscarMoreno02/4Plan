@@ -14,6 +14,27 @@ class ParameterDetailConexion{
  
         this.con= new Conexion()
     }
+    getAllParameterDetailsWithDataOfParameter = async (id) => {
+        try{
+            let resultado = [];
+            this.con.conectar();
+            
+            resultado = await models.ParameterDetail.findAll({
+                where:{idParameter:id},
+                include: [{
+                    model: models.WorkPosition,
+                    as: 'position',
+                }, ]
+            });
+            return resultado;
+        }catch(error){
+            console.log(error)
+          throw error
+        }finally{
+     
+            this.con.desconectar()
+        }
+    }
    
 
     getAllParameterDetails = async () => {

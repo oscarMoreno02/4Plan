@@ -3,5 +3,6 @@ export const environment = {
     urlAuth:'/auth',
     urlLogin:'/login',
     urlWorkParameters:'/parameter',
-    urlTimeZones:'/time'
+    urlTimeZones:'/time',
+    urlDirectives:'/detail',
 };
