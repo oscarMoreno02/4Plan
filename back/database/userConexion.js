@@ -34,11 +34,12 @@ class UserConexion{
 
     
 
-    getAllUsuarios = async () => {
+    getAllUsers = async () => {
         try{
             let resultado = [];
             this.con.conectar();
-            resultado = await models.User.findAll();
+            resultado = await models.User.findAll({
+                attributes: ['id','firstName','lastName','email','access','salary','hiredHours','idCompany']});
             return resultado;
         }catch(error){
           throw error
@@ -47,7 +48,23 @@ class UserConexion{
         }
     }
 
-    getUsuario = async (id) => {
+    getAllUsersOfCompany = async (id) => {
+        try{
+            let resultado = [];
+            this.con.conectar();
+            resultado = await models.User.findAll({
+                where:{idCompany:id},
+                attributes: ['id','firstName','lastName','email','access','salary','hiredHours','idCompany']
+            });
+            return resultado;
+        }catch(error){
+          throw error
+        }finally{
+            this.con.desconectar();
+        }
+    }
+
+    getUser = async (id) => {
         try{
             let resultado = [];
             this.con.conectar();
@@ -63,9 +80,49 @@ class UserConexion{
             this.con.desconectar()
         }
     }
+    updateFullUser= async (id,body) => {
+        try{
+            let resultado = 0
+            this.con.conectar();
+            let User = await models.User.findByPk(id);
+            await User.update(body)
+            return resultado
+        }catch(error){
+            throw error
+        }finally{
+            this.con.desconectar()
+        }
+    }
+    insertUser = async (body) => {
+        let resultado = 0;
+        this.con.conectar();
+        try {
+            const User = new models.User(body);
+            await User.save();
+            return User.id
+        } catch (error) {
+            console.log(error)
+            throw error;
+        } finally {
+            this.con.desconectar();
+        }
+    }
 
-    
-
+    deleteUser = async (id) => {
+        try{
+            this.con.conectar();
+            let resultado = await models.User.findByPk(id);
+            if (!resultado) {
+                throw error;
+            }
+            await resultado.destroy();
+            return resultado;
+        }catch(error){
+            throw error
+        }finally{
+            this.con.desconectar()
+        }
+    }
  
 }
 

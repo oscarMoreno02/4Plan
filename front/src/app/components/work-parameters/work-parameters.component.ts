@@ -19,7 +19,7 @@ import { DirectivesListComponent } from '../directives-list/directives-list.comp
 })
 export class WorkParametersComponent implements OnInit {
 constructor(public authService:AuthService,private workParameterService:WorkParametersService){
-  console.log(this.authService.getCompany())
+
 }
 
 workParametersList:Array<WorkParameter>=[]

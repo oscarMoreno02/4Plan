@@ -14,6 +14,7 @@ class Server {
         this.assignmentPath = '/api/assignment';
         this.detailPath = '/api/detail';
         this.authPath = '/api/auth';
+        this.userPath = '/api/user';
         this.middlewares();
         this.routes();
 
@@ -35,6 +36,7 @@ class Server {
          this.app.use(this.assignmentPath, require('../routes/assignmentRoutes'));
          this.app.use(this.detailPath, require('../routes/parameterDetailRoutes'));
          this.app.use(this.authPath, require('../routes/authRoutes'));
+         this.app.use(this.userPath, require('../routes/userRoutes'));
     }
 
     listen() {

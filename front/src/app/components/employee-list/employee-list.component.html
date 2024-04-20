@@ -1,0 +1,42 @@
+<app-cabecera></app-cabecera>
+<div style="margin-top: 40px;" class="card">
+    <p-table
+        [value]="usersList"
+        [paginator]="true"
+        [rows]="5"
+        [showCurrentPageReport]="true"
+        [tableStyle]="{ 'min-width': '50rem' ,'max-width':'80rem','margin':'auto'}"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} parametros"
+        [rowsPerPageOptions]="[5, 10, 20]"
+    >
+    <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+           Parametros
+           
+        </div>
+    </ng-template>
+        <ng-template pTemplate="header">
+            <tr class="header-glass">
+              
+                <th style="width:40%">Nombre</th>
+                <th style="width:30%">Apellidos</th>
+                <th style="width:20%">Hora fin</th>
+                <th></th>
+                <th style="width:10%"></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-parameter>
+            <tr class="">
+                <td>{{ parameter.expectedVolume}}</td>
+                <td>{{ parameter.timeZone.start}}</td>
+                <td>{{ parameter.timeZone.end}}</td>
+                <td></td>
+                <td></td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="paginatorleft">
+        </ng-template>
+        <ng-template pTemplate="paginatorright">
+        </ng-template>
+    </p-table>
+</div>

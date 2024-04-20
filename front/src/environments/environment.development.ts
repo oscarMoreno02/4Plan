@@ -5,5 +5,6 @@ export const environment = {
     urlWorkParameters:'/parameter',
     urlTimeZones:'/time',
     urlDirectives:'/detail',
-    urlWorkPositions:'/position'
+    urlWorkPositions:'/position',
+    urlUsers:'/user'
 };
