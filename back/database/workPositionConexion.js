@@ -30,6 +30,20 @@ class WorkPositionConexion{
             this.con.desconectar()
         }
     }
+    getAllWorkPositionsOfCompany = async (id) => {
+        try{
+            let resultado = [];
+            this.con.conectar();
+            
+            resultado = await models.WorkPosition.findAll({where:{idCompany:id}});
+            return resultado;
+        }catch(error){
+          throw error
+        }finally{
+            // this.con.desconectar();
+            this.con.desconectar()
+        }
+    }
     getWorkPositionById = async (id) => {
         try{
             let resultado = [];

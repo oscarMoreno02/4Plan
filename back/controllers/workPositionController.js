@@ -16,6 +16,18 @@ const listAllWorkPositions= (req, res = response) => {
             res.status(404).json()
         })
 }
+const listAllWorkPositionsOfCompany= (req, res = response) => {
+    const conexion = new Conexion()
+    conexion.getAllWorkPositionsOfCompany(req.params.id)
+        .then(data => {
+            res.status(200).json(data)
+        })
+        .catch(err => {
+
+            res.status(404).json()
+        })
+}
+
 
 const listWorkPosition= (req, res = response) => {
     const conexion = new Conexion()
@@ -74,5 +86,6 @@ module.exports={
    editWorkPosition,
    createWorkPosition,
    listAllWorkPositions,
-   listWorkPosition
+   listWorkPosition,
+   listAllWorkPositionsOfCompany
 }

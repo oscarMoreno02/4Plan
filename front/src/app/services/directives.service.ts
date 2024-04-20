@@ -28,7 +28,7 @@ export class DirectivesService {
       })
     )
   }
-  insertDirective(Directive:Directive): Observable<any | undefined> {
+  insertDirective(Directive:WorkDirective): Observable<any | undefined> {
     let body={Directive:Directive}
   
      return this.http.post<any>(this.baseUrl,Directive,{params: {auth: true}})
@@ -50,7 +50,7 @@ export class DirectivesService {
     )
   }
   updateDirective(directive:WorkDirective): Observable<any | undefined> {
-     return this.http.put<any>(this.baseUrl+'/'+directive.id,Directive,{params: {auth: true}}).pipe(
+     return this.http.put<any>(this.baseUrl+'/'+directive.id,directive,{params: {auth: true}}).pipe(
       catchError((error) =>{
         return of(undefined)
       })

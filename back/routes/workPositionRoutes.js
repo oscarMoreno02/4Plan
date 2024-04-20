@@ -3,6 +3,7 @@ const {Router} = require('express');
 const router = Router();
 const controller=require('../controllers/workPositionController')
 
+    router.get('/company/:id',controller.listAllWorkPositionsOfCompany)
     router.get('/:id',controller.listWorkPosition)
     router.get('/',controller.listAllWorkPositions)
     router.delete('/:id',controller.removeWorkPosition)

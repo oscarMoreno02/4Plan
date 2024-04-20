@@ -1,0 +1,39 @@
+<p-toast></p-toast>
+
+<div style=""  class=" card flex justify-content-center">
+
+  
+  <p-dialog  header="Añadir directiva" [(visible)]="visible"  [modal]="true" 
+    [draggable]="false" (onHide)="cerrar();" [resizable]="false">
+
+
+    <div style="margin-top: 10px;" class="card flex justify-content-center" class="custom-dialog">
+        <div class="flex flex-row gap-4">
+
+            <div  class="flex flex-column">
+                <label for="username1">Rendimiento </label>
+                <input type="text" disabled="true" pInputText [(ngModel)]="editDirective.expectedValuation" class="w-small"/>
+                <p-slider [(ngModel)]="editDirective.expectedValuation" styleClass="w-full mt-3"></p-slider>
+                <br>
+                <small style="margin-top: 20px;" id="username-help1">Introduce el rendimiento esperado </small>
+            </div>
+            
+          
+
+
+                <div class="flex flex-column subcategoria-seleccionada">
+                    <label for="username2">Posicion</label>
+                    <p-dropdown  class="{{styleValidPosition}}" [options]="positionsList" [(ngModel)]="editDirective.position" optionLabel="description" [showClear]="true" placeholder="Selecciona una posicion de trabajo"></p-dropdown>
+               
+                </div>
+            
+            </div>
+        </div>
+        <div style="margin-top: 70px; display: flex;gap: 10px;" >
+
+            <app-confirm tipo="Editar" icono="save" mensaje="¿Deseas editar esta directiva?" color="success" (confirmacion)="guardar($event)"></app-confirm>
+            <app-confirm tipo="Borrar" icono="pi pi-trash" mensaje="¿Deseas eliminar esta directiva?" color="danger"
+            (confirmacion)="eliminar($event)"></app-confirm>
+        </div>
+  </p-dialog>
+</div>

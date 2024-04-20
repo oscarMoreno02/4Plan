@@ -55,7 +55,12 @@ class ParameterDetailConexion{
         try{
             let resultado = [];
             this.con.conectar();
-            resultado = await models.ParameterDetail.findByPk(id);
+            resultado = await models.ParameterDetail.findByPk(id,{
+                include: [{
+                    model: models.WorkPosition,
+                    as: 'position',
+                }, ]
+            });
             if (!resultado) {
                 throw new Error('error');
             }
