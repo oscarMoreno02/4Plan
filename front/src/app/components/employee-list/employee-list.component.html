@@ -20,18 +20,32 @@
               
                 <th style="width:40%">Nombre</th>
                 <th style="width:30%">Apellidos</th>
-                <th style="width:20%">Hora fin</th>
-                <th></th>
-                <th style="width:10%"></th>
+                <th style="width:20%">Email</th>
+                <th>Horas contratadas</th>
+                <th style="width:10%">Salario</th>
+                <th style="width:10%">Acceso</th>
+
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-parameter>
+        <ng-template pTemplate="body" let-user>
             <tr class="">
-                <td>{{ parameter.expectedVolume}}</td>
-                <td>{{ parameter.timeZone.start}}</td>
-                <td>{{ parameter.timeZone.end}}</td>
-                <td></td>
-                <td></td>
+                <td>{{ user.firstName}}</td>
+                <td>{{ user.lastName}}</td>
+                <td>{{ user.email}}</td>
+                @if(user.hiredHours!=null){
+
+                    <td>{{ user.hiredHours}}</td>
+                }@else {
+                    <td>[No especificado]</td>
+                }
+                @if(user.salary!=null){
+                    <td>{{ user.salary}}</td>
+                    
+                }@else {
+                    <td>[No especificado]</td>
+                }
+                <td>{{ translateAccess(user.access)}}</td>
+
             </tr>
         </ng-template>
         <ng-template pTemplate="paginatorleft">

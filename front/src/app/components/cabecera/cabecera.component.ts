@@ -46,7 +46,7 @@ export class CabeceraComponent {
         {
           label: 'Plantilla', icon: 'pi pi-fw pi-users',
           command: () => {
-            this.router.navigate(['/parameters'])
+            this.router.navigate(['/employees'])
           }
         }
 

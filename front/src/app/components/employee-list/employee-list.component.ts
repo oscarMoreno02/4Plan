@@ -35,4 +35,18 @@ export class EmployeeListComponent {
       
     })
   }
+  translateAccess(access:String):string{
+    let translate=''
+    switch(access){
+      case 'owner': translate='Gerente'
+      break
+      
+      case'manager': translate='Encargado'
+      break
+      
+      default:translate='Empleado'
+      
+        }
+        return translate
+  }
 }
