@@ -6,22 +6,22 @@
     <div class="flex justify-content-center">
         <p-button type="button" badge="{{directivesList.length}}" (click)="showDialog()"  icon="pi pi-external-link" label="Directivas"></p-button>
     </div>
-    <p-dialog header="Header" [resizable]="false" [baseZIndex]="0" [modal]="true" [maximizable]="true" appendTo="body" [(visible)]="visible" [style]="{width: '70vw'}" >
+    <p-dialog header="Directivas" [resizable]="false" [baseZIndex]="0" [modal]="true" [maximizable]="true" appendTo="body" [(visible)]="visible" [style]="{width: '70vw'}" >
         <p-table [value]="directivesList" [scrollable]="true" scrollHeight="flex" [tableStyle]="{'min-width': '70rem'}">
             <ng-template pTemplate="header">
                 <tr>
-                    <th>Posicion</th>
-                    <th>Area</th>
-                    <th>Rendimiento Esperado</th>
-                    <th><p-button label="Añadir" (onClick)="changeNewModalVisibility()"></p-button></th>
+                    <th width="10">Posicion</th>
+                    <th width="10">Area</th>
+                    <th width="10">Rendimiento Esperado</th>
+                    <th width="10"><p-button label="Añadir" (onClick)="changeNewModalVisibility()"></p-button></th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-directive>
                 <tr>
-                    <td [width]="25">{{directive.position.description}}</td>
-                    <td [width]="25">Añadir area</td>
-                    <td [width]="25"> {{directive.expectedValuation}}</td>
-                    <td [width]="25"><p-button label="Editar"  severity="warning" (onClick)="editar.showDialog(directive.id)"></p-button></td>
+                    <td >{{directive.position.description}}</td>
+                    <td >Añadir area</td>
+                    <td > {{directive.expectedValuation}}</td>
+                    <td ><p-button label="Editar"  severity="warning" (onClick)="editar.showDialog(directive.id)"></p-button></td>
                 </tr>
             </ng-template>
         </p-table>

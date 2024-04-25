@@ -42,7 +42,7 @@ export class EditWorkPameterComponent {
     public authService:AuthService,
     private timeZoneService:TimeZoneService
     ) {}
-@Input() id:number=0
+@Input() idParameter:number=0
  @Input() visible: boolean = false;
  @Input() tipo=0
  @Output() cerrarModal = new EventEmitter<void>();
@@ -57,8 +57,10 @@ export class EditWorkPameterComponent {
  styleValidVolume=''
 
  ngOnInit(): void {
-  this.subscription = this.workParameterService.getAllWorkParametersWithTimeZoneOfCompany(this.authService.getCompany()).subscribe({
-    next: (data: any) => {
+  if(this.idParameter!=0){
+
+    this.subscription = this.workParameterService.getAllWorkParametersWithTimeZoneOfCompany(this.authService.getCompany()).subscribe({
+      next: (data: any) => {
       this.workParameterList=data
 
       this.timeZoneService.getAllTimeZonesOfCompany(this.authService.getCompany()).subscribe({
@@ -83,12 +85,16 @@ export class EditWorkPameterComponent {
     }
     
   });
+}
 
  }
  getParameter(){
-  this.workParameterService.getWorkParameter(this.id).subscribe({
+
+  this.subscription=this.workParameterService.getWorkParameter(this.idParameter).subscribe({
+    
     next:(data=>{
       this.editParameter=data
+      
     }),
     error:(error=>{
 
@@ -109,7 +115,7 @@ cerrar(): void {
 
 
      if(this.validarCampos()){
-    this.editParameter.idTimeZone=this.editParameter.timeZone!.id
+    this.editParameter.idTimeZone!=this.editParameter.timeZone!.id
      this.messageService.add({ severity: 'info', summary: 'editar Parametro', detail: 'En curso', life: 3000 });
      this.workParameterService.updateWorkParameter(this.editParameter).subscribe({
        next: (u:any) => {

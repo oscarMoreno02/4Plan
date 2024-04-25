@@ -95,7 +95,7 @@ cerrar(): void {
 
 
      if(this.validarCampos()){
-    this.newParameter.idTimeZone=this.newParameter.timeZone!.id
+      this.newParameter.idTimeZone=this.newParameter.timeZone!.id!
      this.messageService.add({ severity: 'info', summary: 'Crear Parametro', detail: 'En curso', life: 3000 });
      this.workParameterService.insertWorkParameter(this.newParameter).subscribe({
        next: (u:any) => {

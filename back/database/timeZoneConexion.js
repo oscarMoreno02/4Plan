@@ -35,7 +35,11 @@ class TimeZoneConexion{
             let resultado = [];
             this.con.conectar();
             
-            resultado = await models.TimeZone.findAll({where:{idCompany:id}});
+            resultado = await models.TimeZone.findAll({where:{idCompany:id},
+                   include: [{
+                model: models.DayTimeZone,
+                as: 'days',
+            }, ]});
             return resultado;
         }catch(error){
           throw error
@@ -48,7 +52,13 @@ class TimeZoneConexion{
         try{
             let resultado = [];
             this.con.conectar();
-            resultado = await models.TimeZone.findByPk(id);
+            resultado = await models.TimeZone.findByPk(id,{
+                include: [{
+                
+                    model: models.DayTimeZone,
+                    as: 'days',
+                } ]
+            });
             if (!resultado) {
                 throw new Error('error');
             }
@@ -67,8 +77,16 @@ class TimeZoneConexion{
         try {
             const TimeZone = new models.TimeZone(body);
             await TimeZone.save();
+            let newDays=body.days
+            for(const d of newDays){
+                d.idTimeZone=TimeZone.id
+                let day=new models.DayTimeZone(d)
+                await day.save()
+            }
+
             return TimeZone.id
         } catch (error) {
+            console.log(error)
             throw error;
         } finally {
             this.con.desconectar();
@@ -82,7 +100,7 @@ class TimeZoneConexion{
             if (!resultado) {
                 throw error;
             }
-            await resultado.destroy();
+            await resultado.destoy();
             return resultado;
         }catch(error){
             throw error
@@ -96,8 +114,24 @@ class TimeZoneConexion{
             this.con.conectar();
             let TimeZone = await models.TimeZone.findByPk(id);
             await TimeZone.update(body)
+
+           let days = await models.DayTimeZone.findAll({ where: { idTimeZone: id } });
+
+           if (days.length > 0) {
+               for (const d of days) {
+                   await d.destroy();
+               }
+           }
+   
+            let newDays=body.days
+            for(const d of newDays){
+                d.idTimeZone=id
+                let day=new models.DayTimeZone(d)
+                await day.save()
+            }
             return resultado
         }catch(error){
+            console.log(error)
             throw error
         }finally{
             this.con.desconectar()

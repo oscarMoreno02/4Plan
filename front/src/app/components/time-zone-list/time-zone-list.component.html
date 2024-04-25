@@ -1,0 +1,36 @@
+
+<app-new-time-zone [visible]="newModalVisible.value" [tipo]="1" (cerrarModal)="changeNewModalVisibility()"></app-new-time-zone>
+<app-edit-time-zone (cerrarModal)="changeEditModalVisibility()" #editar ></app-edit-time-zone> 
+  <div class="card">
+    <div class="flex justify-content-center">
+        <p-button type="button" badge="{{timezonesList.length}}" (click)="showDialog()"  [size]="'small'"  icon="pi pi-external-link" label="Franjas Horarias"></p-button>
+    </div>
+    <div>
+
+        <p-dialog  header="Franjas Horarias" [resizable]="false" [modal]="true" [draggable]="false" [(visible)]="visible" [style]="{width: '460px'}" >
+            <p-table [value]="timezonesList" [scrollable]="true" scrollHeight="flex" [tableStyle]="{'min-width': '300px'}">
+            <ng-template pTemplate="header">
+                <tr>
+                    
+                    <th>Inicio</th>
+                    <th>Fin</th>
+                    <th>Dias de la semana</th>
+
+                    <th><p-button label="Añadir" (onClick)="changeNewModalVisibility()"></p-button></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-timezone>
+                <tr>
+                    <td [width]="25">{{timezone.start}}</td>
+                    <td [width]="25">{{timezone.end}}</td>
+                    <td>{{getDays(timezone.days)}}</td>
+                    <td [width]="25"><p-button label="Editar"  severity="warning" (onClick)="editar.showDialog(timezone.id)"></p-button></td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <ng-template pTemplate="footer">
+            <button type="button" pButton pRipple icon="pi pi-times" (click)="visible=false" label="Cerrar" class="p-button-text"></button>
+        </ng-template>
+    </p-dialog>
+    </div>
+</div>

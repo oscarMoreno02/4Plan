@@ -22,13 +22,13 @@
 
                 <div class="flex flex-column subcategoria-seleccionada">
                     <label for="username2">Franja horaria</label>
-                    <p-dropdown  class="{{styleValidTimeZone}}" [options]="timeZoneList" [(ngModel)]="editParameter.timeZone" optionLabel="formated" [showClear]="true" placeholder="Selecciona una categoria"></p-dropdown>
+                    <p-dropdown  class="{{styleValidTimeZone}}" [options]="timeZoneList" [(ngModel)]="editParameter.timeZone" optionLabel="formated" [showClear]="true" placeholder="Seleccionar"></p-dropdown>
                     <small id="username-help2">Indíca la zona horaria</small>
                 </div>
             
             </div>
         </div>
-        <div style="margin-top: 70px; display: flex;gap: 10px;" >
+        <div style="margin-top: 140px; display: flex;gap: 10px;" >
 
             <app-confirm tipo="Editar" icono="save" mensaje="¿Deseas editar este parametro?" color="success" (confirmacion)="editar($event)"></app-confirm>
             <app-confirm tipo="Borrar" icono="pi pi-trash" mensaje="¿Deseas eliminar este parametro ?" color="danger"

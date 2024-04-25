@@ -2,9 +2,9 @@
 
 <div style="" class=" card flex justify-content-center">
   @if(tipo==0){
-  <p-button  label="Nueva" severity="success" [raised]="true" [outlined]="true" (click)="showDialog()" icon="pi pi-plus" label="Nueva"></p-button>
+  <p-button  label="Nuevo" severity="success" [raised]="true" [outlined]="true" (click)="showDialog()" icon="pi pi-plus" label="Nueva"></p-button>
   }
-  <p-dialog  header="Crear nueva categoria" [(visible)]="visible" [modal]="true" 
+  <p-dialog  header="Crear nuevo parametro" [(visible)]="visible" [modal]="true" 
     [draggable]="false" (onHide)="cerrar();" [resizable]="false">
 
 
@@ -20,17 +20,17 @@
 
 
 
-                <div class="flex flex-column subcategoria-seleccionada">
+                <div class="flex flex-column ">
                     <label for="username2">Franja horaria</label>
-                    <p-dropdown  class="{{styleValidTimeZone}}" [options]="timeZoneList" [(ngModel)]="newParameter.timeZone" optionLabel="formated" [showClear]="true" placeholder="Selecciona una categoria"></p-dropdown>
+                    <p-dropdown  class="{{styleValidTimeZone}}" [options]="timeZoneList" [(ngModel)]="newParameter.timeZone" optionLabel="formated" [showClear]="true" placeholder="Seleccionar"></p-dropdown>
                     <small id="username-help2">Indíca la zona horaria</small>
                 </div>
             
             </div>
         </div>
-        <div style="margin-top: 20px;" >
+        <div style="margin-top: 120px;" >
 
-            <app-confirm tipo="Crear" icono="plus" mensaje="¿Deseas crear esta nueva categoria?" color="success" (confirmacion)="crear($event)"></app-confirm>
+            <app-confirm tipo="Crear" icono="plus" mensaje="¿Deseas crear esta nueva parametro?" color="success" (confirmacion)="crear($event)"></app-confirm>
         </div>
   </p-dialog>
 </div>

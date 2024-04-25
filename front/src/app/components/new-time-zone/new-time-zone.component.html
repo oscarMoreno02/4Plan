@@ -1,0 +1,54 @@
+
+<p-toast></p-toast>
+
+<div style=""  class=" card flex justify-content-center">
+  @if(tipo==0){
+  <p-button  label="Nueva" severity="success" [raised]="true" [outlined]="true" (click)="showDialog()" icon="pi pi-plus" label="Nueva"></p-button>
+  }
+  
+  <p-dialog  header="Añadir franja horaria" [(visible)]="visible"  [modal]="true" 
+    [draggable]="false" (onHide)="cerrar();" [resizable]="false">
+
+
+    <div style="margin-top: 10px;" class="card flex justify-content-center" class="custom-dialog">
+        <div style="margin-top: 20px;">
+
+            <label for="username1">Hora inicio</label>
+            <div style="display: flex;gap: 10px;margin-top: 20px">
+                
+                <p-dropdown [class]="estiloValidacionHoras"  [options]="horas" [(ngModel)]="horaInicio.hora" optionLabel="valor" [showClear]="true" placeholder="Hora"></p-dropdown>
+                
+                <p-dropdown  [class]="estiloValidacionMinutos" [options]="minutos" [(ngModel)]="horaInicio.minuto" optionLabel="valor" [showClear]="true" placeholder="Minuto "></p-dropdown>
+            </div>
+      
+    </div>
+    <div style="margin-top: 20px;">
+
+        <label for="username1">Hora finalización</label>
+        <div style="display: flex;gap: 10px;margin-top: 20px">
+            
+            <p-dropdown class="{{estiloValidacionHoras}}"  [options]="horas" [(ngModel)]="horaFin.hora" optionLabel="valor" [showClear]="true" placeholder="Hora"></p-dropdown>
+            
+            <p-dropdown class="{{estiloValidacionMinutos}}"  [options]="minutos" [(ngModel)]="horaFin.minuto" optionLabel="valor" [showClear]="true" placeholder="Minuto "></p-dropdown>
+        </div>
+    </div>
+    <div class="card flex justify-content-center">
+        <div class="flex flex-column gap-2" style="margin-top: 20px;">
+            <label  for="">Selecciona los dias de de la semana</label>
+
+            @for (day of days; track day.number) {
+
+                <div style="margin-top: 20px;" class="field-checkbox">
+                    <p-checkbox  (ngModelChange)="mostrar($event)"  class="{{estilosValidacionesDias}}" [label]="day.name" name="group"  [value]="day" [(ngModel)]="selectedDays"></p-checkbox>
+                </div>
+            }
+        </div>
+    </div>
+     
+    </div>
+        <div style="margin-top: 100px;" >
+
+            <app-confirm tipo="Crear" icono="plus" mensaje="¿Deseas añadir esta nueva franja horaria?" color="success" (confirmacion)="crear($event)"></app-confirm>
+        </div>
+  </p-dialog>
+</div>

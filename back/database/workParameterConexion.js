@@ -40,6 +40,10 @@ class WorkParameterConexion{
                 include: [{
                     model: models.TimeZone,
                     as: 'timeZone',
+                    include: [{
+                        model: models.DayTimeZone,
+                        as: 'days',
+                    }, ]
                 }, ]
             });
             return resultado;

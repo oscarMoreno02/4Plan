@@ -21,7 +21,7 @@ export class DirectivesListComponent {
   constructor(public authService:AuthService,private directiveService:DirectivesService){
     
   }
-  @Input() idParameter=5
+  @Input() idParameter=0
   @Input() visible: boolean = false;
   @Output() cerrarModal = new EventEmitter<void>();
   directivesList:Array<WorkDirective>=[]
@@ -30,7 +30,10 @@ export class DirectivesListComponent {
   editModalVisible={value:false}
   editDirectiveId=0
   ngOnInit(): void {
-    this.subscripcion=this.directiveService.getAllDirectivesWithDataOfParameter(this.idParameter).subscribe({
+    if(this.idParameter!=0){
+
+      console.log(this.idParameter)
+      this.subscripcion=this.directiveService.getAllDirectivesWithDataOfParameter(this.idParameter).subscribe({
       next:(data:Array<WorkDirective>)=>{
         this.directivesList=data
         console.log(this.directivesList)
@@ -41,11 +44,13 @@ export class DirectivesListComponent {
       }
     })
   }
+  }
   cerrar(): void {
     this.cerrarModal.emit();
    }
    showDialog() {
-       this.visible = true;
+   
+    this.visible = true;
    }
    changeNewModalVisibility() {
     this.newModalVisible.value=!this.newModalVisible.value

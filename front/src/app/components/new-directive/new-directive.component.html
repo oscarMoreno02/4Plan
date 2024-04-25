@@ -25,8 +25,9 @@
 
                 <div class="flex flex-column subcategoria-seleccionada">
                     <label for="username2">Posicion</label>
-                    <p-dropdown  class="{{styleValidPosition}}" [options]="positionsList" [(ngModel)]="newDirective.position" optionLabel="description" [showClear]="true" placeholder="Selecciona una posicion de trabajo"></p-dropdown>
-               
+                    <p-dropdown  class="{{styleValidPosition}}" [options]="positionsList" [(ngModel)]="newDirective.position" optionLabel="description" [showClear]="true" placeholder="Seleccionar"></p-dropdown>
+                    <small id="username-help2">Indíca la posicion de trabajo</small>
+
                 </div>
             
             </div>
