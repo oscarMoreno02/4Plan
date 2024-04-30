@@ -20,7 +20,16 @@ module.exports = (sequelize, DataTypes) => {
         as: 'assignedTo'
       },
       );
-      
+      this.belongsTo(models.WorkDay, {
+        foreignKey: 'idWorkDay',
+        as: 'workDay'
+      },
+      );
+      this.belongsTo(models.WorkPosition, {
+        foreignKey: 'idPosition',
+        as: 'position'
+      },
+      );
     }
   }
   Assignment.init({
@@ -28,10 +37,10 @@ module.exports = (sequelize, DataTypes) => {
     idUser: DataTypes.INTEGER,
     start: DataTypes.TIME,
     end: DataTypes.TIME,
-    date: DataTypes.DATEONLY,
     idPosition: DataTypes.INTEGER,
     cost: DataTypes.INTEGER,
-    valuation: DataTypes.INTEGER
+    valuation: DataTypes.INTEGER,
+    idWorkDay:DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Assignment',

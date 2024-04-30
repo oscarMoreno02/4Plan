@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class WorkPosition extends Model {
+  class WorkDay extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -15,25 +15,23 @@ module.exports = (sequelize, DataTypes) => {
         as: 'company'
       },
       );
-      this.hasMany(models.Company, {
-        foreignKey: 'idPosition',
-        as: 'parameterDetails'
-      },
-      );
       this.hasMany(models.Assignment, {
-        foreignKey: 'idPosition',
-        as: 'assignments'
+        foreignKey: 'idWorkDay',
+        as: 'dayAssignments'
       },
       );
     }
+    
   }
-  WorkPosition.init({
-    description: DataTypes.STRING,
-    idCompany: DataTypes.INTEGER
+  WorkDay.init({
+    date:DataTypes.DATEONLY,
+    expectVolume: DataTypes.NUMBER,
+    reachedVolume: DataTypes.NUMBER,
+    published:DataTypes.BOOLEAN,
   }, {
     sequelize,
-    modelName: 'WorkPosition',
-    tableName:'workPositions'
+    modelName: 'WorkDay',
+    tableName:'workDays'
   });
-  return WorkPosition;
+  return WorkDay;
 };

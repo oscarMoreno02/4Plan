@@ -15,6 +15,7 @@ class Server {
         this.detailPath = '/api/detail';
         this.authPath = '/api/auth';
         this.userPath = '/api/user';
+        this.workDayPath = '/api/workday';
         this.middlewares();
         this.routes();
 
@@ -37,6 +38,7 @@ class Server {
          this.app.use(this.detailPath, require('../routes/parameterDetailRoutes'));
          this.app.use(this.authPath, require('../routes/authRoutes'));
          this.app.use(this.userPath, require('../routes/userRoutes'));
+         this.app.use(this.workDayPath,require('../routes/workDayRoutes'))
     }
 
     listen() {

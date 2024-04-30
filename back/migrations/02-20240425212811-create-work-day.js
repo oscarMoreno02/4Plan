@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('assignments', {
+    await queryInterface.createTable('workDays', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,43 +11,28 @@ module.exports = {
       },
       idCompany: {
         type: Sequelize.INTEGER,
+        allowNull: true,
         references: {
           model: {
             tableName: 'companies'
           },
           key: 'id'
         },
-        onDelete:'CASCADE'
-      },
-      idUser: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: {
-            tableName: 'users'
-          },
-          key: 'id'
-        },
-        onDelete:'SET NULL'
-      },
-      start: {
-        type: Sequelize.TIME
-      },
-      end: {
-        type: Sequelize.TIME
-      },
-      date: {
-        type: Sequelize.DATEONLY
-      },
-      idPosition: {
-        type: Sequelize.INTEGER
-      },
-      cost: {
-        type: Sequelize.INTEGER
-      },
-      valuation: {
-        type: Sequelize.INTEGER,
-        allowNull:true,
+        onDelete:'CASCADE',
         defaultValue:null
+      },
+      date:{
+        type:Sequelize.DATEONLY
+      },
+      expectVolume: {
+        type: Sequelize.INTEGER
+      },
+      reachedVolume: {
+        type: Sequelize.INTEGER
+      },
+      published: {
+        type: Sequelize.BOOLEAN,
+        defaultValue:false,
       },
       createdAt: {
         allowNull: false,
@@ -60,6 +45,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('assignments');
+    await queryInterface.dropTable('workDays');
   }
 };
