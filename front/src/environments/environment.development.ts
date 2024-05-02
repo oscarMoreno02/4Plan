@@ -6,5 +6,6 @@ export const environment = {
     urlTimeZones:'/time',
     urlDirectives:'/detail',
     urlWorkPositions:'/position',
-    urlUsers:'/user'
+    urlUsers:'/user',
+    urlWorkDays:'/workday',
 };

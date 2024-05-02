@@ -1,0 +1,20 @@
+<app-cabecera></app-cabecera>
+<div class="card">
+  <div class="" style="display: flex; justify-content: center; align-items: center;margin-top: 50px;">
+    <p-calendar (onSelect)="checkDay()" id="calendar" class="max-w-full" [showWeek]="false" [(ngModel)]="date"
+      [inline]="true" [showWeek]="false">
+      <ng-template pTemplate="header">Selecciona un dia</ng-template>
+    </p-calendar>
+  </div>
+</div>
+
+<p-dialog header="No se encontro el registro" [(visible)]="visible" [modal]="true" [draggable]="false"
+  [resizable]="false">
+  No se ha encontrado ningún registro para el dia seleccionado <br><br>¿Deseas crear un nuevo registro?
+
+  <div style="margin-top: 40px; display: flex;gap: 10px;">
+    <p-button severity="warning" (onClick)="cancelar()" label="Cancelar"></p-button>
+    <p-button severity="success" label="Crear" (onClick)="crear()"></p-button>
+
+  </div>
+</p-dialog>

@@ -4,6 +4,8 @@ import { CabeceraComponent } from './components/cabecera/cabecera.component';
 import { LoginComponent } from './components/login/login.component';
 import { WorkParametersComponent } from './components/work-parameters/work-parameters.component';
 import { EmployeeListComponent } from './components/employee-list/employee-list.component';
+import { ShiftWorkdaysListComponent } from './components/shift-workdays-list/shift-workdays-list.component';
+import { ShiftsDateComponent } from './components/shifts-date/shifts-date.component';
 
 export const routes: Routes = [
 
@@ -23,5 +25,13 @@ export const routes: Routes = [
     {
         path:'employees',
         component:EmployeeListComponent
+    },
+    {
+        path:'shifts',
+        component:ShiftWorkdaysListComponent
+    },
+    {
+        path:'shifts/:date',
+        component:ShiftsDateComponent
     }
 ];

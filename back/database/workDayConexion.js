@@ -49,6 +49,25 @@ class WorkDayConexion{
             this.con.desconectar()
         }
     }
+    getWorkDayOfCompanyByDate = async (id,date) => {
+        try{
+            let resultado = [];
+            this.con.conectar();
+            
+            resultado = await models.WorkDay.findOne({where:{idCompany:id,date:date},
+                include: [{
+                    model: models.Assignment,
+                    as: 'dayAssignments',
+                }, ]
+            });
+            return resultado;
+        }catch(error){
+          throw error
+        }finally{
+            // this.con.desconectar();
+            this.con.desconectar()
+        }
+    }
     getWorkDayById = async (id) => {
         try{
             let resultado = [];

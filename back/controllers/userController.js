@@ -27,7 +27,17 @@ const listAllOfUsersOfCompany= (req, res = response) => {
             res.status(404).json()
         })
 }
+const listAllUsersWithAssignments= (req, res = response) => {
+    const conexion = new Conexion()
+    conexion.getAllUsersWithAssignments(req.params.date)
+        .then(data => {
+            res.status(200).json(data)
+        })
+        .catch(err => {
 
+            res.status(404).json()
+        })
+}
 const listUser= (req, res = response) => {
     const conexion = new Conexion()
     conexion.getUser(req.params.id)
@@ -87,5 +97,6 @@ module.exports={
    createUser,
    listAllUsers,
    listUser,
-   listAllOfUsersOfCompany
+   listAllOfUsersOfCompany,
+   listAllUsersWithAssignments
 }

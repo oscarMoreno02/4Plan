@@ -64,6 +64,29 @@ class UserConexion{
         }
     }
 
+    getAllUsersWithAssignments = async (date) => {
+        try{
+            let resultado = [];
+            this.con.conectar();
+            resultado = await models.User.findAll({
+                where:{access:['manager','staff']},
+                attributes: ['id','firstName','lastName','email','access','salary','hiredHours','idCompany'],
+                include: [{
+                    required: false,
+                    model: models.Assignment,
+                    as: 'assignments',
+                    where:{idWorkDay:date}
+                } ]
+            });
+            return resultado;
+        }catch(error){
+          throw error
+        }finally{
+            this.con.desconectar();
+        }
+    }
+
+
     getUser = async (id) => {
         try{
             let resultado = [];

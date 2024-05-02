@@ -1,0 +1,92 @@
+<app-cabecera></app-cabecera>
+<p-toast></p-toast>
+<!-- //Óscar -->
+
+<div class="contenedor" style="margin-top: 50px;">
+
+    <div class="card"  >
+        <p-table [value]="[workDay]" [tableStyle]="{ 'min-width': '50rem' ,'max-width':'80rem','margin':'auto'}">
+            <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                Turno 
+               
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr class="header-glass" style="border: none;" >
+                <th>Fecha</th>
+                <th>Volumen Esperado</th>
+                <th>Volumen Conseguido</th>
+                @if (this.workDay) {
+
+                    @if(this.workDay.published!=false){
+                        <!-- <th> <app-confirm tipo="Ocultar" icono="eye-slash" mensaje="¿Deseas ocultar esta noticia?" color="warning" (confirmacion)="editarPublicacion($event,true)"></app-confirm></th> -->
+                        
+                    }@else {
+                        
+                        <!-- <th> <app-confirm tipo="Publicar" icono="eye" mensaje="¿Deseas publicar esta noticia?" color="success" (confirmacion)="editarPublicacion($event,true)"></app-confirm></th> -->
+                    }
+                    <!-- <th><app-edit-noticia-data [listaCategorias]="listaCategorias" [id]="id"></app-edit-noticia-data></th> -->
+                }
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-day>
+            <tr >
+                <td>{{ day.date }}</td>
+                <td>{{ day.expectVolume }}</td>
+                @if(this.workDay.reachedVolume==null){
+                    <td>[Sin especificar]</td>
+                }@else {
+
+                    <td>{{this.workDay.reachedVolume}}</td>
+                }
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+    
+        </ng-template>
+    </p-table>
+</div>
+
+<div class="card" style="margin-top: 20px;">
+    <p-table [value]="employees" [tableStyle]="{ 'min-width': '50rem' ,'max-width':'80rem','margin':'auto',}">
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+        Empleados
+    </div>
+</ng-template>
+<ng-template pTemplate="header">
+    <tr class="header-glass" style="border: none;" >
+    <th [width]="30">Nombre</th>
+    <th [width]="30">Apellidos</th>
+    <th [width]="20">Email</th>
+    <th [width]="50">Asignaciones</th>
+</tr>
+</ng-template>
+<ng-template pTemplate="body" let-employee>
+<tr>
+  <td>
+    {{employee.firstName}}
+  </td>
+  <td>
+    {{employee.lastName}}
+  </td>
+  <td>
+    {{employee.email}}
+  </td>
+  @if(employee.assignments.length>0){
+
+    <td><p-button severity="warning" label="Asignaciones"></p-button></td>
+  }@else {
+    <td><p-button severity="danger" label=" Sin Asignaciones"></p-button></td>
+  }
+</tr>
+</ng-template>
+    <ng-template pTemplate="summary"></ng-template>
+    
+
+
+
+
+</p-table>
+</div>

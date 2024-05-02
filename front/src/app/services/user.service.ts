@@ -28,6 +28,13 @@ export class UserService {
       })
     )
   }
+  getUsersWithAssignmens(day:number): Observable<any | undefined> {
+    return this.http.get<any>(this.baseUrl+'/assignments/'+day).pipe(
+      catchError((error) =>{
+        return of(undefined)
+      })
+      )
+    }
   insertUser(User:User): Observable<any | undefined> {
     let body={User:User}
   

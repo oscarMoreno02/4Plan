@@ -191,3 +191,7 @@ a:hover {
   border-color: #3B82F6
 }
 
+.p-datepicker table td > span.p-highlight {
+  color: #000;
+  background: #573b8a;
+}
