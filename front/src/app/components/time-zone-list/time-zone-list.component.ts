@@ -22,7 +22,7 @@ export class TimeZoneListComponent {
   
   constructor(public authService:AuthService,private timeZone:TimeZoneService){}
 
-
+  
   @Input() visible: boolean = false;
   @Output() cerrarModal = new EventEmitter<void>();
 

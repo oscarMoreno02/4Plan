@@ -11,7 +11,7 @@ class Server {
         this.parameterPath = '/api/parameter';
         this.timePath = '/api/time';
         this.positionPath = '/api/position';
-        this.assignmentPath = '/api/assignment';
+        this.assignmentPath = '/api/assignments';
         this.detailPath = '/api/detail';
         this.authPath = '/api/auth';
         this.userPath = '/api/user';

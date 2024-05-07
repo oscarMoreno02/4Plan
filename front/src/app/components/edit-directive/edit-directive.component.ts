@@ -22,6 +22,7 @@ import { WorkDirective } from '../../interfaces/directives';
 import { DirectivesService } from '../../services/directives.service';
 import { WorkPosition } from '../../interfaces/work-position';
 import { PositionService } from '../../services/position.service';
+import { Messsage } from '../../interfaces/messsage';
 
 @Component({
   selector: 'app-edit-directive',
@@ -37,7 +38,7 @@ import { PositionService } from '../../services/position.service';
     DropdownModule,
     InputNumberModule,
     SliderModule
-  
+
   ],
   providers: [DialogService, MessageService],
   templateUrl: './edit-directive.component.html',
@@ -47,108 +48,108 @@ export class EditDirectiveComponent {
   constructor(
     public messageService: MessageService,
     private directiveService: DirectivesService,
-    public authService:AuthService,
-    private positionService:PositionService
-    ) {}
-
- @Input() visible: boolean = false;
- @Input() tipo=0
- @Output() cerrarModal = new EventEmitter<void>();
-@Input() idDirective : number=0
- value=''
- subscription: Subscription=new Subscription;
- positionsList:Array<WorkPosition>=[]
-
- editDirective:WorkDirective={expectedValuation:0,idCompany:this.authService.getCompany(),idPosition:0,idParameter:0,id:0}
- styleValidPosition=''
+    public authService: AuthService,
+    private positionService: PositionService
+  ) { }
 
 
- ngOnInit(): void {
-  this.subscription=this.positionService.getAllWorkPositionsOfCompany(this.authService.getCompany()).subscribe({
-    next:(data=>{
-      this.positionsList=data
-      console.log(data)
-    }),
-    error:(error=>{
-      
+  @Input() visible: boolean = false;
+  @Input() tipo = 0
+  @Output() cerrarModal = new EventEmitter<void>();
+  @Input() idDirective: number = 0
+  value = ''
+  subscription: Subscription = new Subscription;
+  positionsList: Array<WorkPosition> = []
+
+  editDirective: WorkDirective = { expectedValuation: 0, idCompany: this.authService.getCompany(), idPosition: 0, idParameter: 0, id: 0 }
+  styleValidPosition = ''
+
+
+  ngOnInit(): void {
+    this.subscription = this.positionService.getAllWorkPositionsOfCompany(this.authService.getCompany()).subscribe({
+      next: (data => {
+        this.positionsList = data
+        console.log(data)
+      }),
+      error: (error => {
+
+      })
     })
-  })
- }
- showDialog(id:number) {
-  this.directiveService.getDirective(id).subscribe({
-    next:(data=>{
-      this.editDirective=data
-      this.visible = true;
-      console.log(data)
-      // console.log(this.editDirective)
-    }),
-    error:(error=>{
+  }
+  showDialog(id: number) {
+    this.directiveService.getDirective(id).subscribe({
+      next: (data => {
+        this.editDirective = data
+        this.visible = true;
 
+      }),
+      error: (error => {
+
+      })
     })
-  })
- }
+  }
 
-cerrar(): void {
- this.cerrarModal.emit();
-}
- guardar(confirm:Boolean){
-   if(confirm){
-     if(this.validarCampos()){
-      this.editDirective.idPosition=this.editDirective.position!.id
-    
-      this.messageService.add({ severity: 'info', summary: 'Editar Directiva', detail: 'En curso', life: 3000 });
-      this.directiveService.updateDirective(this.editDirective).subscribe({
-       next: (u:any) => {
-        console.log(this.editDirective)
-        console.log(u)
-             setTimeout(() => {
-               this.messageService.add({ severity: 'success', summary: 'Editar Directiva', detail: 'Completado', life: 3000 });
-               setTimeout(() => {
-                console.log(this.editDirective)
-                //  window.location.reload()
-             }, 1000); 
-           }, 2000); 
-         
-       },
-       error: (err) => {
-    
-         this.messageService.add({ severity:'error', summary: 'Editar Directiva', detail: 'Cancelado', life: 3000 });
-       }
-     })
-    }
-   
- }
- }
- eliminar(b:Boolean){
-  this.messageService.add({ severity: 'info', summary: 'Eliminar Directiva', detail: 'En curso', life: 3000 });
-  this.directiveService.deleteDirective(this.editDirective.id!).subscribe({
-    next:(data:any)=>{
-      setTimeout(() => {
-              this.visible=false
-              this.messageService.add({ severity: 'success', summary: 'Eliminar Directiva', detail: 'Completado', life: 3000 });
+  cerrar(): void {
+    this.cerrarModal.emit();
+  }
+  guardar(confirm: Boolean) {
+    if (confirm) {
+      if (this.validarCampos()) {
+        this.editDirective.idPosition = this.editDirective.position!.id
+
+        this.messageService.add({ severity: 'info', summary: 'Editar Directiva', detail: 'En curso', life: 3000 });
+        this.directiveService.updateDirective(this.editDirective).subscribe({
+          next: (u: any) => {
+            console.log(this.editDirective)
+            console.log(u)
+            setTimeout(() => {
+              this.messageService.add({ severity: 'success', summary: 'Editar Directiva', detail: 'Completado', life: 3000 });
               setTimeout(() => {
-              window.location.reload()
-            }, 1000);
-          }, 1000); 
-    },
-      error: (err) => {
-        this.messageService.add({ severity:'error', summary: 'Eliminar directiva', detail: 'Cancelado', life: 3000 });
+                console.log(this.editDirective)
+                 window.location.reload()
+              }, 1000);
+            }, 2000);
+
+          },
+          error: (err) => {
+
+            this.messageService.add({ severity: 'error', summary: 'Editar Directiva', detail: 'Cancelado', life: 3000 });
+          }
+        })
       }
-  })
-}
- validarCampos():Boolean{
-    let valido = true
-   if(!this.editDirective.position){
-     this.styleValidPosition='ng-invalid ng-dirty'
-     valido=false
-     this.messageService.add({ severity: 'warn', summary: 'Editar Directiva', detail: 'Posicion de trabajo no especificada', life: 3000 });
-   }else{
-     this.styleValidPosition=''
 
     }
-     return valido
- }
+  }
+  eliminar(b: Boolean) {
+    this.messageService.add({ severity: 'info', summary: 'Eliminar Directiva', detail: 'En curso', life: 3000 });
+    this.directiveService.deleteDirective(this.editDirective.id!).subscribe({
+      next: (data: any) => {
+        setTimeout(() => {
+          this.visible = false
+          this.messageService.add({ severity: 'success', summary: 'Eliminar Directiva', detail: 'Completado', life: 3000 });
+          setTimeout(() => {
+            window.location.reload()
+          }, 1000);
+        }, 1000);
+      },
+      error: (err) => {
+        this.messageService.add({ severity: 'error', summary: 'Eliminar directiva', detail: 'Cancelado', life: 3000 });
+      }
+    })
+  }
+  validarCampos(): Boolean {
+    let valido = true
+    if (!this.editDirective.position) {
+      this.styleValidPosition = 'ng-invalid ng-dirty'
+      valido = false
+      this.messageService.add({ severity: 'warn', summary: 'Editar Directiva', detail: 'Posicion de trabajo no especificada', life: 3000 });
+    } else {
+      this.styleValidPosition = ''
 
- 
+    }
+    return valido
+  }
+
+
 
 }

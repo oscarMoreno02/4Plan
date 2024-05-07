@@ -1,10 +1,8 @@
 
 <div style=""  class=" card flex justify-content-center">
-  @if(tipo==0){
-  <p-button  [label]="buttonText" [severity]="buttonColor" [raised]="true" [outlined]="true" (click)="showDialog()" icon="pi pi-plus" label="Nueva"></p-button>
-  }
+ 
   
-  <p-dialog  header="Nueva Assignacion" [(visible)]="visible"  [modal]="true" 
+  <p-dialog  header="Editar Assignacion" [(visible)]="visible"  [modal]="true" 
     [draggable]="false" (onHide)="cerrar();" [resizable]="false">
 
 
@@ -55,16 +53,18 @@
 
                 <div class="flex flex-column subcategoria-seleccionada">
                     <label for="username2">Posicion</label>
-                    <p-dropdown  class="{{styleValidPosition}}" [options]="positionsList" [(ngModel)]="newAssignment.position" optionLabel="description" [showClear]="true" placeholder="Seleccionar"></p-dropdown>
+                    <p-dropdown  class="{{styleValidPosition}}" [options]="positionsList" [(ngModel)]="editAssignment.position" optionLabel="description" [showClear]="true" placeholder="Seleccionar"></p-dropdown>
                     <small id="username-help2">Indíca la posicion de trabajo</small>
 
                 </div>
             
             </div>
         </div>
-        <div style="margin-top: 150px;" >
+        <div style="margin-top: 150px;display: flex;gap: 10px;" >
 
-            <app-confirm tipo="Crear" icono="plus" mensaje="¿Deseas añadir esta nueva asginación?" color="success" (confirmacion)="crear($event)"></app-confirm>
+            <app-confirm tipo="Guardar" icono="save" mensaje="¿Deseas modificar esta asginación?" color="success" (confirmacion)="editar($event)"></app-confirm>
+            <app-confirm tipo="Borrar" icono="pi pi-trash" mensaje="¿Deseas eliminar esta directiva?" color="danger"
+            (confirmacion)="eliminar($event)"></app-confirm>
         </div>
   </p-dialog>
 </div>

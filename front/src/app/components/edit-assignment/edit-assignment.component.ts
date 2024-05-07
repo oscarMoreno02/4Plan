@@ -26,9 +26,8 @@ import { User } from '../../interfaces/user';
 import { WorkDayService } from '../../services/work-day.service';
 import { UserService } from '../../services/user.service';
 import { Messsage } from '../../interfaces/messsage';
-
 @Component({
-  selector: 'app-new-assignment',
+  selector: 'app-edit-assignment',
   standalone: true,
   imports: [
     FormsModule,
@@ -44,10 +43,11 @@ import { Messsage } from '../../interfaces/messsage';
 
   ],
   providers: [DialogService, MessageService],
-  templateUrl: './new-assignment.component.html',
-  styleUrl: './new-assignment.component.css'
+  encapsulation:ViewEncapsulation.None,
+  templateUrl: './edit-assignment.component.html',
+  styleUrl: './edit-assignment.component.css'
 })
-export class NewAssignmentComponent {
+export class EditAssignmentComponent {
   constructor(
     public messageService: MessageService,
     private assignmentService: AssignmentService,
@@ -60,16 +60,16 @@ export class NewAssignmentComponent {
   @Input() tipo = 0
   @Output() cerrarModal = new EventEmitter<void>();
   @Output() sendMessage = new EventEmitter<Messsage>();
-  @Input() idWorkDay!: number
-  @Input() buttonText: string = 'Añadir'
-  @Input() buttonColor: string = 'success'
-  @Input() idUser!: number
+
+
   value = ''
   subscription: Subscription = new Subscription;
   positionsList: Array<WorkPosition> = []
-  user!: User
+  @Input() id:number=0
   @Input() date!:string
-  newAssignment: Assignment = { idCompany: this.authService.getCompany(), idPosition: 0, cost: 0, valuation: null, idUser: this.idUser, idWorkDay: this.idWorkDay, start: '', end: '' }
+
+  user!:User
+  editAssignment: Assignment = { idCompany: this.authService.getCompany(), idPosition: 0, cost: 0, valuation: null, idUser: 0, idWorkDay: 0, start: '', end: '' }
   styleValidPosition = ''
   horaInicio = { hora: { valor: '00', numero: 0 }, minuto: { valor: '00', numero: 0 } }
   horaFin = { hora: { valor: '00', numero: 0 }, minuto: { valor: '00', numero: 0 } }
@@ -77,7 +77,7 @@ export class NewAssignmentComponent {
   minutos = [{ valor: '00', numero: 0 }]
   estiloValidacionHoras = ''
   estiloValidacionMinutos = ''
-  estilosValidacionesDias: string='';
+
 
   ngOnInit(): void {
     let listaHoras = []
@@ -102,14 +102,7 @@ export class NewAssignmentComponent {
     this.subscription = this.positionService.getAllWorkPositionsOfCompany(this.authService.getCompany()).subscribe({
       next: (data => {
         this.positionsList = data
-        console.log(data)
-        this.userService.getUserWithAssignments(this.idUser, this.idWorkDay).subscribe({
-          next: (user) => {
-            console.log(user)
-            this.user=user
-        
-          }
-        })
+
       }),
       error: (error => {
 
@@ -117,82 +110,109 @@ export class NewAssignmentComponent {
     })
 
   }
-  showDialog() {
-    this.newAssignment = { idCompany: this.authService.getCompany(), idPosition: 0, cost: 0, valuation: null, idUser: this.idUser, idWorkDay: this.idWorkDay, start: '', end: '' }
-    this.visible = true;
+  showDialog(assignment:Assignment) {
+       this.subscription=this.userService.getUserWithAssignments(assignment.idUser, assignment.idWorkDay).subscribe({
+          next: (user) => {
+            this.user=user
+            for (const a of user.assignments){
+              if(assignment.id==a.id){
+                this.editAssignment=a
+                this.parsearDatos(this.editAssignment.start,this.editAssignment.end)
+                break
+              }
+            }
+            
+            this.visible = true;
+          }
+        })
   }
 
   cerrar(): void {
     this.cerrarModal.emit();
   }
-  crear(confirm: Boolean) {
+  editar(confirm: Boolean) {
        if(confirm){
          if(this.validarCampos()){
-          this.newAssignment.end = this.horaFin.hora.valor + ':' + this.horaFin.minuto.valor
-          this.newAssignment.start = this.horaInicio.hora.valor + ':' + this.horaInicio.minuto.valor
-          this.newAssignment.idUser=this.user.id
-          this.newAssignment.idWorkDay=this.idWorkDay
-          this.newAssignment.idPosition=this.newAssignment.position!.id!
-          // this.newAssignment.cost=0
-          // this.newAssignment.valuation=null
+          this.editAssignment.end = this.horaFin.hora.valor + ':' + this.horaFin.minuto.valor
+          this.editAssignment.start = this.horaInicio.hora.valor + ':' + this.horaInicio.minuto.valor
+          this.editAssignment.idPosition=this.editAssignment.position!.id!
+          this.editAssignment.cost=0
+          this.editAssignment.valuation=null
           if (this.comprobarCompatibilidad()) {
 
-             this.sendMessage.emit({ severity: 'info', summary: 'Crear Asignación', detail: 'En curso', life: 3000 });
-            this.assignmentService.insertAssignment(this.newAssignment).subscribe({
+             this.sendMessage.emit({ severity: 'info', summary: 'Modificar Asignación', detail: 'En curso', life: 3000 });
+            this.assignmentService.updateAssignment(this.editAssignment).subscribe({
            next: (u:any) => {
-            console.log(this.newAssignment)
+            console.log(this.editAssignment)
                  setTimeout(() => {
-                    this.sendMessage.emit({ severity: 'success', summary: 'Crear Asignación', detail: 'Completado', life: 3000 });
+                    this.sendMessage.emit({ severity: 'success', summary: 'Modificar Asignación', detail: 'Completado', life: 3000 });
                    setTimeout(() => {
-                      window.location.reload()
+                     window.location.reload()
                  }, 1000); 
                }, 2000); 
 
            },
            error: (err) => {
 
-             this.sendMessage.emit({ severity:'error', summary: 'Crear Asignación', detail: 'Cancelado', life: 3000 });
+              this.sendMessage.emit({ severity:'error', summary: 'Modificar Asignación', detail: 'Cancelado', life: 3000 });
            }
          })
         }else{
-          this.sendMessage.emit({ severity: 'warn', summary: 'Crear Asignación', detail: 'Asignación incompatible con las existentes', life: 3000 });
+           this.sendMessage.emit({ severity: 'warn', summary: 'Modificar Asignación', detail: 'Asignación incompatible con las existentes', life: 3000 });
 
         }
       }
         
       }
   }
+  eliminar(b: Boolean) {
+     this.sendMessage.emit({ severity: 'info', summary: 'Eliminar Directiva', detail: 'En curso', life: 3000 });
+    this.assignmentService.deleteAssignment(this.editAssignment.id!).subscribe({
+      next: (data: any) => {
+        setTimeout(() => {
+          this.visible = false
+           this.sendMessage.emit({ severity: 'success', summary: 'Eliminar Asignación', detail: 'Completado', life: 3000 });
+          setTimeout(() => {
+            window.location.reload()
+          }, 1000);
+        }, 1000);
+      },
+      error: (err) => {
+         this.sendMessage.emit({ severity: 'error', summary: 'Eliminar asignación', detail: 'Cancelado', life: 3000 });
+      }
+    })
+  }
   validarCampos(): Boolean {
         let valido = true
-       if(!this.newAssignment.position){
+       if(!this.editAssignment.position){
          this.styleValidPosition='ng-invalid ng-dirty'
          valido=false
-          this.sendMessage.emit({ severity: 'warn', summary: 'Crear Asignación', detail: 'Posicion de trabajo no especificada', life: 3000 });
+          this.sendMessage.emit({ severity: 'warn', summary: 'Modificar Asignación', detail: 'Posicion de trabajo no especificada', life: 3000 });
        }else{
         if (this.horaInicio.hora == null || this.horaFin.hora == null) {
           this.estiloValidacionHoras = 'ng-invalid ng-dirty'
           valido = false
-           this.sendMessage.emit({ severity: 'warn', summary: 'Crear Franja', detail: 'Horas introdudas incorrectamente', life: 3000 });
+           this.sendMessage.emit({ severity: 'warn', summary: 'Modificar Asignación', detail: 'Horas introdudas incorrectamente', life: 3000 });
         }
         if (this.horaInicio.minuto == null || this.horaFin.minuto == null) {
           this.estiloValidacionHoras = 'ng-invalid ng-dirty'
           valido = false
-           this.sendMessage.emit({ severity: 'warn', summary: 'Crear Franja', detail: 'Minutos introducidos incorrectamente', life: 3000 });
+           this.sendMessage.emit({ severity: 'warn', summary: 'Modificar Asignación', detail: 'Minutos introducidos incorrectamente', life: 3000 });
         }
         if (this.horaInicio.hora.numero > this.horaFin.hora.numero) {
           this.estiloValidacionHoras = 'ng-invalid ng-dirty'
           valido = false
-           this.sendMessage.emit({ severity: 'warn', summary: 'Crear Franja', detail: 'Horas introdudas incorrectamente', life: 3000 });
+           this.sendMessage.emit({ severity: 'warn', summary: 'Modificar Asignación', detail: 'Horas introdudas incorrectamente', life: 3000 });
         } else {
           if (this.horaInicio.hora.numero == this.horaFin.hora.numero && this.horaInicio.minuto.numero > this.horaFin.minuto.numero) {
             this.estiloValidacionMinutos = 'ng-invalid ng-dirty'
             valido = false
-             this.sendMessage.emit({ severity: 'warn', summary: 'Crear Franja', detail: 'Minutos introdudos incorrectamente', life: 3000 });
+             this.sendMessage.emit({ severity: 'warn', summary: 'Modificar Asignación', detail: 'Minutos introdudos incorrectamente', life: 3000 });
           } else {
             if (this.horaInicio.hora.numero == this.horaFin.hora.numero && this.horaInicio.minuto.numero == this.horaFin.minuto.numero) {
               this.estiloValidacionMinutos = 'ng-invalid ng-dirty'
               valido = false
-               this.sendMessage.emit({ severity: 'warn', summary: 'Crear Franja', detail: 'Minutos introdudos incorrectamente', life: 3000 });
+               this.sendMessage.emit({ severity: 'warn', summary: 'Modificar Asignación', detail: 'Minutos introdudos incorrectamente', life: 3000 });
             } else {
               this.estiloValidacionMinutos = ''
               this.estiloValidacionHoras = ''
@@ -206,14 +226,23 @@ export class NewAssignmentComponent {
     let valido = true;
     if(this.user.assignments){
       for (const assignment of this.user.assignments) {
-        if ((this.newAssignment.start >= assignment.start && this.newAssignment.start < assignment.end) ||
-        (this.newAssignment.end > assignment.start && this.newAssignment.end <= assignment.end) ||
-        (this.newAssignment.start <= assignment.start && this.newAssignment.end >= assignment.end)) {
-          valido = false;
-          break;
+        if(this.editAssignment.id!=assignment.id){
+          if ((this.editAssignment.start >= assignment.start && this.editAssignment.start < assignment.end) ||
+          (this.editAssignment.end > assignment.start && this.editAssignment.end <= assignment.end) ||
+          (this.editAssignment.start <= assignment.start && this.editAssignment.end >= assignment.end)) {
+            valido = false;
+            break;
+          }
         }
       }
     }
     return valido;
+}
+parsearDatos(horaInicio:string,horaFin:string){
+
+  this.horaInicio.hora={valor:horaInicio.substring(0,2),numero:parseInt(horaInicio.substring(0,2))}
+  this.horaInicio.minuto={valor:horaInicio.substring(3,5),numero:parseInt(horaInicio.substring(3,5))}
+  this.horaFin.hora={valor:horaFin.substring(0,2),numero:parseInt(horaFin.substring(0,2))}
+  this.horaFin.minuto={valor:horaFin.substring(3,5),numero:parseInt(horaFin.substring(3,5))}
 }
 }

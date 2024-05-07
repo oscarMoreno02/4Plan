@@ -12,10 +12,13 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { MessageService } from 'primeng/api';
 import { ConfirmComponent } from '../confirm/confirm.component';
+import { NewAssignmentComponent } from '../new-assignment/new-assignment.component';
+import { UserAssignmentsComponent } from '../user-assignments/user-assignments.component';
+import { Messsage } from '../../interfaces/messsage';
 @Component({
   selector: 'app-shifts-date',
   standalone: true,
-  imports: [CabeceraComponent,ToastModule,TableModule,ConfirmComponent,ButtonModule],
+  imports: [CabeceraComponent,ToastModule,TableModule,ConfirmComponent,ButtonModule,NewAssignmentComponent,UserAssignmentsComponent],
   providers:[MessageService],
   templateUrl: './shifts-date.component.html',
   styleUrl: './shifts-date.component.css'
@@ -26,7 +29,8 @@ export class ShiftsDateComponent  implements OnInit{
     public authService:AuthService,
     public workDayService:WorkDayService,
     public router:Router,
-    public userService:UserService
+    public userService:UserService,
+    public messageService:MessageService
     ) {
   }
   subscripion=new Subscription
@@ -57,5 +61,8 @@ export class ShiftsDateComponent  implements OnInit{
       
       }
     })
+  }
+  showMessage(message:Messsage){
+    this.messageService.add(message)
   }
 }

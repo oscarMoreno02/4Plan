@@ -3,22 +3,24 @@
 <!-- //Óscar -->
 
 <div class="contenedor" style="margin-top: 50px;">
-
-    <div class="card"  >
-        <p-table [value]="[workDay]" [tableStyle]="{ 'min-width': '50rem' ,'max-width':'80rem','margin':'auto'}">
-            <ng-template pTemplate="caption">
-            <div class="flex align-items-center justify-content-between">
-                Turno 
-               
-            </div>
-        </ng-template>
-        <ng-template pTemplate="header">
-            <tr class="header-glass" style="border: none;" >
+    
+    @if(workDay && workDay.id){
+        
+        <div class="card"  >
+            <p-table [value]="[workDay]" [tableStyle]="{ 'min-width': '50rem' ,'max-width':'80rem','margin':'auto'}">
+                <ng-template pTemplate="caption">
+                    <div class="flex align-items-center justify-content-between">
+                        Turno 
+                        
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr class="header-glass" style="border: none;" >
                 <th>Fecha</th>
                 <th>Volumen Esperado</th>
                 <th>Volumen Conseguido</th>
                 @if (this.workDay) {
-
+                    
                     @if(this.workDay.published!=false){
                         <!-- <th> <app-confirm tipo="Ocultar" icono="eye-slash" mensaje="¿Deseas ocultar esta noticia?" color="warning" (confirmacion)="editarPublicacion($event,true)"></app-confirm></th> -->
                         
@@ -37,7 +39,7 @@
                 @if(this.workDay.reachedVolume==null){
                     <td>[Sin especificar]</td>
                 }@else {
-
+                    
                     <td>{{this.workDay.reachedVolume}}</td>
                 }
             </tr>
@@ -52,41 +54,40 @@
     <p-table [value]="employees" [tableStyle]="{ 'min-width': '50rem' ,'max-width':'80rem','margin':'auto',}">
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
-        Empleados
-    </div>
-</ng-template>
-<ng-template pTemplate="header">
-    <tr class="header-glass" style="border: none;" >
-    <th [width]="30">Nombre</th>
-    <th [width]="30">Apellidos</th>
-    <th [width]="20">Email</th>
-    <th [width]="50">Asignaciones</th>
-</tr>
-</ng-template>
-<ng-template pTemplate="body" let-employee>
-<tr>
-  <td>
-    {{employee.firstName}}
-  </td>
-  <td>
-    {{employee.lastName}}
-  </td>
-  <td>
+                Empleados
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr class="header-glass" style="border: none;" >
+                <th [width]="30">Nombre</th>
+                <th [width]="30">Apellidos</th>
+                <th [width]="20">Email</th>
+                <th [width]="50">Asignaciones</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-employee>
+            <tr>
+                <td>
+                    {{employee.firstName}}
+                </td>
+                <td>
+                    {{employee.lastName}}
+</td>
+<td>
     {{employee.email}}
-  </td>
-  @if(employee.assignments.length>0){
-
-    <td><p-button severity="warning" label="Asignaciones"></p-button></td>
-  }@else {
-    <td><p-button severity="danger" label=" Sin Asignaciones"></p-button></td>
-  }
+</td>
+@if(employee.assignments.length>0){
+    
+    <td><app-user-assignments [idWorkDay]="workDay.id!" [date]="this.workDay.date.toString()" [idUser]="employee.id" buttonColor="warning" buttonText="Asignaciones"></app-user-assignments></td>
+}@else {
+    <td><app-new-assignment (sendMessage)="showMessage($event)" [idWorkDay]="workDay.id!" [date]="this.workDay.date.toString()" [idUser]="employee.id" buttonColor="danger" buttonText=" Sin Asignaciones"></app-new-assignment></td>
+}
 </tr>
 </ng-template>
-    <ng-template pTemplate="summary"></ng-template>
-    
-
-
-
+<ng-template pTemplate="summary"></ng-template>
 
 </p-table>
+</div>
+
+}
 </div>
