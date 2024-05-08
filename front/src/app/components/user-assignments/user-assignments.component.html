@@ -1,52 +1,81 @@
 <p-toast></p-toast>
-<app-edit-assignment (sendMessage)="showMessage($event)" [visible]="editVisible" [date]="date" (cerrarModal)="editVisible=false" #editar></app-edit-assignment>
+<app-edit-assignment (sendMessage)="showMessage($event)" [visible]="editVisible" [date]="date"
+  (cerrarModal)="editVisible=false" #editar></app-edit-assignment>
 
-<div style=""  class=" card flex justify-content-center">
+<div style="" class=" card flex justify-content-center">
   @if(tipo==0){
-  <p-button  [label]="buttonText" [severity]="buttonColor" [raised]="true" [outlined]="true" (click)="showDialog()" icon="pi pi-list" label="Nueva"></p-button>
+  <p-button [label]="buttonText" [severity]="buttonColor" [raised]="true" [outlined]="true" (click)="showDialog()"
+    icon="pi pi-list" label="Nueva"></p-button>
   }
-  
-  <p-dialog  header="Asignaciones" [(visible)]="visible"  [modal]="true" 
-    [draggable]="false" (onHide)="cerrar();" [resizable]="false">
+
+  <p-dialog header="Asignaciones" [(visible)]="visible" [modal]="true" [draggable]="false" (onHide)="cerrar();"
+    [resizable]="false">
 
 
     <div style="margin-top: 10px;" class="card flex justify-content-center" class="custom-dialog">
-        <div class="flex flex-row gap-4">
-         
-            @if(this.user){
+      <div class="flex flex-row gap-4">
 
-                <div  class="flex flex-column">
-                    <label for="username1">Empleado </label>
-                    <input type="text" disabled="true" pInputText [(ngModel)]="user.firstName+' '+user.lastName" class="w-small"/>
-                    <br>
-                </div>
-            }
-            @if(this.date){
+        @if(this.user){
 
-                <div  class="flex flex-column">
-                    <label for="username1">Fecha </label>
-                    <input type="text" disabled="true" pInputText [(ngModel)]="date" class="w-small"/>
-                    <br>
-                </div>
-            }
-            @if(user){
+        <div class="flex flex-column">
+          <label for="username1">Empleado </label>
+          <input type="text" disabled="true" pInputText [(ngModel)]="user.firstName+' '+user.lastName"
+            class="w-small" />
+          <br>
+        </div>
+        }
+        @if(this.date){
 
-                @for (assignment of user.assignments; track assignment.id) {
-                    
-                    <div style="margin-top: 10px;" class="card flex justify-content-center" class="custom-dialog">
-                        <div style="display: flex;gap: 10px;margin-top: 20px">
-                            <p-button (onClick)="editar.showDialog(assignment)" icon="pi pi-pencil" label="{{assignment.start}} - {{assignment.end}}"></p-button> 
-                            <!-- <app-edit-assignment [visible]="editVisible" (cerrarModal)="editVisible=false" [idWorkDay]="assignment.idWorkDay" [idUser]="assignment.idUser"  [id]="assignment.id!"></app-edit-assignment> -->
-                        </div>
-                    </div>
-                }
-            }
-            </div>
-            <div style="width: 100%; text-align: center;margin-top: 40px;">
-                <div style="width: 30%; margin: 0 auto;">
-                  <app-new-assignment (sendMessage)="showMessage($event)" [idWorkDay]="this.idWorkDay" buttonText=""  buttonColor="success" [idUser]="this.idUser"></app-new-assignment>
+        <div class="flex flex-column">
+          <label for="username1">Fecha </label>
+          <input type="text" disabled="true" pInputText [(ngModel)]="date" class="w-small" />
+          <br>
+        </div>
+        }
+        @if(user){
+
+        @switch (user.assignments![0].type) {
+
+        @case (0) {
+
+
+        @for (assignment of user.assignments; track assignment.id) {
+
+        <div style="margin-top: 10px;" class="card flex justify-content-center" class="custom-dialog">
+          <div style="display: flex;gap: 10px;margin-top: 20px">
+            <p-button (onClick)="editar.showDialog(assignment)" icon="pi pi-pencil"
+              label="{{assignment.start}} - {{assignment.end}}"></p-button>
+          </div>
+        </div>
+        }
+        <div style="width: 100%; text-align: center;margin-top: 40px;">
+          <div style="width: 30%; margin: 0 auto;">
+            <app-new-assignment (sendMessage)="showMessage($event)" [idWorkDay]="this.idWorkDay" buttonText=""
+              buttonColor="success" [idUser]="this.idUser"></app-new-assignment>
+          </div>
+        </div>
+        }
+
+        @case (1) {
+            <div style="margin-top: 10px;" class="card flex justify-content-center" class="custom-dialog">
+                <div style=" width: 70%;margin: 0 auto;">
+                  <p-button severity="success" (onClick)="editar.showDialog(user.assignments![0])" icon="pi pi-pencil"
+                    label="Dia Libre"></p-button>
                 </div>
               </div>
-        </div>
+        }
+        @case (2) {
+            <div style="margin-top: 10px;" class="card flex justify-content-center" class="custom-dialog">
+                <div style="width: 70%; margin: 0 auto;">
+                  <p-button severity="danger" (onClick)="editar.showDialog(user.assignments![0])" icon="pi pi-pencil"
+                    label="Vacaciones"></p-button>
+                </div>
+              </div>
+        }
+
+        }
+        }
+      </div>
+    </div>
   </p-dialog>
 </div>

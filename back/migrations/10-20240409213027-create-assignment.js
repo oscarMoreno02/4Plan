@@ -56,7 +56,12 @@ module.exports = {
         onDelete:'SET NULL'
       },
       cost: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull:true,
+        defaultValue:null
+      },
+      type: {
+        type: Sequelize.INTEGER,
       },
       valuation: {
         type: Sequelize.INTEGER,

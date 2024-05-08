@@ -71,7 +71,6 @@ export class UserAssignmentsComponent {
   editVisible:boolean=false
  public user!: User
   @Input() date!:string
-  newAssignment: Assignment = { idCompany: this.authService.getCompany(), idPosition: 0, cost: 0, valuation: null, idUser: this.idUser, idWorkDay: this.idWorkDay, start: '', end: '' }
   styleValidPosition = ''
   horaInicio = { hora: { valor: '00', numero: 0 }, minuto: { valor: '00', numero: 0 } }
   horaFin = { hora: { valor: '00', numero: 0 }, minuto: { valor: '00', numero: 0 } }
@@ -93,20 +92,13 @@ export class UserAssignmentsComponent {
 
   }
   showDialog() {
-    this.newAssignment = { idCompany: this.authService.getCompany(), idPosition: 0, cost: 0, valuation: null, idUser: this.idUser, idWorkDay: this.idWorkDay, start: '', end: '' }
     this.visible = true;
   }
 
   cerrar(): void {
     this.cerrarModal.emit();
   }
-  parsearDatos(horaInicio:string,horaFin:string){
 
-    this.horaInicio.hora={valor:horaInicio.substring(0,2),numero:parseInt(horaInicio.substring(0,2))}
-    this.horaInicio.minuto={valor:horaInicio.substring(3,5),numero:parseInt(horaInicio.substring(3,5))}
-    this.horaFin.hora={valor:horaFin.substring(0,2),numero:parseInt(horaFin.substring(0,2))}
-    this.horaFin.minuto={valor:horaFin.substring(3,5),numero:parseInt(horaFin.substring(3,5))}
-  }
 showMessage(message:Messsage){
   this.messageService.add(message)
 }

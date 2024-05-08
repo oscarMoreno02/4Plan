@@ -39,6 +39,7 @@ module.exports = (sequelize, DataTypes) => {
     end: DataTypes.TIME,
     idPosition: DataTypes.INTEGER,
     cost: DataTypes.INTEGER,
+    type:DataTypes.INTEGER,
     valuation: DataTypes.INTEGER,
     idWorkDay:DataTypes.INTEGER
   }, {

@@ -44,6 +44,7 @@ import { Messsage } from '../../interfaces/messsage';
 
   ],
   providers: [DialogService, MessageService],
+  encapsulation:ViewEncapsulation.None,
   templateUrl: './new-assignment.component.html',
   styleUrl: './new-assignment.component.css'
 })
@@ -68,8 +69,8 @@ export class NewAssignmentComponent {
   subscription: Subscription = new Subscription;
   positionsList: Array<WorkPosition> = []
   user!: User
-  @Input() date!:string
-  newAssignment: Assignment = { idCompany: this.authService.getCompany(), idPosition: 0, cost: 0, valuation: null, idUser: this.idUser, idWorkDay: this.idWorkDay, start: '', end: '' }
+  @Input() date!: string
+  newAssignment: Assignment = { idCompany: this.authService.getCompany(), idPosition: 0, cost: 0, valuation: null, idUser: this.idUser, idWorkDay: this.idWorkDay, start: '', end: '', type: 0 }
   styleValidPosition = ''
   horaInicio = { hora: { valor: '00', numero: 0 }, minuto: { valor: '00', numero: 0 } }
   horaFin = { hora: { valor: '00', numero: 0 }, minuto: { valor: '00', numero: 0 } }
@@ -77,7 +78,9 @@ export class NewAssignmentComponent {
   minutos = [{ valor: '00', numero: 0 }]
   estiloValidacionHoras = ''
   estiloValidacionMinutos = ''
-  estilosValidacionesDias: string='';
+  estilosValidacionesTipo: string = '';
+  types = [{ text: 'Turno de trabajo', value: 0 }, { text: 'Dia Libre', value: 1 }, { text: 'Vacaciones', value: 2 }]
+  typeSelected = this.types[0]
 
   ngOnInit(): void {
     let listaHoras = []
@@ -106,8 +109,8 @@ export class NewAssignmentComponent {
         this.userService.getUserWithAssignments(this.idUser, this.idWorkDay).subscribe({
           next: (user) => {
             console.log(user)
-            this.user=user
-        
+            this.user = user
+
           }
         })
       }),
@@ -118,7 +121,7 @@ export class NewAssignmentComponent {
 
   }
   showDialog() {
-    this.newAssignment = { idCompany: this.authService.getCompany(), idPosition: 0, cost: 0, valuation: null, idUser: this.idUser, idWorkDay: this.idWorkDay, start: '', end: '' }
+    this.newAssignment = { idCompany: this.authService.getCompany(), idPosition: 0, cost: 0, valuation: null, idUser: this.idUser, idWorkDay: this.idWorkDay, start: '', end: '', type: 0 }
     this.visible = true;
   }
 
@@ -126,94 +129,120 @@ export class NewAssignmentComponent {
     this.cerrarModal.emit();
   }
   crear(confirm: Boolean) {
-       if(confirm){
-         if(this.validarCampos()){
-          this.newAssignment.end = this.horaFin.hora.valor + ':' + this.horaFin.minuto.valor
-          this.newAssignment.start = this.horaInicio.hora.valor + ':' + this.horaInicio.minuto.valor
-          this.newAssignment.idUser=this.user.id
-          this.newAssignment.idWorkDay=this.idWorkDay
-          this.newAssignment.idPosition=this.newAssignment.position!.id!
+    if (confirm) {
+
+      if (this.validarCampos()) {
+        this.newAssignment.idUser = this.user.id
+        this.newAssignment.idWorkDay = this.idWorkDay
+        this.newAssignment.type=this.typeSelected.value
           // this.newAssignment.cost=0
           // this.newAssignment.valuation=null
-          if (this.comprobarCompatibilidad()) {
-
-             this.sendMessage.emit({ severity: 'info', summary: 'Crear Asignación', detail: 'En curso', life: 3000 });
-            this.assignmentService.insertAssignment(this.newAssignment).subscribe({
-           next: (u:any) => {
-            console.log(this.newAssignment)
-                 setTimeout(() => {
-                    this.sendMessage.emit({ severity: 'success', summary: 'Crear Asignación', detail: 'Completado', life: 3000 });
-                   setTimeout(() => {
-                      window.location.reload()
-                 }, 1000); 
-               }, 2000); 
-
-           },
-           error: (err) => {
-
-             this.sendMessage.emit({ severity:'error', summary: 'Crear Asignación', detail: 'Cancelado', life: 3000 });
-           }
-         })
+        if (this.typeSelected.value == 0) {
+          this.newAssignment.end = this.horaFin.hora.valor + ':' + this.horaFin.minuto.valor
+          this.newAssignment.start = this.horaInicio.hora.valor + ':' + this.horaInicio.minuto.valor
+          this.newAssignment.idPosition = this.newAssignment.position!.id!
         }else{
+          this.newAssignment.start = '00:00'
+          this.newAssignment.end = '00:00'
+          this.newAssignment.idPosition = null
+        }
+        if (this.comprobarCompatibilidad()) {
+
+          this.sendMessage.emit({ severity: 'info', summary: 'Crear Asignación', detail: 'En curso', life: 3000 });
+          this.assignmentService.insertAssignment(this.newAssignment).subscribe({
+            next: (u: any) => {
+              console.log(this.newAssignment)
+              setTimeout(() => {
+                this.sendMessage.emit({ severity: 'success', summary: 'Crear Asignación', detail: 'Completado', life: 3000 });
+                setTimeout(() => {
+                  window.location.reload()
+                }, 1000);
+              }, 2000);
+
+            },
+            error: (err) => {
+
+              this.sendMessage.emit({ severity: 'error', summary: 'Crear Asignación', detail: 'Cancelado', life: 3000 });
+            }
+          })
+        } else {
           this.sendMessage.emit({ severity: 'warn', summary: 'Crear Asignación', detail: 'Asignación incompatible con las existentes', life: 3000 });
 
         }
       }
-        
-      }
+
+    }
   }
   validarCampos(): Boolean {
-        let valido = true
-       if(!this.newAssignment.position){
-         this.styleValidPosition='ng-invalid ng-dirty'
-         valido=false
+    let valido = true
+
+    if (this.typeSelected == null) {
+      valido = false
+      this.sendMessage.emit({ severity: 'warn', summary: 'Crear  Asignación', detail: 'Debe seleccionar un tipo de asignación', life: 3000 });
+      this.estilosValidacionesTipo = 'ng-invalid ng-dirty'
+    } else {
+      this.estilosValidacionesTipo = ''
+      if (this.typeSelected.value == 0) {
+        if (!this.newAssignment.position) {
+          this.styleValidPosition = 'ng-invalid ng-dirty'
+          valido = false
           this.sendMessage.emit({ severity: 'warn', summary: 'Crear Asignación', detail: 'Posicion de trabajo no especificada', life: 3000 });
-       }else{
-        if (this.horaInicio.hora == null || this.horaFin.hora == null) {
-          this.estiloValidacionHoras = 'ng-invalid ng-dirty'
-          valido = false
-           this.sendMessage.emit({ severity: 'warn', summary: 'Crear Franja', detail: 'Horas introdudas incorrectamente', life: 3000 });
-        }
-        if (this.horaInicio.minuto == null || this.horaFin.minuto == null) {
-          this.estiloValidacionHoras = 'ng-invalid ng-dirty'
-          valido = false
-           this.sendMessage.emit({ severity: 'warn', summary: 'Crear Franja', detail: 'Minutos introducidos incorrectamente', life: 3000 });
-        }
-        if (this.horaInicio.hora.numero > this.horaFin.hora.numero) {
-          this.estiloValidacionHoras = 'ng-invalid ng-dirty'
-          valido = false
-           this.sendMessage.emit({ severity: 'warn', summary: 'Crear Franja', detail: 'Horas introdudas incorrectamente', life: 3000 });
         } else {
-          if (this.horaInicio.hora.numero == this.horaFin.hora.numero && this.horaInicio.minuto.numero > this.horaFin.minuto.numero) {
-            this.estiloValidacionMinutos = 'ng-invalid ng-dirty'
+          if (this.horaInicio.hora == null || this.horaFin.hora == null) {
+            this.estiloValidacionHoras = 'ng-invalid ng-dirty'
             valido = false
-             this.sendMessage.emit({ severity: 'warn', summary: 'Crear Franja', detail: 'Minutos introdudos incorrectamente', life: 3000 });
+            this.sendMessage.emit({ severity: 'warn', summary: 'Crear  Asignación', detail: 'Horas introdudas incorrectamente', life: 3000 });
+          }
+          if (this.horaInicio.minuto == null || this.horaFin.minuto == null) {
+            this.estiloValidacionHoras = 'ng-invalid ng-dirty'
+            valido = false
+            this.sendMessage.emit({ severity: 'warn', summary: 'Crear  Asignación', detail: 'Minutos introducidos incorrectamente', life: 3000 });
+          }
+          if (this.horaInicio.hora.numero > this.horaFin.hora.numero) {
+            this.estiloValidacionHoras = 'ng-invalid ng-dirty'
+            valido = false
+            this.sendMessage.emit({ severity: 'warn', summary: 'Crear  Asignación', detail: 'Horas introdudas incorrectamente', life: 3000 });
           } else {
-            if (this.horaInicio.hora.numero == this.horaFin.hora.numero && this.horaInicio.minuto.numero == this.horaFin.minuto.numero) {
+            if (this.horaInicio.hora.numero == this.horaFin.hora.numero && this.horaInicio.minuto.numero > this.horaFin.minuto.numero) {
               this.estiloValidacionMinutos = 'ng-invalid ng-dirty'
               valido = false
-               this.sendMessage.emit({ severity: 'warn', summary: 'Crear Franja', detail: 'Minutos introdudos incorrectamente', life: 3000 });
+              this.sendMessage.emit({ severity: 'warn', summary: 'Crear  Asignación', detail: 'Minutos introdudos incorrectamente', life: 3000 });
             } else {
-              this.estiloValidacionMinutos = ''
-              this.estiloValidacionHoras = ''
+              if (this.horaInicio.hora.numero == this.horaFin.hora.numero && this.horaInicio.minuto.numero == this.horaFin.minuto.numero) {
+                this.estiloValidacionMinutos = 'ng-invalid ng-dirty'
+                valido = false
+                this.sendMessage.emit({ severity: 'warn', summary: 'Crear  Asignación', detail: 'Minutos introdudos incorrectamente', life: 3000 });
+              } else {
+                this.estiloValidacionMinutos = ''
+                this.estiloValidacionHoras = ''
+              }
             }
+          }
         }
-      } 
+      }
     }
+
     return valido
   }
   comprobarCompatibilidad(): boolean {
     let valido = true;
-    if(this.user.assignments){
+    if (this.user.assignments) {
+      if(this.newAssignment.type!=0){
+        return false
+      }
+
       for (const assignment of this.user.assignments) {
         if ((this.newAssignment.start >= assignment.start && this.newAssignment.start < assignment.end) ||
-        (this.newAssignment.end > assignment.start && this.newAssignment.end <= assignment.end) ||
-        (this.newAssignment.start <= assignment.start && this.newAssignment.end >= assignment.end)) {
+          (this.newAssignment.end > assignment.start && this.newAssignment.end <= assignment.end) ||
+          (this.newAssignment.start <= assignment.start && this.newAssignment.end >= assignment.end)||
+          assignment.type!=0
+          ) {
           valido = false;
           break;
         }
+       
       }
     }
     return valido;
-}
+  }
 }

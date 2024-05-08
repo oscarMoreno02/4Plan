@@ -1,0 +1,8 @@
+.p-dialog-content {
+    background-color: rgb(250, 246, 246);
+    box-shadow: 0 0 5px 1px rgba(112, 103, 103, );
+    background-repeat: no-repeat;
+    background-size: 100vw 600vh;
+    max-width: 100%;
+    max-height: 80vh;
+  }

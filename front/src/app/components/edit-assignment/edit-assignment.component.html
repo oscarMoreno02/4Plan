@@ -2,7 +2,7 @@
 <div style=""  class=" card flex justify-content-center">
  
   
-  <p-dialog  header="Editar Assignacion" [(visible)]="visible"  [modal]="true" 
+  <p-dialog  header="Editar Asignación" [(visible)]="visible"  [modal]="true" 
     [draggable]="false" (onHide)="cerrar();" [resizable]="false">
 
 
@@ -25,6 +25,15 @@
                     <br>
                 </div>
             }
+            <div class="flex flex-column subcategoria-seleccionada">
+                <label for="username2">Tipo</label>
+                <p-dropdown  class="{{styleValidPosition}}" [options]="types" [(ngModel)]="typeSelected" optionLabel="text" [showClear]="true" placeholder="Seleccionar"></p-dropdown>
+                <small id="username-help2">Indíca el tipo de asignación</small>
+
+            </div>
+            @if(this.typeSelected.value==0){
+
+                
                 <div style="margin-top: 10px;" class="card flex justify-content-center" class="custom-dialog">
                  
             
@@ -57,7 +66,8 @@
                     <small id="username-help2">Indíca la posicion de trabajo</small>
 
                 </div>
-            
+            }
+                
             </div>
         </div>
         <div style="margin-top: 150px;display: flex;gap: 10px;" >

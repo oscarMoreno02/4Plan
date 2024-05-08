@@ -6,9 +6,10 @@ export interface Assignment {
     idUser:     number;
     start:      string;
     end:        string;
-    idPosition: number;
+    idPosition: number |null;
     cost:       number;
     valuation:  number | null;
     idWorkDay:  number;
-    position?: WorkPosition
+    position?: WorkPosition ,
+    type:number
 }
