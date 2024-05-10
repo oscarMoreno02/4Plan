@@ -7,3 +7,50 @@
     box-sizing: border-box; 
     padding: 20px;
 }
+
+.bg-green {
+    color: #000;
+    background: #2ebe35;
+  }
+
+  .bg-orange {
+    color: #000;
+    background: #e5ab19;
+  }
+
+  .p-button.buttonSelected {
+    background-color: #1e1138;
+    max-width: 30%;
+    max-height:50px;
+    font-size: 10px;
+  }
+  .p-button.regularButton {
+    background-color: #573b8a;
+    max-width: 30%;
+    max-height:50px;
+    font-size: 10px;
+  }
+
+  span.disabled {
+    opacity: 0.5; 
+    cursor: not-allowed; 
+}
+
+span.regular{
+    color: black;
+}
+
+.p-datepicker:not(.p-disabled) table td span:not(.p-highlight):not(.p-disabled):hover {
+    background-color: #6d44b8;
+    
+  }
+  .p-datepicker td > span:hover {
+    background-color: none;
+  }
+
+  .date-published{
+    opacity: 0.8; 
+    color: black;
+    pointer-events: none;
+    background: #2ebe35;
+}

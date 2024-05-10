@@ -38,7 +38,22 @@ const listWorkDayOfCompanyByDate= (req, res = response) => {
             res.status(404).json()
         })
 }
+const listWorkDayOfCompanyOfMonth= (req, res = response) => {
+    const conexion = new Conexion()
 
+    const date = new Date(req.params.date);
+    const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+    const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0); 
+
+    conexion.getWorkDayOfCompanyBetweenDates(req.params.id,firstDay,lastDay)
+        .then(data => {
+            res.status(200).json( data)
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(404).json()
+        })
+}
 const listWorkDay= (req, res = response) => {
     const conexion = new Conexion()
     conexion.getWorkDayById(req.params.id)
@@ -88,8 +103,27 @@ const removeWorkDay= (req, res = response) => {
       
             res.status(203).json('Error en la eliminacion')
         })
-}
 
+    
+}
+const publish= (req, res = response)=>{
+    const conexion = new Conexion()
+
+    let list=req.body
+    for (const day of list){
+        day.published=true
+    }
+    conexion.updateListWorkDay(list)
+    .then(data => {
+        res.status(202).json('Actualizado correctamente')
+
+
+    })
+    .catch(err => {
+        res.status(203).json('Error al actualizar')
+    });
+
+}
 
 module.exports={
    removeWorkDay,
@@ -98,5 +132,7 @@ module.exports={
    listAllWorkDays,
    listWorkDay,
    listAllWorkDaysOfCompany,
-   listWorkDayOfCompanyByDate
+   listWorkDayOfCompanyByDate,
+   listWorkDayOfCompanyOfMonth,
+   publish
 }

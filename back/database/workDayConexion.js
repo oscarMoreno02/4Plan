@@ -7,87 +7,118 @@ const {
     where
 } = require('sequelize');
 const models = require('../models/index.js');
-const Conexion =require('./connection.js')
+const Conexion = require('./connection.js')
 
-class WorkDayConexion{
+class WorkDayConexion {
     constructor() {
- 
-        this.con= new Conexion()
+
+        this.con = new Conexion()
     }
-   
+
 
     getAllWorkDays = async () => {
-        try{
+        try {
             let resultado = [];
             this.con.conectar();
-            
+
             resultado = await models.WorkDay.findAll();
             return resultado;
-        }catch(error){
-          throw error
-        }finally{
+        } catch (error) {
+            throw error
+        } finally {
             // this.con.desconectar();
             this.con.desconectar()
         }
     }
     getAllWorkDaysOfCompany = async (id) => {
-        try{
+        try {
             let resultado = [];
             this.con.conectar();
-            
-            resultado = await models.WorkDay.findAll({where:{idCompany:id},
+
+            resultado = await models.WorkDay.findAll({
+                where: {
+                    idCompany: id
+                },
                 include: [{
                     model: models.Assignment,
                     as: 'dayAssignments',
                 }, ]
             });
             return resultado;
-        }catch(error){
-          throw error
-        }finally{
+        } catch (error) {
+            throw error
+        } finally {
             // this.con.desconectar();
             this.con.desconectar()
         }
     }
-    getWorkDayOfCompanyByDate = async (id,date) => {
-        try{
+    getWorkDayOfCompanyByDate = async (id, date) => {
+        try {
             let resultado = [];
             this.con.conectar();
-            
-            resultado = await models.WorkDay.findOne({where:{idCompany:id,date:date},
+
+            resultado = await models.WorkDay.findOne({
+                where: {
+                    idCompany: id,
+                    date: date
+                },
                 include: [{
                     model: models.Assignment,
                     as: 'dayAssignments',
                 }, ]
             });
             return resultado;
-        }catch(error){
-          throw error
-        }finally{
+        } catch (error) {
+            throw error
+        } finally {
+            // this.con.desconectar();
+            this.con.desconectar()
+        }
+    }
+    getWorkDayOfCompanyBetweenDates = async (id, first,last) => {
+        try {
+            let resultado = [];
+            this.con.conectar();
+
+            resultado = await models.WorkDay.findAll({
+                where: {
+                    idCompany: id,
+                    date:  {[Op.between]: [first, last]}
+                },
+                include: [{
+                    model: models.Assignment,
+                    as: 'dayAssignments',
+                }, ]
+            });
+            return resultado;
+        } catch (error) {
+            throw error
+        } finally {
             // this.con.desconectar();
             this.con.desconectar()
         }
     }
     getWorkDayById = async (id) => {
-        try{
+        try {
             let resultado = [];
             this.con.conectar();
-            resultado = await models.WorkDay.findByPk(id,{  include: [{
-                model: models.Assignment,
-                as: 'dayAssignments',
-            }, ]});
+            resultado = await models.WorkDay.findByPk(id, {
+                include: [{
+                    model: models.Assignment,
+                    as: 'dayAssignments',
+                }, ]
+            });
             if (!resultado) {
                 throw new Error('error');
             }
             return resultado;
-        }catch(error){
+        } catch (error) {
             throw error
-        }
-        finally{
+        } finally {
             this.con.desconectar()
         }
     }
-   
+
     insertWorkDay = async (body) => {
         let resultado = 0;
         this.con.conectar();
@@ -103,7 +134,7 @@ class WorkDayConexion{
     }
 
     deleteWorkDay = async (id) => {
-        try{
+        try {
             this.con.conectar();
             let resultado = await models.WorkDay.findByPk(id);
             if (!resultado) {
@@ -111,26 +142,42 @@ class WorkDayConexion{
             }
             await resultado.destroy();
             return resultado;
-        }catch(error){
+        } catch (error) {
             throw error
-        }finally{
+        } finally {
             this.con.desconectar()
         }
     }
-    updateFullWorkDay= async (id,body) => {
-        try{
+    updateFullWorkDay = async (id, body) => {
+        try {
             let resultado = 0
             this.con.conectar();
             let WorkDay = await models.WorkDay.findByPk(id);
             await WorkDay.update(body)
             return resultado
-        }catch(error){
+        } catch (error) {
             throw error
-        }finally{
+        } finally {
             this.con.desconectar()
         }
     }
-   
+
+    updateListWorkDay = async (list) => {
+        try {
+            let resultado = 0
+            this.con.conectar();
+            for(const day of list){
+                let WorkDay = await models.WorkDay.findByPk(day.id);
+                await WorkDay.update(day)
+            }
+            return resultado
+        } catch (error) {
+            throw error
+        } finally {
+            this.con.desconectar()
+        }
+    }
+
 }
 
 module.exports = WorkDayConexion;

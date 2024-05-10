@@ -18,6 +18,13 @@ export class WorkDayService {
       })
     )
   }
+  getDayOfCompanyOfMonth(idCompany:number,date:string): Observable<any>{
+    return this.http.get<any>(this.baseUrl+'/company/'+idCompany+'/month/'+date).pipe(
+      catchError((error) =>{
+        return of(undefined)
+      })
+    )
+  }
   getAllDays(): Observable<any | undefined> {
     return this.http.get<any>(this.baseUrl).pipe(
       catchError((error) =>{
@@ -61,4 +68,12 @@ export class WorkDayService {
       })
      )
    }
+
+   publishWorkDays(workdays:Array<WorkDay>): Observable<any | undefined> {
+    return this.http.put<any>(this.baseUrl+'/publish',workdays,{params: {auth: true}}).pipe(
+     catchError((error) =>{
+       return of(undefined)
+     })
+    )
+  }
 }

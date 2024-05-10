@@ -1,14 +1,99 @@
 <app-cabecera></app-cabecera>
 <div class="card">
   <div class="" style="display: flex; justify-content: center; align-items: center;margin-top: 50px;">
-    <p-calendar (onSelect)="checkDay()" id="calendar" class="max-w-full" [showWeek]="false" [(ngModel)]="date"
+    <p-calendar (onMonthChange)="monthChange($event)" 
+    (onSelect)="checkDay($event)" (onInput)="mostrar($event)" id="calendar" class="max-w-full"
+      [showWeek]="false" 
+      [(ngModel)]="multipleDates" [selectionMode]="selectedButton == 2 ? 'multiple' : 'single'" 
       [inline]="true" [showWeek]="false">
-      <ng-template pTemplate="header">Selecciona un dia</ng-template>
+      <ng-template pTemplate="header">
+
+        <div style="display: flex; justify-content: center; gap: 20px;">
+
+          <button pripple="" class="p-ripple p-element p-button p-component" type="button"
+          [ngClass]="{'buttonSelected': selectedButton == 1, 'regularButton': selectedButton != 1}"
+          (click)="changeButtonSelected(1)">
+          <span class="p-button-label">Días de trabajo</span>
+        </button>
+        
+        <button pripple="" class="p-ripple p-element p-button p-component" type="button"
+          [ngClass]="{'buttonSelected': selectedButton == 2, 'regularButton': selectedButton != 2}"
+          (click)="changeButtonSelected(2)">
+          <span class="p-button-label">Publicaciones</span>
+        </button>
+        
+        <button pripple="" class="p-ripple p-element p-button p-component" type="button"
+        [ngClass]="{'buttonSelected': selectedButton == 3, 'regularButton': selectedButton != 3}"
+        (click)="changeButtonSelected(3)">
+        <span class="p-button-label">Valoraciones</span>
+      </button>
+    </div>
+      
+
+      </ng-template>
+      
+      <ng-template pTemplate="date" let-date>
+           @if(this.selectedButton==1){
+             @if( date.month==(this.month-1)){
+               @if(this.createdDays.includes(date.day)){
+
+                 
+                 <span disabled class="bg-personal-green">
+                   {{date.day}}
+                  </span>
+                }@else {
+                <span disabled class="regular">
+                  {{date.day}}
+                </span>
+              }
+          }@else {
+            <span class="bg-personal-disabled" [ngStyle]="{textDecoration: 'inherit'}">
+              {{date.day}}
+            </span>
+          }
+          }
+            @if(this.selectedButton==2){
+              @if( date.month==(this.month-1)){
+                @if(this.createdDays.includes(date.day)){
+
+                  @if(this.publishedDays.includes(date.day)){
+
+                    <span disabled class="bg-personal-green personal-pointer-none">
+                      {{date.day}}
+                    </span>
+                  }@else {
+                    <span disabled class="bg-personal-orange">
+                      {{date.day}}
+                    </span>
+                  }
+                  
+                }@else {
+                  <span disabled class="regular">
+                    {{date.day}}
+                  </span>
+                }
+            }@else {
+              <span class="bg-personal-disabled" [ngStyle]="{textDecoration: 'inherit'}">
+                {{date.day}}
+              </span>
+            }
+            }
+          </ng-template>
+          <ng-template pTemplate="footer">
+
+            @if(this.selectedButton==2){
+              <div style="margin: 0 auto; text-align: center;">
+                <p-button (onClick)="checkMultipleSelectedDays(confirmPublish)" label="Publicar"></p-button>
+              </div>
+            }
+          
+    
+          </ng-template>
     </p-calendar>
   </div>
 </div>
 
-<p-dialog header="No se encontro el registro" [(visible)]="visible" [modal]="true" [draggable]="false"
+<p-dialog header="No se encontro el registro" (onHide)="cancelar()" [(visible)]="visible" [modal]="true" [draggable]="false"
   [resizable]="false">
   No se ha encontrado ningún registro para el dia seleccionado <br><br>¿Deseas crear un nuevo registro?
 
@@ -17,4 +102,19 @@
     <p-button severity="success" label="Crear" (onClick)="crear()"></p-button>
 
   </div>
+
+
+  
 </p-dialog>
+<p-dialog header="No se ha seleccionado ningun dia" (onHide)="visibleAlertPublishFalse=false" [(visible)]="visibleAlertPublishFalse" [modal]="true" [draggable]="false"
+  [resizable]="false">
+  Debe seleccionar al menos un dia de trabajo para publicar <br><br>
+
+  <div style="margin-top: 40px; display: flex;gap: 10px;">
+    <p-button severity="warning" (onClick)="visibleAlertPublishFalse=false" label="Aceptar"></p-button>
+  </div>
+
+
+  
+</p-dialog>
+<app-confirm #confirmPublish [mode]="2" tipo="Publicar" (confirmacion)="publishDaysSelected($event)" icono="calendar" mensaje="¿Deseas publicar las asignaciones de estos dias de trabajo?" color="success"></app-confirm>

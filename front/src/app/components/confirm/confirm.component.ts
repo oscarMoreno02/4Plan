@@ -19,6 +19,7 @@ export class ConfirmComponent implements OnInit {
  @Input() mensaje=''
  mensajeLbl=this.mensaje
  @Input() icono=''
+ @Input() mode=1
  iconoFinal='pi pi-'
  ngOnInit(): void {
 
