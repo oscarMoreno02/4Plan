@@ -226,12 +226,14 @@ export class NewAssignmentComponent {
   }
   comprobarCompatibilidad(): boolean {
     let valido = true;
-    if (this.user.assignments) {
+    if (this.user.assignments!.length>0) {
+      
+      console.log(this.user.assignments)
       if(this.newAssignment.type!=0){
         return false
       }
 
-      for (const assignment of this.user.assignments) {
+      for (const assignment of this.user.assignments!) {
         if ((this.newAssignment.start >= assignment.start && this.newAssignment.start < assignment.end) ||
           (this.newAssignment.end > assignment.start && this.newAssignment.end <= assignment.end) ||
           (this.newAssignment.start <= assignment.start && this.newAssignment.end >= assignment.end)||

@@ -177,7 +177,7 @@ export class ShiftWorkdaysListComponent {
   changeButtonSelected(button: number) {
     this.multipleDates=[]
     this.date=new Date()
-    if (button !== this.selectedButton) {
+   
       this.buttonPublish=false
         if (button === 2) {
             if (this.date) {
@@ -188,7 +188,7 @@ export class ShiftWorkdaysListComponent {
         }
         this.selectedButton = button;
         this.updateMonthData(this.lastDate);
-    }
+    
 }
   changeColor(){
 
