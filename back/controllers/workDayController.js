@@ -3,7 +3,7 @@ const {
     request
 } = require('express');
 const Conexion = require('../database/workDayConexion');
-
+const ConexionTimeZone = require('../database/timeZoneConexion');
 
 const listAllWorkDays= (req, res = response) => {
     const conexion = new Conexion()
@@ -29,8 +29,12 @@ const listAllWorkDaysOfCompany= (req, res = response) => {
 }
 const listWorkDayOfCompanyByDate= (req, res = response) => {
     const conexion = new Conexion()
+    const conexionTimeZone=new ConexionTimeZone()
     conexion.getWorkDayOfCompanyByDate(req.params.id,req.params.date)
         .then(data => {
+            
+            console.log(data)
+
             res.status(200).json( data)
         })
         .catch(err => {

@@ -1,8 +1,9 @@
 <app-cabecera></app-cabecera>
+<app-list-work-day-rates #ratesModal [userList]="userListWithAssignments" (cerrarModal)="modalListRatesVisible=false" (cerrarModal)="this.updateMonthData(this.date.getFullYear()+'-'+(this.date.getMonth()+1))" [visible]="modalListRatesVisible"></app-list-work-day-rates>
 <div class="card">
   <div class="" style="display: flex; justify-content: center; align-items: center;margin-top: 50px;">
     <p-calendar (onMonthChange)="monthChange($event)" 
-    (onSelect)="checkDay($event)" (onInput)="mostrar($event)" id="calendar" class="max-w-full"
+    (onSelect)="checkDay($event,ratesModal)"  id="calendar" class="max-w-full"
       [showWeek]="false" 
       [(ngModel)]="multipleDates" [selectionMode]="selectedButton == 2 ? 'multiple' : 'single'" 
       [inline]="true" [showWeek]="false">
@@ -25,8 +26,13 @@
         <button pripple="" class="p-ripple p-element p-button p-component" type="button"
         [ngClass]="{'buttonSelected': selectedButton == 3, 'regularButton': selectedButton != 3}"
         (click)="changeButtonSelected(3)">
-        <span class="p-button-label">Valoraciones</span>
+        <span class="p-button-label">Rendimiento</span>
       </button>
+      <button pripple="" class="p-ripple p-element p-button p-component" type="button"
+      [ngClass]="{'buttonSelected': selectedButton == 4, 'regularButton': selectedButton != 4}"
+      (click)="changeButtonSelected(4)">
+      <span class="p-button-label">Volumen</span>
+    </button>
     </div>
       
 
@@ -38,11 +44,11 @@
                @if(this.createdDays.includes(date.day)){
 
                  
-                 <span disabled class="bg-personal-green">
+                 <span  class="bg-personal-green">
                    {{date.day}}
                   </span>
                 }@else {
-                <span disabled class="regular">
+                <span  class="regular">
                   {{date.day}}
                 </span>
               }
@@ -58,17 +64,17 @@
 
                   @if(this.publishedDays.includes(date.day)){
 
-                    <span disabled class="bg-personal-green personal-pointer-none">
+                    <span  class="bg-personal-green personal-pointer-none">
                       {{date.day}}
                     </span>
                   }@else {
-                    <span disabled class="bg-personal-orange">
+                    <span  class="bg-personal-orange">
                       {{date.day}}
                     </span>
                   }
                   
                 }@else {
-                  <span disabled class="regular">
+                  <span  class="regular">
                     {{date.day}}
                   </span>
                 }
@@ -78,6 +84,40 @@
               </span>
             }
             }
+            @if(this.selectedButton==3){
+              @if( date.month==(this.month-1)){
+                @if(this.createdDays.includes(date.day) && this.daysBeforeToday.includes(date.day)){
+
+                  @if(this.daysAllRatesInserted.includes(date.day)){
+                    @if(this.daysHighRate.includes(date.day)){
+
+                      <span  class="bg-personal-green">
+                        {{date.day}}
+                      </span>
+                    }@else {
+                      <span  class="bg-personal-red">
+                        {{date.day}}
+                      </span>
+                    }
+                  }@else {
+                    <span  class="bg-personal-orange">
+                      {{date.day}}
+                    </span>
+                  }
+                  
+                }@else {
+                  <span class="bg-personal-disabled" [ngStyle]="{textDecoration: 'inherit'}">
+                    {{date.day}}
+                  </span>
+                }
+            }@else {
+              <span class="bg-personal-disabled" [ngStyle]="{textDecoration: 'inherit'}">
+                {{date.day}}
+              </span>
+            }
+            }
+
+
           </ng-template>
           <ng-template pTemplate="footer">
 

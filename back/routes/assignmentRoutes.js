@@ -3,6 +3,7 @@ const {Router} = require('express');
 const router = Router();
 const controller=require('../controllers/assignmentController')
 
+    router.get('/workday/:id',controller.listAllAssignmentsOfWorkDay)
     router.get('/:id',controller.listAssignment)
     router.get('/',controller.listAllAssignments)
     router.delete('/:id',controller.removeAssignment)

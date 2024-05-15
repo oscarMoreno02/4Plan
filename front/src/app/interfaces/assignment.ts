@@ -11,5 +11,7 @@ export interface Assignment {
     valuation:  number | null;
     idWorkDay:  number;
     position?: WorkPosition ,
-    type:number
+    type:number,
+    createdAt?:string,
+    updatedAt?:string,
 }

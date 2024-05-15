@@ -110,7 +110,30 @@ class UserConexion{
             this.con.desconectar();
         }
     }
-
+    getUsersWithAssignmentsRequired = async (date) => {
+        try{
+            let resultado = [];
+            this.con.conectar();
+            resultado = await models.User.findAll({
+                
+                attributes: ['id','firstName','lastName','email','access','salary','hiredHours','idCompany'],
+                include: [{
+                    model: models.Assignment,
+                    as: 'assignments',
+                    where:{idWorkDay:date,type:1},
+                    include: [{
+                        model: models.WorkPosition,
+                        as: 'position',
+                    } ]
+                } ]
+            });
+            return resultado;
+        }catch(error){
+          throw error
+        }finally{
+            this.con.desconectar();
+        }
+    }
     getUser = async (id) => {
         try{
             let resultado = [];

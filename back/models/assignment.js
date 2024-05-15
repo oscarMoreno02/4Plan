@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       );
       this.belongsTo(models.User, {
         foreignKey: 'idUser',
-        as: 'assignedTo'
+        as: 'user'
       },
       );
       this.belongsTo(models.WorkDay, {

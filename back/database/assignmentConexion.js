@@ -30,6 +30,28 @@ class AssignmentConexion{
             this.con.desconectar()
         }
     }
+    getAllAssignmentsOfWorkday = async (id) => {
+        try{
+            let resultado = [];
+            this.con.conectar();
+            
+            resultado = await models.Assignment.findAll({where:{idWorkDay:id},
+                include:[{
+                    attributes: ['id','firstName','lastName','email','access','salary','hiredHours','idCompany'],
+                    model: models.User,
+                    as: 'user',
+                    
+                }]
+
+            });
+            return resultado;
+        }catch(error){
+          throw error
+        }finally{
+            // this.con.desconectar();
+            this.con.desconectar()
+        }
+    }
     getAssignmentById = async (id) => {
         try{
             let resultado = [];

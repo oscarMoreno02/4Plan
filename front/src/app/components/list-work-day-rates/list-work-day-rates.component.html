@@ -1,0 +1,40 @@
+<p-dialog  header="Valoraciones" (onHide)="cerrar()" [resizable]="false" [modal]="true" [draggable]="false" [(visible)]="visible"  >
+    <div class="card">
+        <p-accordion>
+            @if(userList.length>0){
+
+                @for (user of userList; track user.id) {
+                    
+                <p-accordionTab header="{{user.firstName}} {{user.lastName}}">
+              <p-table [value]="user.assignments!">
+                <ng-template pTemplate="header">
+                    <tr>
+                    <th>Inicio</th>
+                    <th>Fin</th>
+                    <th>Posicion</th>
+                    <th>Rendimiento</th>
+                </tr>
+            </ng-template>
+                <ng-template pTemplate="body" let-assignment>
+                  <tr>
+                      <td>{{ assignment.start }}</td>
+                    <td>{{ assignment.end }}</td>
+                    <td>{{ assignment.position?.name }}</td>
+                    <td><app-rate-user-assingment [assignment]="assignment"></app-rate-user-assingment></td>
+                 
+                </tr>
+            </ng-template>
+        </p-table>
+        <ul>
+            <li>Nº Asignaciones : {{user.assignments!.length}} </li>
+            <li>Horas Totales : {{' '}}{{totalHoursWorked(user.assignments!)}}h.  </li>
+        </ul>
+    </p-accordionTab>
+}
+}@else {
+    <p-accordionTab [disabled]="true" header="Sin asignaciones"></p-accordionTab>
+}
+          </p-accordion>
+
+        </div>
+</p-dialog>

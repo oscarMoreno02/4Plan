@@ -48,6 +48,25 @@ class TimeZoneConexion{
             this.con.desconectar()
         }
     }
+    getAllTimeZonesOfCompanyByDayOfWeek= async (id,day) => {
+        try{
+            let resultado = [];
+            this.con.conectar();
+            
+            resultado = await models.TimeZone.findAll({where:{idCompany:id},
+                   include: [{
+                model: models.DayTimeZone,
+                as: 'days',
+                where:{number:day}
+            }, ]});
+            return resultado;
+        }catch(error){
+          throw error
+        }finally{
+            // this.con.desconectar();
+            this.con.desconectar()
+        }
+    }
     getTimeZoneById = async (id) => {
         try{
             let resultado = [];
