@@ -216,19 +216,20 @@ export class ShiftWorkdaysListComponent {
 
 
   changeButtonSelected(button: number) {
-    this.multipleDates = []
-    this.date = new Date()
+ 
 
     this.buttonPublish = false
-    if (button === 2) {
-      if (this.date) {
-        this.multipleDates = [];
-      } else {
-        this.multipleDates = [];
-      }
+    if (button === 2 && this.multipleDates instanceof Date) {
+      let auxiliar=this.multipleDates
+      console.log('Es multiple')
+     this.multipleDates= new Array
+      this.multipleDates.push(auxiliar)
     }
-    this.selectedButton = button;
-    this.updateMonthData(this.lastDate);
+    setTimeout(()=>{
+      this.selectedButton = button;
+      this.updateMonthData(this.lastDate);
+    },1)
+   
 
   }
   changeColor() {
@@ -332,8 +333,7 @@ export class ShiftWorkdaysListComponent {
   checkAllRatesInserted(day: WorkDay): boolean {
     if (day.dayAssignments) {
       for (const assignment of day.dayAssignments) {
-        if(assignment.type==1){
-
+        if(assignment.type==0){
           if (assignment.valuation== null || assignment.valuation==0) {
             console.log('llega')
             return false
@@ -349,7 +349,7 @@ export class ShiftWorkdaysListComponent {
       let sum = 0
       let validAssignments=0
       for (const assignment of day.dayAssignments) {
-        if(assignment.type==1){
+        if(assignment.type==0){
           validAssignments++
           if (assignment.valuation != null && assignment.valuation>0 ) {
             sum += assignment.valuation
@@ -362,6 +362,7 @@ export class ShiftWorkdaysListComponent {
     }
     return true
   }
+  
 }
 
 

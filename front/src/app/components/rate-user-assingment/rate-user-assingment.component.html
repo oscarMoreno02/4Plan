@@ -3,9 +3,9 @@
 <div style=""  class=" card flex justify-content-center">
   @if(assignment.valuation==null || assignment.valuation==0){
 
-  <p-button  label="Añadir" severity="danger" [raised]="true" [outlined]="true" (click)="showDialog()" icon="pi pi-plus" label="Nueva"></p-button>
+  <p-button  severity="warning" [raised]="true" [outlined]="true" (click)="showDialog()" icon="pi pi-plus" label="Añadir"></p-button>
   }@else {
-    <p-button  label="{{assignment.valuation}}" severity="success" [raised]="true" [outlined]="true" (click)="showDialog()" icon="pi pi-pencil" label="Nueva"></p-button>
+    <p-button  label="{{assignment.valuation}}"[severity]="assignment.valuation>=50 ? 'success' : 'danger'" [raised]="true" [outlined]="true" (click)="showDialog()" icon="pi pi-pencil" label="Nueva"></p-button>
 
   }
   

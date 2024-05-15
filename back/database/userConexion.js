@@ -120,7 +120,7 @@ class UserConexion{
                 include: [{
                     model: models.Assignment,
                     as: 'assignments',
-                    where:{idWorkDay:date,type:1},
+                    where:{idWorkDay:date,type:0},
                     include: [{
                         model: models.WorkPosition,
                         as: 'position',

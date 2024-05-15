@@ -1,5 +1,5 @@
 <app-cabecera></app-cabecera>
-<app-list-work-day-rates #ratesModal [userList]="userListWithAssignments" (cerrarModal)="modalListRatesVisible=false" (cerrarModal)="this.updateMonthData(this.date.getFullYear()+'-'+(this.date.getMonth()+1))" [visible]="modalListRatesVisible"></app-list-work-day-rates>
+<app-list-work-day-rates #ratesModal [userList]="userListWithAssignments" (cerrarModal)="modalListRatesVisible=false" (cerrarModal)="this.updateMonthData(this.lastDate)" [visible]="modalListRatesVisible"></app-list-work-day-rates>
 <div class="card">
   <div class="" style="display: flex; justify-content: center; align-items: center;margin-top: 50px;">
     <p-calendar (onMonthChange)="monthChange($event)" 
