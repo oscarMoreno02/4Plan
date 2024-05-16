@@ -15,6 +15,7 @@ import { ConfirmComponent } from '../confirm/confirm.component';
 import { NewAssignmentComponent } from '../new-assignment/new-assignment.component';
 import { UserAssignmentsComponent } from '../user-assignments/user-assignments.component';
 import { Messsage } from '../../interfaces/messsage';
+import { Assignment } from '../../interfaces/assignment';
 @Component({
   selector: 'app-shifts-date',
   standalone: true,
@@ -33,6 +34,11 @@ export class ShiftsDateComponent  implements OnInit{
     public messageService:MessageService
     ) {
   }
+  workAssignment=0
+  freeDays=0
+  holidays=0
+  hours=0
+
   subscripion=new Subscription
   date=""
   workDay!:WorkDay
@@ -50,6 +56,24 @@ export class ShiftsDateComponent  implements OnInit{
           this.userService.getUsersWithAssignmens(this.workDay.id!).subscribe({
             next:(users)=>{
               this.employees=users
+
+              for (const employee of this.employees){
+                if(employee.assignments){
+                  this.hours+=this.totalHoursWorked(employee.assignments)
+
+                  for (const assignment of employee.assignments){
+                    if(assignment.type==0){
+                      this.workAssignment++
+                    }
+                    if(assignment.type==1){
+                      this.freeDays++
+                    }
+                    if(assignment.type==2){
+                      this.holidays++
+                    }
+                  }
+                }
+              }
               console.log(this.employees)
             },
             error:(error)=>{
@@ -64,5 +88,19 @@ export class ShiftsDateComponent  implements OnInit{
   }
   showMessage(message:Messsage){
     this.messageService.add(message)
+  }
+  totalHoursWorked(assignments:Array<Assignment>):number{
+    let total:any=0
+
+    for (const assignment of assignments){
+      let start=new Date('2024-05-15T'+assignment.start)
+      let end =new Date('2024-05-15T'+assignment.end)
+      total+=end.getTime()-start.getTime();
+  
+    }
+    
+    return total / (1000 * 60 * 60);
+
+
   }
 }

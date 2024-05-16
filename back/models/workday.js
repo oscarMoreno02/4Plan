@@ -20,6 +20,11 @@ module.exports = (sequelize, DataTypes) => {
         as: 'dayAssignments'
       },
       );
+      this.hasMany(models.WorkDayTimeZoneVolume, {
+        foreignKey: 'idWorkDay',
+        as: 'volumes'
+      },
+      );
     }
     
   }

@@ -16,6 +16,7 @@ class Server {
         this.authPath = '/api/auth';
         this.userPath = '/api/user';
         this.workDayPath = '/api/workday';
+        this.workDayTimeZoneVolume = '/api/volume';
         this.middlewares();
         this.routes();
 
@@ -39,6 +40,7 @@ class Server {
          this.app.use(this.authPath, require('../routes/authRoutes'));
          this.app.use(this.userPath, require('../routes/userRoutes'));
          this.app.use(this.workDayPath,require('../routes/workDayRoutes'))
+         this.app.use(this.workDayTimeZoneVolume,require('../routes/workDayTimeZoneVolumeRoutes'))
     }
 
     listen() {

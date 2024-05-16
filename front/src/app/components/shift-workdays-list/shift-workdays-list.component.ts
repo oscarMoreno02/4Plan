@@ -221,7 +221,6 @@ export class ShiftWorkdaysListComponent {
     this.buttonPublish = false
     if (button === 2 && this.multipleDates instanceof Date) {
       let auxiliar=this.multipleDates
-      console.log('Es multiple')
      this.multipleDates= new Array
       this.multipleDates.push(auxiliar)
     }

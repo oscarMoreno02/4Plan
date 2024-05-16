@@ -18,7 +18,10 @@
                     <tr class="header-glass" style="border: none;" >
                 <th>Fecha</th>
                 <th>Volumen Esperado</th>
-                <th>Volumen Conseguido</th>
+                <th>Turnos de trabajo</th>
+                <th>Dias Libres</th>
+                <th>Vacaciones</th>
+                <th>Horas de trabajo</th>
                 @if (this.workDay) {
                     
                     @if(this.workDay.published!=false){
@@ -36,12 +39,10 @@
             <tr >
                 <td>{{ day.date }}</td>
                 <td>{{ day.expectVolume }}</td>
-                @if(this.workDay.reachedVolume==null){
-                    <td>[Sin especificar]</td>
-                }@else {
-                    
-                    <td>{{this.workDay.reachedVolume}}</td>
-                }
+                <td>{{workAssignment}}</td>
+                <td>{{freeDays}}</td>
+                <td>{{holidays}}</td>
+                <td>{{hours}}</td>
             </tr>
         </ng-template>
         <ng-template pTemplate="summary">
