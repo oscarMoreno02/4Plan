@@ -24,6 +24,9 @@ class ParameterDetailConexion{
                 include: [{
                     model: models.WorkPosition,
                     as: 'position',
+                },{
+                    model: models.WorkArea,
+                    as: 'area',
                 }, ]
             });
             return resultado;
@@ -59,6 +62,9 @@ class ParameterDetailConexion{
                 include: [{
                     model: models.WorkPosition,
                     as: 'position',
+                },{
+                    model: models.WorkArea,
+                    as: 'area',
                 }, ]
             });
             if (!resultado) {

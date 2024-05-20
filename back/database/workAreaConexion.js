@@ -89,7 +89,19 @@ class WorkAreaConexion{
             this.con.desconectar()
         }
     }
-   
+    getAllWorkAreasOfCompany = async (id) => {
+        try{
+            let resultado = [];
+            this.con.conectar();
+            
+            resultado = await models.WorkArea.findAll({where:{idCompany:id}});
+            return resultado;
+        }catch(error){
+          throw error
+        }finally{
+            this.con.desconectar()
+        }
+    }
 }
 
 module.exports = WorkAreaConexion;

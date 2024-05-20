@@ -66,11 +66,17 @@
                     <small id="username-help2">Indíca la posicion de trabajo</small>
 
                 </div>
+                <div class="flex flex-column subcategoria-seleccionada">
+                    <label for="username2">Area</label>
+                    <p-dropdown  class="{{styleValidAreas}}" [options]="areasList" [(ngModel)]="editAssignment.area" optionLabel="description" [showClear]="true" placeholder="Seleccionar"></p-dropdown>
+                    <small id="username-help2">Indíca el area de trabajo</small>
+
+                </div>
             }
                 
             </div>
         </div>
-        <div style="margin-top: 150px;display: flex;gap: 10px;" >
+        <div style="margin-top: 100px;display: flex;gap: 10px;" >
 
             <app-confirm tipo="Guardar" icono="save" mensaje="¿Deseas modificar esta asginación?" color="success" (confirmacion)="editar($event)"></app-confirm>
             <app-confirm tipo="Borrar" icono="pi pi-trash" mensaje="¿Deseas eliminar esta directiva?" color="danger"

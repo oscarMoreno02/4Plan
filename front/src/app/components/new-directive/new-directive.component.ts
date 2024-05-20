@@ -22,6 +22,8 @@ import { WorkDirective } from '../../interfaces/directives';
 import { DirectivesService } from '../../services/directives.service';
 import { WorkPosition } from '../../interfaces/work-position';
 import { PositionService } from '../../services/position.service';
+import { AreaService } from '../../services/area.service';
+import { WorkArea } from '../../interfaces/work-area';
 @Component({
   selector: 'app-new-directive',
   standalone: true,
@@ -48,18 +50,21 @@ export class NewDirectiveComponent {
     public messageService: MessageService,
     private directiveService: DirectivesService,
     public authService:AuthService,
-    private positionService:PositionService
+    private positionService:PositionService,
+    private areaService:AreaService
     ) {}
-
- @Input() visible: boolean = false;
- @Input() tipo=0
- @Output() cerrarModal = new EventEmitter<void>();
-@Input() idParameter : number=0
+    
+    @Input() visible: boolean = false;
+    @Input() tipo=0
+    @Output() cerrarModal = new EventEmitter<void>();
+    @Input() idParameter : number=0
+    styleValidArea: string='';
  value=''
  subscription: Subscription=new Subscription;
  positionsList:Array<WorkPosition>=[]
+ areasList:Array<WorkArea>=[]
 
- newDirective:WorkDirective={expectedValuation:0,idCompany:this.authService.getCompany(),idPosition:0,idParameter:0,id:0}
+ newDirective:WorkDirective={expectedValuation:0,idCompany:this.authService.getCompany(),idPosition:0,idParameter:0,id:0,idArea:0}
  styleValidPosition=''
 
 
@@ -67,7 +72,11 @@ export class NewDirectiveComponent {
   this.subscription=this.positionService.getAllWorkPositionsOfCompany(this.authService.getCompany()).subscribe({
     next:(data=>{
       this.positionsList=data
-      console.log(data)
+      this.areaService.getAllWorkAreasOfCompany(this.authService.getCompany()).subscribe({
+        next:(area)=>{
+          this.areasList=area
+        }
+      })
     }),
     error:(error=>{
       
@@ -75,7 +84,7 @@ export class NewDirectiveComponent {
   })
  }
  showDialog() {
-  this.newDirective={expectedValuation:0,idCompany:this.authService.getCompany(),idParameter:0,idPosition:0}
+  this.newDirective={expectedValuation:0,idCompany:this.authService.getCompany(),idParameter:0,idPosition:0,idArea:0}
      this.visible = true;
  }
 
@@ -85,7 +94,8 @@ cerrar(): void {
  crear(confirm:Boolean){
    if(confirm){
      if(this.validarCampos()){
-      this.newDirective.idPosition=this.newDirective.position!.id
+      this.newDirective.idPosition=this.newDirective.position!.id!
+      this.newDirective.idArea=this.newDirective.area!.id!
       this.newDirective.idParameter=this.idParameter
       this.messageService.add({ severity: 'info', summary: 'Crear Directiva', detail: 'En curso', life: 3000 });
       this.directiveService.insertDirective(this.newDirective).subscribe({
@@ -118,6 +128,15 @@ cerrar(): void {
      this.styleValidPosition=''
 
     }
+    if(!this.newDirective.area){
+      this.styleValidArea='ng-invalid ng-dirty'
+      valido=false
+      this.messageService.add({ severity: 'warn', summary: 'Crear Directiva', detail: 'Area de trabajo no especificada', life: 3000 });
+    }else{
+      this.styleValidArea=''
+ 
+     }
+    
      return valido
  }
 

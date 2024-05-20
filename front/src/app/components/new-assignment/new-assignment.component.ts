@@ -26,6 +26,8 @@ import { User } from '../../interfaces/user';
 import { WorkDayService } from '../../services/work-day.service';
 import { UserService } from '../../services/user.service';
 import { Messsage } from '../../interfaces/messsage';
+import { AreaService } from '../../services/area.service';
+import { WorkArea } from '../../interfaces/work-area';
 
 @Component({
   selector: 'app-new-assignment',
@@ -54,7 +56,8 @@ export class NewAssignmentComponent {
     private assignmentService: AssignmentService,
     public authService: AuthService,
     private positionService: PositionService,
-    private userService: UserService
+    private userService: UserService,
+    private areaService:AreaService
   ) { }
 
   @Input() visible: boolean = false;
@@ -68,9 +71,10 @@ export class NewAssignmentComponent {
   value = ''
   subscription: Subscription = new Subscription;
   positionsList: Array<WorkPosition> = []
+  areasList: Array<WorkArea> = []
   user!: User
   @Input() date!: string
-  newAssignment: Assignment = { idCompany: this.authService.getCompany(), idPosition: 0, cost: 0, valuation: null, idUser: this.idUser, idWorkDay: this.idWorkDay, start: '', end: '', type: 0 }
+  newAssignment: Assignment = { idCompany: this.authService.getCompany(), idPosition: 0, cost: 0, valuation: null, idUser: this.idUser, idWorkDay: this.idWorkDay, start: '', end: '', type: 0,idArea:0 }
   styleValidPosition = ''
   horaInicio = { hora: { valor: '00', numero: 0 }, minuto: { valor: '00', numero: 0 } }
   horaFin = { hora: { valor: '00', numero: 0 }, minuto: { valor: '00', numero: 0 } }
@@ -79,6 +83,8 @@ export class NewAssignmentComponent {
   estiloValidacionHoras = ''
   estiloValidacionMinutos = ''
   estilosValidacionesTipo: string = '';
+  estilosValidacionesAreas: string = '';
+
   types = [{ text: 'Turno de trabajo', value: 0 }, { text: 'Dia Libre', value: 1 }, { text: 'Vacaciones', value: 2 }]
   typeSelected = this.types[0]
 
@@ -103,9 +109,16 @@ export class NewAssignmentComponent {
     }
     this.minutos = listaMinutos
     this.subscription = this.positionService.getAllWorkPositionsOfCompany(this.authService.getCompany()).subscribe({
-      next: (data => {
+      next: (data) => {
         this.positionsList = data
-        console.log(data)
+      
+        this.areaService.getAllWorkAreasOfCompany(this.authService.getCompany()).subscribe({
+          next:(areas)=>{
+              this.areasList=areas
+          },
+
+        })
+        
         this.userService.getUserWithAssignments(this.idUser, this.idWorkDay).subscribe({
           next: (user) => {
             console.log(user)
@@ -113,7 +126,7 @@ export class NewAssignmentComponent {
 
           }
         })
-      }),
+      },
       error: (error => {
 
       })
@@ -121,7 +134,7 @@ export class NewAssignmentComponent {
 
   }
   showDialog() {
-    this.newAssignment = { idCompany: this.authService.getCompany(), idPosition: 0, cost: 0, valuation: null, idUser: this.idUser, idWorkDay: this.idWorkDay, start: '', end: '', type: 0 }
+    this.newAssignment = { idCompany: this.authService.getCompany(), idPosition: 0, cost: 0, valuation: null, idUser: this.idUser, idWorkDay: this.idWorkDay, start: '', end: '', type: 0,idArea:0 }
     this.visible = true;
   }
 
@@ -141,10 +154,12 @@ export class NewAssignmentComponent {
           this.newAssignment.end = this.horaFin.hora.valor + ':' + this.horaFin.minuto.valor
           this.newAssignment.start = this.horaInicio.hora.valor + ':' + this.horaInicio.minuto.valor
           this.newAssignment.idPosition = this.newAssignment.position!.id!
+          this.newAssignment.idArea=this.newAssignment.area!.id!
         }else{
           this.newAssignment.start = '00:00'
           this.newAssignment.end = '00:00'
           this.newAssignment.idPosition = null
+          this.newAssignment.idArea=null
         }
         if (this.comprobarCompatibilidad()) {
 
@@ -188,6 +203,13 @@ export class NewAssignmentComponent {
           valido = false
           this.sendMessage.emit({ severity: 'warn', summary: 'Crear Asignación', detail: 'Posicion de trabajo no especificada', life: 3000 });
         } else {
+          this.styleValidPosition=''
+          if (!this.newAssignment.area) {
+            this.estilosValidacionesAreas = 'ng-invalid ng-dirty'
+            valido = false
+            this.sendMessage.emit({ severity: 'warn', summary: 'Crear Asignación', detail: 'Area de trabajo no especificada', life: 3000 });
+          } else {
+            this.estilosValidacionesAreas=''
           if (this.horaInicio.hora == null || this.horaFin.hora == null) {
             this.estiloValidacionHoras = 'ng-invalid ng-dirty'
             valido = false
@@ -218,7 +240,7 @@ export class NewAssignmentComponent {
               }
             }
           }
-        }
+        }}
       }
     }
 

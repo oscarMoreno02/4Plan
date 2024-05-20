@@ -30,6 +30,11 @@ module.exports = (sequelize, DataTypes) => {
         as: 'position'
       },
       );
+      this.belongsTo(models.WorkArea, {
+        foreignKey: 'idArea',
+        as: 'area'
+      },
+      );
     }
   }
   Assignment.init({
@@ -38,6 +43,7 @@ module.exports = (sequelize, DataTypes) => {
     start: DataTypes.TIME,
     end: DataTypes.TIME,
     idPosition: DataTypes.INTEGER,
+    idArea: DataTypes.INTEGER,
     cost: DataTypes.INTEGER,
     type:DataTypes.INTEGER,
     valuation: DataTypes.INTEGER,

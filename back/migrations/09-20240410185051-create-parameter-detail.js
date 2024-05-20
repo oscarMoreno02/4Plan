@@ -39,6 +39,16 @@ module.exports = {
         },
         onDelete:'CASCADE'
       },
+      idArea: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: 'workAreas'
+          },
+          key: 'id'
+        },
+        onDelete:'CASCADE'
+      },
       expectedValuation: {
         type: Sequelize.INTEGER
       },

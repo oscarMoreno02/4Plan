@@ -20,6 +20,11 @@ module.exports = (sequelize, DataTypes) => {
         as: 'position'
       },
       );
+      this.belongsTo(models.WorkArea, {
+        foreignKey: 'idArea',
+        as: 'area'
+      },
+      );
       this.belongsTo(models.WorkParameter, {
         foreignKey: 'idParameter',
         as: 'parameter'
@@ -31,6 +36,7 @@ module.exports = (sequelize, DataTypes) => {
     idCompany: DataTypes.INTEGER,
     idParameter: DataTypes.INTEGER,
     idPosition: DataTypes.INTEGER,
+    idArea: DataTypes.INTEGER,
     expectedValuation: DataTypes.INTEGER
   }, {
     sequelize,

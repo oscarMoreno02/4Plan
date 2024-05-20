@@ -28,7 +28,17 @@ const listWorkArea= (req, res = response) => {
             res.status(404).json(err)
         })
 }
+const listAllWorkAreasOfCompany= (req, res = response) => {
+    const conexion = new Conexion()
+    conexion.getAllWorkAreasOfCompany(req.params.id)
+        .then(data => {
+            res.status(200).json(data)
+        })
+        .catch(err => {
 
+            res.status(404).json()
+        })
+}
 
 const editWorkArea= (req, res = response)=>{
     const conexion = new Conexion()
@@ -74,5 +84,6 @@ module.exports={
    editWorkArea,
    createWorkArea,
    listAllWorkAreas,
-   listWorkArea
+   listWorkArea,
+   listAllWorkAreasOfCompany
 }

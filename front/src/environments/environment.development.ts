@@ -9,5 +9,6 @@ export const environment = {
     urlUsers:'/user',
     urlWorkDays:'/workday',
     urlAssignments:'/assignments',
-    urlVolume:'/volume'
+    urlVolume:'/volume',
+    urlWorkAreas:'/area',
 };

@@ -23,6 +23,8 @@ import { DirectivesService } from '../../services/directives.service';
 import { WorkPosition } from '../../interfaces/work-position';
 import { PositionService } from '../../services/position.service';
 import { Messsage } from '../../interfaces/messsage';
+import { AreaService } from '../../services/area.service';
+import { WorkArea } from '../../interfaces/work-area';
 
 @Component({
   selector: 'app-edit-directive',
@@ -49,7 +51,8 @@ export class EditDirectiveComponent {
     public messageService: MessageService,
     private directiveService: DirectivesService,
     public authService: AuthService,
-    private positionService: PositionService
+    private positionService: PositionService,
+    private areaService:AreaService
   ) { }
 
 
@@ -60,16 +63,20 @@ export class EditDirectiveComponent {
   value = ''
   subscription: Subscription = new Subscription;
   positionsList: Array<WorkPosition> = []
-
-  editDirective: WorkDirective = { expectedValuation: 0, idCompany: this.authService.getCompany(), idPosition: 0, idParameter: 0, id: 0 }
+  areasList:Array<WorkArea>=[]
+  editDirective: WorkDirective = { expectedValuation: 0, idCompany: this.authService.getCompany(), idPosition: 0, idParameter: 0, id: 0,idArea:0 }
   styleValidPosition = ''
-
+  styleValidArea=''
 
   ngOnInit(): void {
     this.subscription = this.positionService.getAllWorkPositionsOfCompany(this.authService.getCompany()).subscribe({
       next: (data => {
         this.positionsList = data
-        console.log(data)
+        this.areaService.getAllWorkAreasOfCompany(this.authService.getCompany()).subscribe({
+          next:(areas)=>{
+              this.areasList=areas
+          }
+        })
       }),
       error: (error => {
 
@@ -80,6 +87,7 @@ export class EditDirectiveComponent {
     this.directiveService.getDirective(id).subscribe({
       next: (data => {
         this.editDirective = data
+        console.log(this.editDirective)
         this.visible = true;
 
       }),
@@ -95,8 +103,8 @@ export class EditDirectiveComponent {
   guardar(confirm: Boolean) {
     if (confirm) {
       if (this.validarCampos()) {
-        this.editDirective.idPosition = this.editDirective.position!.id
-
+        this.editDirective.idPosition = this.editDirective.position!.id!
+        this.editDirective.idArea=this.editDirective.position!.id!
         this.messageService.add({ severity: 'info', summary: 'Editar Directiva', detail: 'En curso', life: 3000 });
         this.directiveService.updateDirective(this.editDirective).subscribe({
           next: (u: any) => {
@@ -137,18 +145,27 @@ export class EditDirectiveComponent {
       }
     })
   }
-  validarCampos(): Boolean {
+  validarCampos():Boolean{
     let valido = true
-    if (!this.editDirective.position) {
-      this.styleValidPosition = 'ng-invalid ng-dirty'
-      valido = false
-      this.messageService.add({ severity: 'warn', summary: 'Editar Directiva', detail: 'Posicion de trabajo no especificada', life: 3000 });
-    } else {
-      this.styleValidPosition = ''
+   if(!this.editDirective.position){
+     this.styleValidPosition='ng-invalid ng-dirty'
+     valido=false
+     this.messageService.add({ severity: 'warn', summary: 'Crear Directiva', detail: 'Posicion de trabajo no especificado', life: 3000 });
+   }else{
+     this.styleValidPosition=''
 
     }
-    return valido
-  }
+    if(!this.editDirective.area){
+      this.styleValidArea='ng-invalid ng-dirty'
+      valido=false
+      this.messageService.add({ severity: 'warn', summary: 'Crear Directiva', detail: 'Area de trabajo no especificada', life: 3000 });
+    }else{
+      this.styleValidArea=''
+ 
+     }
+    
+     return valido
+ }
 
 
 

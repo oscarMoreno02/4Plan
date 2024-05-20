@@ -100,7 +100,10 @@ class UserConexion{
                     include: [{
                         model: models.WorkPosition,
                         as: 'position',
-                    } ]
+                    },{
+                        model: models.WorkArea,
+                        as: 'area',
+                    }, ]
                 } ]
             });
             return resultado;
@@ -124,7 +127,10 @@ class UserConexion{
                     include: [{
                         model: models.WorkPosition,
                         as: 'position',
-                    } ]
+                    },{
+                        model: models.WorkArea,
+                        as: 'area',
+                    }, ]
                 } ]
             });
             return resultado;

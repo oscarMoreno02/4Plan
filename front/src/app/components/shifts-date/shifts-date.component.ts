@@ -115,4 +115,7 @@ export class ShiftsDateComponent  implements OnInit{
 
 
   }
+   truncateNumber() {
+    return Math.trunc(this.hours * 100) / 100;
+  }
 }

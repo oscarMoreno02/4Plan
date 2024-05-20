@@ -1,0 +1,37 @@
+<p-toast></p-toast>
+
+<div style=""  class=" card flex justify-content-center">
+
+  
+  <p-dialog  [header]="this.typeElement==1 ? 'Modificar posicion': 'Modificar Area'" [(visible)]="visible"  [modal]="true" 
+    [draggable]="false" (onHide)="cerrar();" [resizable]="false">
+
+
+    <div style="margin-top: 10px;" class="card flex justify-content-center" class="custom-dialog">
+        <div class="flex flex-row gap-4">
+
+            <div  class="flex flex-column">
+                <label for="username1">Descripcion </label>
+                <input type="text" [class]="styleValidValue"  pInputText [(ngModel)]="value" class="w-small"/>
+                <br>
+                <small style="margin-top: 20px;" id="username-help1">Introduce una descripción </small>
+            </div>
+        
+            
+            </div>
+        </div>
+        <div style="margin-top: 20px; display: flex;gap: 10px;" >
+            @if(this.typeElement==1){
+                    <app-confirm tipo="Modificar" icono="plus" mensaje="¿Deseas modificar esta  posición?" color="success" (confirmacion)="modificarPosicion($event)"></app-confirm>
+
+                    <app-confirm tipo="Borrar" icono="pi pi-trash" mensaje="¿Deseas eliminar esta posición?" color="danger"
+                    (confirmacion)="eliminarPosicion($event)"></app-confirm>
+                }@else {
+                    <app-confirm tipo="Modificar" icono="plus" mensaje="¿Deseas modificar este area?" color="success" (confirmacion)="modificarArea($event)"></app-confirm>
+                    <app-confirm tipo="Borrar" icono="pi pi-trash" mensaje="¿Deseas eliminar esta posición?" color="danger"
+                    (confirmacion)="eliminarArea($event)"></app-confirm>
+                }
+            </div>
+        
+  </p-dialog>
+</div>

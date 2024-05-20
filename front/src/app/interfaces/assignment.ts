@@ -1,3 +1,4 @@
+import { WorkArea } from "./work-area";
 import { WorkPosition } from "./work-position";
 
 export interface Assignment {
@@ -10,7 +11,9 @@ export interface Assignment {
     cost:       number;
     valuation:  number | null;
     idWorkDay:  number;
+    idArea:number | null,
     position?: WorkPosition ,
+    area?:WorkArea,
     type:number,
     createdAt?:string,
     updatedAt?:string,

@@ -6,13 +6,13 @@
         [rows]="5"
         [showCurrentPageReport]="true"
         [tableStyle]="{ 'min-width': '50rem' ,'max-width':'80rem','margin':'auto'}"
-        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} parametros"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} trabajadores"
         [rowsPerPageOptions]="[5, 10, 20]"
     >
     <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between">
-           Parametros
-           
+           Plantilla
+  
         </div>
     </ng-template>
         <ng-template pTemplate="header">
@@ -25,6 +25,9 @@
                 <th style="width:10%">Salario</th>
                 <th style="width:10%">Acceso</th>
 
+                <th><app-list-areas-positions></app-list-areas-positions>
+                </th>
+            
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-user>
@@ -45,7 +48,7 @@
                     <td>[No especificado]</td>
                 }
                 <td>{{ translateAccess(user.access)}}</td>
-
+                <td>Editar</td>
             </tr>
         </ng-template>
         <ng-template pTemplate="paginatorleft">

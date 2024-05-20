@@ -3,6 +3,7 @@ const {Router} = require('express');
 const router = Router();
 const controller=require('../controllers/workAreaController')
 
+    router.get('/company/:id',controller.listAllWorkAreasOfCompany)
     router.get('/:id',controller.listWorkArea)
     router.get('/',controller.listAllWorkAreas)
     router.delete('/:id',controller.removeWorkArea)

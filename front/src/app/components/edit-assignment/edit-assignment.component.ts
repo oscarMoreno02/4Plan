@@ -26,6 +26,8 @@ import { User } from '../../interfaces/user';
 import { WorkDayService } from '../../services/work-day.service';
 import { UserService } from '../../services/user.service';
 import { Messsage } from '../../interfaces/messsage';
+import { WorkArea } from '../../interfaces/work-area';
+import { AreaService } from '../../services/area.service';
 @Component({
   selector: 'app-edit-assignment',
   standalone: true,
@@ -54,7 +56,8 @@ export class EditAssignmentComponent {
     private assignmentService: AssignmentService,
     public authService: AuthService,
     private positionService: PositionService,
-    private userService: UserService
+    private userService: UserService,
+    private areaService:AreaService
   ) { }
 
   @Input() visible: boolean = false;
@@ -66,12 +69,13 @@ export class EditAssignmentComponent {
   value = ''
   subscription: Subscription = new Subscription;
   positionsList: Array<WorkPosition> = []
+ areasList: Array<WorkArea> = []
   @Input() id: number = 0
   @Input() date!: string
-
   user!: User
-  editAssignment: Assignment = { idCompany: this.authService.getCompany(), idPosition: 0, cost: 0, valuation: null, idUser: 0, idWorkDay: 0, start: '', end: '', type: 0 }
+  editAssignment: Assignment = { idCompany: this.authService.getCompany(), idPosition: 0, cost: 0, valuation: null, idUser: 0, idWorkDay: 0, start: '', end: '', type: 0 ,idArea:0}
   styleValidPosition = ''
+  styleValidAreas = ''
   horaInicio = { hora: { valor: '00', numero: 0 }, minuto: { valor: '00', numero: 0 } }
   horaFin = { hora: { valor: '00', numero: 0 }, minuto: { valor: '00', numero: 0 } }
   horas = [{ valor: '00', numero: 0 }]
@@ -104,7 +108,11 @@ export class EditAssignmentComponent {
     this.subscription = this.positionService.getAllWorkPositionsOfCompany(this.authService.getCompany()).subscribe({
       next: (data => {
         this.positionsList = data
-
+        this.areaService.getAllWorkAreasOfCompany(this.authService.getCompany()).subscribe({
+          next:(areas)=>{
+            this.areasList=areas
+          }
+        })
       }),
       error: (error => {
 
@@ -115,6 +123,7 @@ export class EditAssignmentComponent {
   showDialog(assignment: Assignment) {
     this.subscription = this.userService.getUserWithAssignments(assignment.idUser, assignment.idWorkDay).subscribe({
       next: (user) => {
+        console.log(user)
         this.user = user
         for (const a of user.assignments) {
           if (assignment.id == a.id) {
@@ -123,6 +132,7 @@ export class EditAssignmentComponent {
             break
           }
         }
+        console.log(this.editAssignment)
 
         this.visible = true;
       }
@@ -145,8 +155,10 @@ export class EditAssignmentComponent {
           this.editAssignment.end = this.horaFin.hora.valor + ':' + this.horaFin.minuto.valor
           this.editAssignment.start = this.horaInicio.hora.valor + ':' + this.horaInicio.minuto.valor
           this.editAssignment.idPosition = this.editAssignment.position!.id!
+          this.editAssignment.idArea=this.editAssignment.area!.id!
         }else{
           this.editAssignment.idPosition=null
+          this.editAssignment.idArea=null
           this.editAssignment.start='00:00'
           this.editAssignment.end='00:00'
 
@@ -202,17 +214,29 @@ export class EditAssignmentComponent {
       this.sendMessage.emit({ severity: 'warn', summary: 'Modificar  Asignación', detail: 'Debe seleccionar un tipo de asignación', life: 3000 });
       this.estilosValidacionesTipo = 'ng-invalid ng-dirty'
     } else {
+      this.estilosValidacionesTipo=''
       if (this.typeSelected.value == 0) {
         if (!this.editAssignment.position) {
           this.styleValidPosition = 'ng-invalid ng-dirty'
           valido = false
           this.sendMessage.emit({ severity: 'warn', summary: 'Modificar Asignación', detail: 'Posicion de trabajo no especificada', life: 3000 });
         } else {
+          this.styleValidAreas=''
+          if(!this.editAssignment.area){
+            this.styleValidPosition = 'ng-invalid ng-dirty'
+            valido = false
+            this.sendMessage.emit({ severity: 'warn', summary: 'Modificar Asignación', detail: 'Area de trabajo no especificada', life: 3000 });
+          }else{
+            this.styleValidAreas=''
+          
           if (this.horaInicio.hora == null || this.horaFin.hora == null) {
             this.estiloValidacionHoras = 'ng-invalid ng-dirty'
             valido = false
             this.sendMessage.emit({ severity: 'warn', summary: 'Modificar Asignación', detail: 'Horas introdudas incorrectamente', life: 3000 });
+          }else{
+            this.estiloValidacionHoras=''
           }
+          
           if (this.horaInicio.minuto == null || this.horaFin.minuto == null) {
             this.estiloValidacionHoras = 'ng-invalid ng-dirty'
             valido = false
@@ -238,7 +262,7 @@ export class EditAssignmentComponent {
               }
             }
           }
-        }
+        }}
       }
     }
     return valido

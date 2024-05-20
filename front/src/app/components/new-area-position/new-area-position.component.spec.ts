@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditAssignmentComponent } from './edit-assignment.component';
+import { NewAreaPositionComponent } from './new-area-position.component';
 
-describe('EditAssignmentComponent', () => {
-  let component: EditAssignmentComponent;
-  let fixture: ComponentFixture<EditAssignmentComponent>;
+describe('NewAreaPositionComponent', () => {
+  let component: NewAreaPositionComponent;
+  let fixture: ComponentFixture<NewAreaPositionComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EditAssignmentComponent]
+      imports: [NewAreaPositionComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(EditAssignmentComponent);
+    fixture = TestBed.createComponent(NewAreaPositionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

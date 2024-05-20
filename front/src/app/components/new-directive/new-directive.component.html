@@ -29,10 +29,15 @@
                     <small id="username-help2">Indíca la posicion de trabajo</small>
 
                 </div>
-            
+                <div class="flex flex-column subcategoria-seleccionada">
+                    <label for="username2">Area</label>
+                    <p-dropdown  class="{{styleValidArea}}" [options]="areasList" [(ngModel)]="newDirective.area" optionLabel="description" [showClear]="true" placeholder="Seleccionar"></p-dropdown>
+                    <small id="username-help2">Indíca el area de trabajo</small>
+
+                </div>
             </div>
         </div>
-        <div style="margin-top: 20px;" >
+        <div style="margin-top: 80px;" >
 
             <app-confirm tipo="Crear" icono="plus" mensaje="¿Deseas añadir esta nueva directiva?" color="success" (confirmacion)="crear($event)"></app-confirm>
         </div>

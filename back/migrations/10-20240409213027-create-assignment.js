@@ -39,11 +39,15 @@ module.exports = {
         },
         onDelete:'SET NULL'
       },
-      start: {
-        type: Sequelize.TIME
-      },
-      end: {
-        type: Sequelize.TIME
+      idArea: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: 'workAreas'
+          },
+          key: 'id'
+        },
+        onDelete:'SET NULL'
       },
       idPosition: {
         type: Sequelize.INTEGER,
@@ -54,6 +58,12 @@ module.exports = {
           key: 'id'
         },
         onDelete:'SET NULL'
+      },
+      start: {
+        type: Sequelize.TIME
+      },
+      end: {
+        type: Sequelize.TIME
       },
       cost: {
         type: Sequelize.INTEGER,
