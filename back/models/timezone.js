@@ -25,6 +25,11 @@ module.exports = (sequelize, DataTypes) => {
         as: 'days'
       },
       );
+      this.hasMany(models.WorkDayTimeZoneVolume, {
+        foreignKey: 'idTimeZone',
+        as: 'volumes'
+      },
+      );
     }
   }
   TimeZone.init({

@@ -1,0 +1,29 @@
+<div style=""  class=" card flex justify-content-center">
+    
+    <p-button  label="{{tipo==0 ? this.volume.volumeExpect:this.volume.reachedVolume}}" severity="warning" [raised]="true" [outlined]="true" (click)="showDialog()" icon="pi pi-pencil" ></p-button>
+    
+    
+    <p-dialog  [header]="textHeader" [(visible)]="visible"  [modal]="true" 
+      [draggable]="false" (onHide)="cerrar();" [resizable]="false">
+            <div  class="flex flex-column">
+                <label for="username1">Volumen Esperado </label>
+                @if (this.tipo==0) {
+
+                    <p-inputNumber inputId="integeronly" class="{{styleValidVolume}}" [(ngModel)]="newExpectedVolume"> </p-inputNumber>
+                    <small id="username-help1">Introduce el volumen de trabajo esperado</small>
+                }@else {
+                    <p-inputNumber [disabled]="true" inputId="integeronly" class="{{styleValidVolume}}" [(ngModel)]="newExpectedVolume"> </p-inputNumber>
+                    <label for="username1">Volumen Obtenido </label>
+                    <p-inputNumber inputId="integeronly" class="{{styleValidVolume}}" [(ngModel)]="newReachedVolume"> </p-inputNumber>
+                    <small id="username-help1">Introduce el volumen de trabajo esperado</small>
+
+                }
+            </div>
+            
+          <div  class="flex flex-column " style="margin-top: 20px;" >
+  
+              <app-confirm tipo="Modificar" icono="plus" mensaje="¿Deseas modificar este volumen?" color="success" (confirmacion)="crear($event)"></app-confirm>
+          </div>
+    </p-dialog>
+  </div>
+  

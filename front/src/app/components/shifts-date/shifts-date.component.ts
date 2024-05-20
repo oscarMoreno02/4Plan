@@ -16,10 +16,20 @@ import { NewAssignmentComponent } from '../new-assignment/new-assignment.compone
 import { UserAssignmentsComponent } from '../user-assignments/user-assignments.component';
 import { Messsage } from '../../interfaces/messsage';
 import { Assignment } from '../../interfaces/assignment';
+import { ListExpectedVolumeComponent } from '../list-expected-volume/list-expected-volume.component';
 @Component({
   selector: 'app-shifts-date',
   standalone: true,
-  imports: [CabeceraComponent,ToastModule,TableModule,ConfirmComponent,ButtonModule,NewAssignmentComponent,UserAssignmentsComponent],
+  imports: [
+    CabeceraComponent,
+    ToastModule,
+    TableModule,
+    ConfirmComponent,
+    ButtonModule,
+    NewAssignmentComponent,
+    UserAssignmentsComponent,
+    ListExpectedVolumeComponent
+  ],
   providers:[MessageService],
   templateUrl: './shifts-date.component.html',
   styleUrl: './shifts-date.component.css'
@@ -48,11 +58,13 @@ export class ShiftsDateComponent  implements OnInit{
 
     this.subscripion=this.workDayService.getDayOfCompanyByDate(this.authService.getCompany(),this.date).subscribe({
       next:(day)=>{
+        
           if(day==null){
               this.router.navigate(['/shifts'])
           }
           this.workDay=day
           console.log(day)
+          console.log(this.workDay)
           this.userService.getUsersWithAssignmens(this.workDay.id!).subscribe({
             next:(users)=>{
               this.employees=users

@@ -1,0 +1,45 @@
+@if(this.withButton){
+
+  <p-button   severity="warning" [raised]="true" [outlined]="true" (click)="showDialog()" icon="pi pi-list" label="Franjas"></p-button>
+}
+
+<p-dialog [header]="textHeader" (onHide)="cerrar()" [resizable]="false" [modal]="true" [draggable]="false"
+  [(visible)]="visible">
+  <div class="card">
+    @if(volumeList && volumeList.length>0){
+
+        <p-table [value]="volumeList">
+            <ng-template pTemplate="header">
+                <tr>
+          <th>Inicio</th>
+          <th>Fin</th>
+          <th>Volumen Esperado</th>
+          @if(this.tipo==1){
+            <th>Volumen obtenido</th>
+          }
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-volume>
+        <tr>
+          <td>{{ volume.timeZone.start }}</td>
+          <td>{{ volume.timeZone.end }}</td>
+          @if(tipo==0){
+
+            <td><app-insert-expected-volume  [tipo]="1" [visible]="editModalVisible" (cerrarModal)="editModalVisible=false" [volume]="volume"></app-insert-expected-volume></td>
+          }@else{
+            <td>{{volume.volumeExpect}}</td>
+            <td><app-insert-expected-volume [tipo]="1" textHeader="Modificar Volumen Obtenido" [visible]="editModalVisible" (cerrarModal)="editModalVisible=false" [volume]="volume"></app-insert-expected-volume></td>
+          }
+
+        </tr>
+      </ng-template>
+    </p-table>
+}@else {
+    <p-accordion>
+
+        <p-accordionTab [disabled]="true" header="Sin franjas"></p-accordionTab>
+    </p-accordion>
+}
+
+  </div>
+</p-dialog>

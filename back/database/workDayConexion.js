@@ -54,19 +54,29 @@ class WorkDayConexion {
     }
     getWorkDayOfCompanyByDate = async (id, date) => {
         try {
-            let resultado = [];
+          
             this.con.conectar();
 
-            resultado = await models.WorkDay.findOne({
+            const resultado = await models.WorkDay.findOne({
                 where: {
-                    idCompany: id,
-                    date: date
+                  idCompany: id,
+                  date: date
                 },
                 include: [{
-                    model: models.Assignment,
-                    as: 'dayAssignments',
-                }, ]
-            });
+                  model: models.Assignment,
+                  as: 'dayAssignments',
+                }, {
+                  model: models.WorkDayTimeZoneVolume,
+                  as: 'volumes',
+                  include: [{
+                    model: models.TimeZone,
+                    as: 'timeZone',
+                  }],
+                  order: [
+                    [{ model: models.TimeZone, as: 'timeZone' }, 'start', 'ASC'] 
+                  ]
+                }],
+              });
             return resultado;
         } catch (error) {
             throw error
@@ -88,7 +98,17 @@ class WorkDayConexion {
                 include: [{
                     model: models.Assignment,
                     as: 'dayAssignments',
-                }, ]
+                  }, {
+                    model: models.WorkDayTimeZoneVolume,
+                    as: 'volumes',
+                    include: [{
+                      model: models.TimeZone,
+                      as: 'timeZone',
+                    }],
+                    order: [
+                      [{ model: models.TimeZone, as: 'timeZone' }, 'start', 'ASC'] 
+                    ]
+                  }],
             });
             return resultado;
         } catch (error) {

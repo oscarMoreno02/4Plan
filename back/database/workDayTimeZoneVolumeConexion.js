@@ -7,31 +7,31 @@ const {
     where
 } = require('sequelize');
 const models = require('../models/index.js');
-const Conexion =require('./connection.js')
+const Conexion = require('./connection.js')
 
-class WorkDayTimeZoneVolumeConexion{
+class WorkDayTimeZoneVolumeConexion {
     constructor() {
- 
-        this.con= new Conexion()
+
+        this.con = new Conexion()
     }
-   
+
 
     getAllWorkDayTimeZoneVolumes = async () => {
-        try{
+        try {
             let resultado = [];
             this.con.conectar();
-            
+
             resultado = await models.WorkDayTimeZoneVolume.findAll();
             return resultado;
-        }catch(error){
-          throw error
-        }finally{
+        } catch (error) {
+            throw error
+        } finally {
             // this.con.desconectar();
             this.con.desconectar()
         }
     }
     getWorkDayTimeZoneVolumeById = async (id) => {
-        try{
+        try {
             let resultado = [];
             this.con.conectar();
             resultado = await models.WorkDayTimeZoneVolume.findByPk(id);
@@ -39,14 +39,44 @@ class WorkDayTimeZoneVolumeConexion{
                 throw new Error('error');
             }
             return resultado;
-        }catch(error){
+        } catch (error) {
             throw error
-        }
-        finally{
+        } finally {
             this.con.desconectar()
         }
     }
-   
+    getAllWorkDayTimeZoneVolumeByWorkDay = async (id) => {
+        try {
+            let resultado = [];
+            this.con.conectar();
+            resultado = await models.WorkDayTimeZoneVolume.findAll({
+                where: {
+                    idWorkDay: id
+                },
+                include: [{
+
+                    model: models.TimeZone,
+                    as: 'timeZone',
+
+                    order: [
+                        [{
+                            model: models.TimeZone,
+                            as: 'timeZone'
+                        }, 'start', 'ASC']
+                    ]
+                }]
+            });
+            if (!resultado) {
+                throw new Error('error');
+            }
+            return resultado;
+        } catch (error) {
+            throw error
+        } finally {
+            this.con.desconectar()
+        }
+    }
+
     insertWorkDayTimeZoneVolume = async (body) => {
         let resultado = 0;
         this.con.conectar();
@@ -60,9 +90,26 @@ class WorkDayTimeZoneVolumeConexion{
             this.con.desconectar();
         }
     }
+    insertMultiple = async (list) => {
+        let resultado = 0;
+        this.con.conectar();
+        try {
+            for (const volume of list) {
 
+                const WorkDayTimeZoneVolume = new models.WorkDayTimeZoneVolume(volume);
+                await WorkDayTimeZoneVolume.save();
+            }
+            resultado = 1
+
+            return resultado
+        } catch (error) {
+            throw error;
+        } finally {
+            this.con.desconectar();
+        }
+    }
     deleteWorkDayTimeZoneVolume = async (id) => {
-        try{
+        try {
             this.con.conectar();
             let resultado = await models.WorkDayTimeZoneVolume.findByPk(id);
             if (!resultado) {
@@ -70,26 +117,26 @@ class WorkDayTimeZoneVolumeConexion{
             }
             await resultado.destroy();
             return resultado;
-        }catch(error){
+        } catch (error) {
             throw error
-        }finally{
+        } finally {
             this.con.desconectar()
         }
     }
-    updateFullWorkDayTimeZoneVolume= async (id,body) => {
-        try{
+    updateFullWorkDayTimeZoneVolume = async (id, body) => {
+        try {
             let resultado = 0
             this.con.conectar();
             let WorkDayTimeZoneVolume = await models.WorkDayTimeZoneVolume.findByPk(id);
             await WorkDayTimeZoneVolume.update(body)
             return resultado
-        }catch(error){
+        } catch (error) {
             throw error
-        }finally{
+        } finally {
             this.con.desconectar()
         }
     }
-   
+
 }
 
 module.exports = WorkDayTimeZoneVolumeConexion;

@@ -28,7 +28,17 @@ const listWorkDayTimeZoneVolume= (req, res = response) => {
             res.status(404).json(err)
         })
 }
-
+const listAllWorkDayTimeZoneVolumeByWorkDay= (req, res = response) => {
+    const conexion = new Conexion()
+    conexion.getAllWorkDayTimeZoneVolumeByWorkDay(req.params.id)
+        .then(data => {
+            res.status(200).json( data)
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(404).json(err)
+        })
+}
 
 const editWorkDayTimeZoneVolume= (req, res = response)=>{
     const conexion = new Conexion()
@@ -74,5 +84,6 @@ module.exports={
    editWorkDayTimeZoneVolume,
    createWorkDayTimeZoneVolume,
    listAllWorkDayTimeZoneVolumes,
-   listWorkDayTimeZoneVolume
+   listWorkDayTimeZoneVolume,
+   listAllWorkDayTimeZoneVolumeByWorkDay
 }

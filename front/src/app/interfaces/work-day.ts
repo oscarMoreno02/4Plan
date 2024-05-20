@@ -1,5 +1,6 @@
 
 import { Assignment } from "./assignment";
+import { Volume } from "./volume";
 
 export interface WorkDay {
     id?:            number;
@@ -9,5 +10,6 @@ export interface WorkDay {
     published:      boolean;
     idCompany:      number;
     dayAssignments?: Assignment[];
+    volumes?:Volume[]
 }
 

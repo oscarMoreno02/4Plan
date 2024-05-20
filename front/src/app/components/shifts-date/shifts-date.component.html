@@ -38,7 +38,7 @@
         <ng-template pTemplate="body" let-day>
             <tr >
                 <td>{{ day.date }}</td>
-                <td>{{ day.expectVolume }}</td>
+                <td><app-list-expected-volume [volumeList]="this.workDay.volumes!"></app-list-expected-volume></td>
                 <td>{{workAssignment}}</td>
                 <td>{{freeDays}}</td>
                 <td>{{holidays}}</td>

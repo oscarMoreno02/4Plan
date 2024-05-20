@@ -8,5 +8,6 @@ export const environment = {
     urlWorkPositions:'/position',
     urlUsers:'/user',
     urlWorkDays:'/workday',
-    urlAssignments:'/assignments'
+    urlAssignments:'/assignments',
+    urlVolume:'/volume'
 };

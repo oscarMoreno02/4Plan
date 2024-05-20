@@ -19,6 +19,9 @@ import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { ListWorkDayRatesComponent } from '../list-work-day-rates/list-work-day-rates.component';
 import { User } from '../../interfaces/user';
+import { VolumeService } from '../../services/volume.service';
+import { ListExpectedVolumeComponent } from '../list-expected-volume/list-expected-volume.component';
+import { Volume } from '../../interfaces/volume';
 
 @Component({
   selector: 'app-shift-workdays-list',
@@ -35,7 +38,8 @@ import { User } from '../../interfaces/user';
     ConfirmComponent,
     CommonModule,
     ListWorkDayRatesComponent,
-    DialogModule],
+    DialogModule,
+    ListExpectedVolumeComponent],
   encapsulation: ViewEncapsulation.None,
   templateUrl: './shift-workdays-list.component.html',
   styleUrl: './shift-workdays-list.component.css'
@@ -49,7 +53,8 @@ export class ShiftWorkdaysListComponent {
     private renderer: Renderer2,
     private elementRef: ElementRef,
     private cdr: ChangeDetectorRef,
-    private userService: UserService
+    private userService: UserService,
+    private volumeService:VolumeService
   ) { }
   visible = false
   visibleAlertPublishFalse = false
@@ -66,8 +71,12 @@ export class ShiftWorkdaysListComponent {
   daysAllRatesInserted: Array<number> = []
   daysBeforeToday: Array<number> = []
   modalListRatesVisible = false
+  modalListVolumeVisible = false
   userListWithAssignments: Array<User> = []
   daysHighRate: Array<number> = []
+  daysAllVolumeInserted: Array<number> = []
+  daysCumplimentVolume:Array<number>=[]
+
   ngOnInit(): void {
     let date = new Date()
     this.month = date.getMonth() + 1
@@ -77,10 +86,11 @@ export class ShiftWorkdaysListComponent {
     this.changeColor()
   }
 
-  async checkDay(event: any, ratesModal: any) {
+  async checkDay(event: any, ratesModal: any,volumesModal:any) {
     this.buttonPublish = false
     this.date = this.multipleDates instanceof Array ? this.multipleDates[this.multipleDates.length - 1] : this.multipleDates
     let day = await this.getWorkDay({ date: this.date, visible: this.visible })
+   
     if (day == null) {
       if (this.selectedButton == 1 || this.selectedButton == 2) {
         this.visible = true
@@ -106,18 +116,27 @@ export class ShiftWorkdaysListComponent {
       if (this.selectedButton == 3 && this.checkDateBefore(day.date)) {
         this.userService.getUsersWithAssignmentsRequired(day.id!).subscribe({
           next: (users) => {
-            console.log(users)
             ratesModal.userList = users;
-
             ratesModal.showDialog()
-
           },
           error: () => {
 
           }
         })
       }
+      if (this.selectedButton == 4 && this.checkDateBefore(day.date)) {
+        volumesModal.volumeList=day.volumes
+        volumesModal.showDialog()
+        this.volumeService.getAllVolumeByWorkDay(day.id!).subscribe({
+          next: (volumes) => {
+            volumesModal.volumeList = volumes;
+            volumesModal.showDialog()
+          },
+          error: () => {
 
+          }
+        })
+      }
     }
 
 
@@ -171,6 +190,7 @@ export class ShiftWorkdaysListComponent {
   updateMonthData(date: string) {
     this.subscripcion = this.workDayService.getDayOfCompanyOfMonth(this.authService.getCompany(), date).subscribe({
       next: (data: Array<WorkDay>) => {
+        console.log(data)
         this.workDaysList = data;
         this.updateCreatedDays();
         this.cdr.detectChanges();
@@ -187,6 +207,8 @@ export class ShiftWorkdaysListComponent {
     let listBefore = []
     let listAllRatesInserted = []
     let listHighRate=[]
+    let listAllVolumeInserted=[]
+    let listCumplimentVolume=[]
     if (this.workDaysList.length > 0) {
       for (const day of this.workDaysList) {
         let numberOfDay = new Date(day.date).getDate()
@@ -203,7 +225,12 @@ export class ShiftWorkdaysListComponent {
             listHighRate.push(numberOfDay)
           }
         }
-
+    if (this.checkAllVolumeInserted(day)) {
+          listAllVolumeInserted.push(numberOfDay)
+          if (this.hasCumplimentVolume(day)) {
+            listCumplimentVolume.push(numberOfDay)
+          }
+        }
       }
     }
     this.daysAllRatesInserted = listAllRatesInserted
@@ -211,7 +238,8 @@ export class ShiftWorkdaysListComponent {
     this.createdDays = listCreated
     this.daysBeforeToday = listBefore
     this.daysHighRate=listHighRate
-
+    this.daysAllVolumeInserted=listAllVolumeInserted
+    this.daysCumplimentVolume=listCumplimentVolume
   }
 
 
@@ -334,7 +362,6 @@ export class ShiftWorkdaysListComponent {
       for (const assignment of day.dayAssignments) {
         if(assignment.type==0){
           if (assignment.valuation== null || assignment.valuation==0) {
-            console.log('llega')
             return false
           }
         }
@@ -342,7 +369,16 @@ export class ShiftWorkdaysListComponent {
     }
     return true
   }
-
+  checkAllVolumeInserted(day: WorkDay): boolean {
+    if (day.volumes) {
+      for (const volume of day.volumes) {
+          if (volume.reachedVolume== null ||volume.reachedVolume==0) {
+            return false
+          }
+      }
+    }
+    return true
+  }
   hasHighRate(day: WorkDay): boolean {
     if (day.dayAssignments) {
       let sum = 0
@@ -361,7 +397,32 @@ export class ShiftWorkdaysListComponent {
     }
     return true
   }
-  
+  hasCumplimentVolume(day: WorkDay): boolean {
+    console.log('llega')
+    console.log(day)
+    if (day.volumes) {
+    
+      console.log('llega2')
+
+      let cumplimentVolume=0
+      let notCumplimentVolume=0
+      for (const volume of day.volumes) {
+      
+        if(volume.reachedVolume>=volume.volumeExpect){
+          cumplimentVolume++
+          console.log('cumple el volumen')
+        }else{
+          notCumplimentVolume++
+          console.log('no cumple el volumen')
+
+        }
+      }
+      if (notCumplimentVolume>cumplimentVolume ) {
+        return false
+      }
+    }
+    return true
+  }
 }
 
 
