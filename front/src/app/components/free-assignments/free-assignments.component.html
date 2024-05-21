@@ -1,0 +1,59 @@
+<app-cabecera></app-cabecera>
+<p-toast></p-toast>
+<div style="margin-top: 40px;" class="card">
+    <p-table
+        [value]="assigmentsList"
+        [paginator]="true"
+        [rows]="5"
+        [showCurrentPageReport]="true"
+        [tableStyle]="{ 'min-width': '50rem' ,'max-width':'80rem','margin':'auto'}"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} vacantes"
+        [rowsPerPageOptions]="[5, 10, 20]"
+    >
+    <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+           Vacantes
+  
+        </div>
+    </ng-template>
+        <ng-template pTemplate="header">
+            <tr class="header-glass">
+              
+                <th >Fecha</th>
+                <th>Inicio</th>
+                <th >Fin</th>
+                <th>Posicion<th>
+                <th>Area</th>
+                @if(this.adminAccess){
+
+                    <th><app-new-free-assignment [assignmentList]="assigmentsList" (sendMessage)="showMessage($event)"></app-new-free-assignment></th>
+                }@else {
+                    <th></th>
+                }
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-assignment>
+            <tr class="">
+                <td>{{assignment.workDay.date}}</td>
+                <td>{{assignment.start}}</td>
+                <td>{{assignment.end}}</td>
+            
+                <td>{{assignment.position.description}}</td>
+                <td></td>
+                <td>{{assignment.area.description}}</td>
+                @if(this.adminAccess){
+
+                    <td><app-confirm tipo="Borrar" icono="pi pi-trash" mensaje="¿Deseas eliminar esta vacante?" color="danger"
+                    (confirmacion)="eliminar($event,assignment)"></app-confirm></td>
+                }@else{
+                    <td><app-confirm tipo="Aceptar" icono="pi pi-trash" mensaje="¿Deseas aceptar esta vacante?" color="danger"
+                        (confirmacion)="aceptar($event,assignment)"></app-confirm></td>
+                }
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="paginatorleft">
+        </ng-template>
+        <ng-template pTemplate="paginatorright">
+        </ng-template>
+    </p-table>
+</div>

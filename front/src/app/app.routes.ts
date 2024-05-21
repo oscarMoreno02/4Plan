@@ -6,6 +6,7 @@ import { WorkParametersComponent } from './components/work-parameters/work-param
 import { EmployeeListComponent } from './components/employee-list/employee-list.component';
 import { ShiftWorkdaysListComponent } from './components/shift-workdays-list/shift-workdays-list.component';
 import { ShiftsDateComponent } from './components/shifts-date/shifts-date.component';
+import { FreeAssignmentsComponent } from './components/free-assignments/free-assignments.component';
 
 export const routes: Routes = [
 
@@ -33,5 +34,9 @@ export const routes: Routes = [
     {
         path:'shifts/:date',
         component:ShiftsDateComponent
+    },
+    {
+        path:'assignments/free',
+        component:FreeAssignmentsComponent
     }
 ];

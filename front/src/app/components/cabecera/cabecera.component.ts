@@ -38,7 +38,10 @@ export class CabeceraComponent {
       },
       {
         label: 'Vacantes',
-        icon: 'pi pi-fw pi-search'
+        icon: 'pi pi-fw pi-search',
+        command: () => {
+          this.router.navigate(['/assignments/free'])
+        }
       }
     ];
     if (this.authService.hasRol(['owner'])) {

@@ -59,6 +59,23 @@ const listWorkDayOfCompanyOfMonth = (req, res = response) => {
             res.status(404).json()
         })
 }
+const listNextWorkDays = (req, res = response) => {
+    const conexion = new Conexion()
+
+    let today=new Date()
+    const date = new Date(today.getFullYear()+'-'+today.getMonth()+'-'+today.getDate());
+    const firstDay = new Date(date.getFullYear(), date.getMonth()+1, date.getDate());
+    const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, date.getDate()+5);
+
+    conexion.getWorkDayOfCompanyBetweenDates(req.params.id, firstDay, lastDay)
+        .then(data => {
+            res.status(200).json(data)
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(404).json()
+        })
+}
 const listWorkDay = (req, res = response) => {
     const conexion = new Conexion()
     conexion.getWorkDayById(req.params.id)
@@ -153,5 +170,6 @@ module.exports = {
     listAllWorkDaysOfCompany,
     listWorkDayOfCompanyByDate,
     listWorkDayOfCompanyOfMonth,
-    publish
+    publish,
+    listNextWorkDays
 }

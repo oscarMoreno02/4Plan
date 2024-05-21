@@ -25,6 +25,13 @@ export class WorkDayService {
       })
     )
   }
+  getNextDays(idCompany:number): Observable<any>{
+    return this.http.get<any>(this.baseUrl+'/company/'+idCompany+'/next/').pipe(
+      catchError((error) =>{
+        return of(undefined)
+      })
+    )
+  }
   getAllDays(): Observable<any | undefined> {
     return this.http.get<any>(this.baseUrl).pipe(
       catchError((error) =>{

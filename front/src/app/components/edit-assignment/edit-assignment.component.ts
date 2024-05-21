@@ -121,7 +121,7 @@ export class EditAssignmentComponent {
 
   }
   showDialog(assignment: Assignment) {
-    this.subscription = this.userService.getUserWithAssignments(assignment.idUser, assignment.idWorkDay).subscribe({
+    this.subscription = this.userService.getUserWithAssignments(assignment.idUser!, assignment.idWorkDay).subscribe({
       next: (user) => {
         console.log(user)
         this.user = user

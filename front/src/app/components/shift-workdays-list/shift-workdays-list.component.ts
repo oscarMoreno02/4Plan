@@ -167,11 +167,9 @@ export class ShiftWorkdaysListComponent {
     })
   }
   cancelar() {
-    this.updateMonthData(this.formatDate(this.date))
-    this.multipleDates = []
-    this.buttonPublish = false
+    this.changeButtonSelected(this.selectedButton)
     this.visible = false
-    this.date = new Date()
+   
   }
   formatDate(date: Date): string {
     let day = date.getDate();

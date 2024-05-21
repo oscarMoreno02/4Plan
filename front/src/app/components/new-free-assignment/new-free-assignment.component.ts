@@ -28,9 +28,9 @@ import { UserService } from '../../services/user.service';
 import { Messsage } from '../../interfaces/messsage';
 import { AreaService } from '../../services/area.service';
 import { WorkArea } from '../../interfaces/work-area';
-
+import { WorkDay } from '../../interfaces/work-day';
 @Component({
-  selector: 'app-new-assignment',
+  selector: 'app-new-free-assignment',
   standalone: true,
   imports: [
     FormsModule,
@@ -46,35 +46,34 @@ import { WorkArea } from '../../interfaces/work-area';
 
   ],
   providers: [DialogService, MessageService],
-  encapsulation:ViewEncapsulation.None,
-  templateUrl: './new-assignment.component.html',
-  styleUrl: './new-assignment.component.css'
+  templateUrl: './new-free-assignment.component.html',
+  styleUrl: './new-free-assignment.component.css'
 })
-export class NewAssignmentComponent {
+export class NewFreeAssignmentComponent {
   constructor(
     public messageService: MessageService,
     private assignmentService: AssignmentService,
     public authService: AuthService,
     private positionService: PositionService,
     private userService: UserService,
-    private areaService:AreaService
+    private areaService:AreaService,
+    private workDayService:WorkDayService
   ) { }
 
   @Input() visible: boolean = false;
   @Input() tipo = 0
   @Output() cerrarModal = new EventEmitter<void>();
   @Output() sendMessage = new EventEmitter<Messsage>();
-  @Input() idWorkDay!: number
+
   @Input() buttonText: string = 'Añadir'
   @Input() buttonColor: string = 'success'
-  @Input() idUser!: number
+  @Input() assignmentList:Array<Assignment>=[]
   value = ''
   subscription: Subscription = new Subscription;
   positionsList: Array<WorkPosition> = []
   areasList: Array<WorkArea> = []
-  user!: User
-  @Input() date!: string
-  newAssignment: Assignment = { idCompany: this.authService.getCompany(), idPosition: 0, cost: 0, valuation: null, idUser: this.idUser, idWorkDay: this.idWorkDay, start: '', end: '', type: 0,idArea:0 }
+
+  newAssignment: Assignment = { idCompany: this.authService.getCompany(), idPosition: 0, cost: 0, valuation: null, idUser: null, idWorkDay: 0, start: '', end: '', type: 0,idArea:0 }
   styleValidPosition = ''
   horaInicio = { hora: { valor: '00', numero: 0 }, minuto: { valor: '00', numero: 0 } }
   horaFin = { hora: { valor: '00', numero: 0 }, minuto: { valor: '00', numero: 0 } }
@@ -84,10 +83,11 @@ export class NewAssignmentComponent {
   estiloValidacionMinutos = ''
   estilosValidacionesTipo: string = '';
   estilosValidacionesAreas: string = '';
-    
-  types = [{ text: 'Turno de trabajo', value: 0 }, { text: 'Dia Libre', value: 1 }, { text: 'Vacaciones', value: 2 }]
-  typeSelected = this.types[0]
 
+
+
+  workDayList:Array<WorkDay>=[]
+  workDaySelected!:WorkDay
   ngOnInit(): void {
     let listaHoras = []
     for (let i = 0; i < 24; i++) {
@@ -119,11 +119,11 @@ export class NewAssignmentComponent {
 
         })
         
-        this.userService.getUserWithAssignments(this.idUser, this.idWorkDay).subscribe({
-          next: (user) => {
-            console.log(user)
-            this.user = user
-
+   
+        this.workDayService.getNextDays(this.authService.getCompany()).subscribe({
+          next:(workdays)=>{
+            console.log(workdays)
+            this.workDayList=workdays
           }
         })
       },
@@ -134,45 +134,35 @@ export class NewAssignmentComponent {
 
   }
   showDialog() {
-    this.newAssignment = { idCompany: this.authService.getCompany(), idPosition: 0, cost: 0, valuation: null, idUser: this.idUser, idWorkDay: this.idWorkDay, start: '', end: '', type: 0,idArea:0 }
+    this.newAssignment = { idCompany: this.authService.getCompany(), idPosition: 0, cost: 0, valuation: null, idUser: null, idWorkDay: 0, start: '', end: '', type: 0,idArea:0 }
     this.visible = true;
   }
 
   cerrar(): void {
+    this.visible=false
     this.cerrarModal.emit();
   }
   crear(confirm: Boolean) {
     if (confirm) {
 
       if (this.validarCampos()) {
-        this.newAssignment.idUser = this.user.id
-        this.newAssignment.idWorkDay = this.idWorkDay
-        this.newAssignment.type=this.typeSelected.value
-          // this.newAssignment.cost=0
-          // this.newAssignment.valuation=null
-        if (this.typeSelected.value == 0) {
+          this.newAssignment.idWorkDay = this.newAssignment.workDay!.id!
           this.newAssignment.end = this.horaFin.hora.valor + ':' + this.horaFin.minuto.valor
           this.newAssignment.start = this.horaInicio.hora.valor + ':' + this.horaInicio.minuto.valor
           this.newAssignment.idPosition = this.newAssignment.position!.id!
           this.newAssignment.idArea=this.newAssignment.area!.id!
-        }else{
-          this.newAssignment.start = '00:00'
-          this.newAssignment.end = '00:00'
-          this.newAssignment.idPosition = null
-          this.newAssignment.idArea=null
-        }
-        if (this.comprobarCompatibilidad()) {
-
+      
           this.sendMessage.emit({ severity: 'info', summary: 'Crear Asignación', detail: 'En curso', life: 3000 });
           this.assignmentService.insertAssignment(this.newAssignment).subscribe({
             next: (u: any) => {
-              console.log(this.newAssignment)
+              this.newAssignment.id=u.id
               setTimeout(() => {
                 this.sendMessage.emit({ severity: 'success', summary: 'Crear Asignación', detail: 'Completado', life: 3000 });
+                this.assignmentList.push(this.newAssignment)
                 setTimeout(() => {
-                  window.location.reload()
-                }, 1000);
-              }, 2000);
+                 this.cerrar()
+                }, 1);
+              }, 1000);
 
             },
             error: (err) => {
@@ -180,24 +170,21 @@ export class NewAssignmentComponent {
               this.sendMessage.emit({ severity: 'error', summary: 'Crear Asignación', detail: 'Cancelado', life: 3000 });
             }
           })
-        } else {
-          this.sendMessage.emit({ severity: 'warn', summary: 'Crear Asignación', detail: 'Asignación incompatible con las existentes', life: 3000 });
-
-        }
+        
       }
 
     }
-  }
+      }
+
+    
   validarCampos(): Boolean {
     let valido = true
+      if(!this.newAssignment.workDay){
+        valido=false
+        this.sendMessage.emit({ severity: 'warn', summary: 'Crear Asignación', detail: 'Dia de trabajo no especificado', life: 3000 });
 
-    if (this.typeSelected == null) {
-      valido = false
-      this.sendMessage.emit({ severity: 'warn', summary: 'Crear  Asignación', detail: 'Debe seleccionar un tipo de asignación', life: 3000 });
-      this.estilosValidacionesTipo = 'ng-invalid ng-dirty'
-    } else {
-      this.estilosValidacionesTipo = ''
-      if (this.typeSelected.value == 0) {
+      }else{
+
         if (!this.newAssignment.position) {
           this.styleValidPosition = 'ng-invalid ng-dirty'
           valido = false
@@ -242,31 +229,10 @@ export class NewAssignmentComponent {
           }
         }}
       }
-    }
+      
+    
 
     return valido
   }
-  comprobarCompatibilidad(): boolean {
-    let valido = true;
-    if (this.user.assignments!.length>0) {
-      
-      console.log(this.user.assignments)
-      if(this.newAssignment.type!=0){
-        return false
-      }
-
-      for (const assignment of this.user.assignments!) {
-        if ((this.newAssignment.start >= assignment.start && this.newAssignment.start < assignment.end) ||
-          (this.newAssignment.end > assignment.start && this.newAssignment.end <= assignment.end) ||
-          (this.newAssignment.start <= assignment.start && this.newAssignment.end >= assignment.end)||
-          assignment.type!=0
-          ) {
-          valido = false;
-          break;
-        }
-       
-      }
-    }
-    return valido;
-  }
+ 
 }

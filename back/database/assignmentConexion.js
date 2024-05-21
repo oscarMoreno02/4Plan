@@ -52,6 +52,40 @@ class AssignmentConexion{
             this.con.desconectar()
         }
     }
+    getAllFreeAssignment = async (id,list) => {
+            try {
+                let resultado = [];
+                this.con.conectar();
+                
+                resultado = await  models.Assignment.findAll({
+                    where: {
+                        idWorkDay: [list],
+                        idUser: null ,
+                        idCompany:id
+                    },
+                    include:[{
+                        model:models.WorkDay,
+                        as:'workDay'
+                    },
+                    {
+                        model:models.WorkPosition,
+                        as:'position'
+                    },
+                    {
+                        model:models.WorkArea,
+                        as:'area'
+                    }
+                ]
+                });
+                
+                return resultado;
+        }catch(error){
+          throw error
+        }finally{
+            // this.con.desconectar();
+            this.con.desconectar()
+        }
+    }
     getAssignmentById = async (id) => {
         try{
             let resultado = [];

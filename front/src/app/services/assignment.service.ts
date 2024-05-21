@@ -27,6 +27,13 @@ export class AssignmentService {
       })
     )
   }
+  getAllFreeAssignmentsOfCompany(id:number): Observable<any | undefined> {
+    return this.http.get<any>(this.baseUrl+'/free/'+id).pipe(
+      catchError((error) =>{
+        return of(undefined)
+      })
+    )
+  }
   insertAssignment(Assignment:Assignment): Observable<any | undefined> {
     let body={Assignment:Assignment}
   

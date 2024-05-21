@@ -60,7 +60,7 @@ class WorkDayConexion {
             const resultado = await models.WorkDay.findOne({
                 where: {
                   idCompany: id,
-                  date: date
+                  date: date,
                 },
                 include: [{
                   model: models.Assignment,
@@ -96,6 +96,10 @@ class WorkDayConexion {
                     date:  {[Op.between]: [first, last]}
                 },
                 include: [{
+                    where:{
+                        idUser:{ [Op.notIn]: [null]},
+                    },
+                    required:false,
                     model: models.Assignment,
                     as: 'dayAssignments',
                   }, {

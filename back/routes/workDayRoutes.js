@@ -4,7 +4,7 @@ const {
 } = require('express');
 const router = Router();
 const controller = require('../controllers/workDayController')
-
+router.get('/company/:id/next', controller.listNextWorkDays)
 router.get('/company/:id/month/:date', controller.listWorkDayOfCompanyOfMonth)
 router.get('/company/:id/date/:date', controller.listWorkDayOfCompanyByDate)
 router.get('/company/:id', controller.listAllWorkDaysOfCompany)

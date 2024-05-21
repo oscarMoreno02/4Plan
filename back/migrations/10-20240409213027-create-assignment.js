@@ -27,7 +27,7 @@ module.exports = {
           },
           key: 'id'
         },
-        onDelete:'SET NULL'
+        onDelete:'CASCADE'
       },
       idWorkDay: {
         type: Sequelize.INTEGER,

@@ -3,7 +3,7 @@ const {
     request
 } = require('express');
 const Conexion = require('../database/assignmentConexion');
-
+const ConexionWorkday= require('../database/workDayConexion')
 
 const listAllAssignments= (req, res = response) => {
     const conexion = new Conexion()
@@ -28,7 +28,32 @@ const listAllAssignmentsOfWorkDay= (req, res = response) => {
             res.status(404).json()
         })
 }
-
+const listAllFreeAssignments= (req, res = response) => {
+    const conexion = new Conexion()
+    const conxWorkday=new ConexionWorkday()
+    let today=new Date()
+    const date = new Date(today.getFullYear()+'-'+today.getMonth()+'-'+today.getDate());
+    const firstDay = new Date(date.getFullYear(), date.getMonth()+1, date.getDate());
+    const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, date.getDate()+5);
+    conxWorkday.getWorkDayOfCompanyBetweenDates(req.params.id,firstDay,lastDay).then(workdays=>{
+        console.log(workdays)
+        let list=[]
+        for(const workday of workdays){
+           list.push( workday.id)
+        }
+        conexion.getAllFreeAssignment(req.params.id,list)
+        .then(data => {
+            res.status(200).json(data)
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(404).json()
+        })
+    }).catch(err => {
+            console.log(err)
+            res.status(404).json()
+        })
+}
 const listAssignment= (req, res = response) => {
     const conexion = new Conexion()
     conexion.getAssignmentById(req.params.id)
@@ -87,5 +112,6 @@ module.exports={
    createAssignment,
    listAllAssignments,
    listAssignment,
-   listAllAssignmentsOfWorkDay
+   listAllAssignmentsOfWorkDay,
+   listAllFreeAssignments
 }
