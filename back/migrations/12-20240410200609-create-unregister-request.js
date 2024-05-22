@@ -33,6 +33,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       idProcessor: {
+        allowNull:true,
         type: Sequelize.INTEGER,
         references: {
           model: {

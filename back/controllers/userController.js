@@ -72,7 +72,17 @@ const listUser= (req, res = response) => {
         })
 }
 
-
+const listUserByEmail= (req, res = response) => {
+    const conexion = new Conexion()
+    conexion.getUserByEmail(req.params.email)
+        .then(data => {
+            res.status(200).json( data)
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(404).json(err)
+        })
+}
 
 const editUser= (req, res = response)=>{
     const conexion = new Conexion()
@@ -122,5 +132,6 @@ module.exports={
    listAllOfUsersOfCompany,
    listAllUsersWithAssignments,
    listUserWithAssignments,
-   listAllUsersWithAssignmentsRequired
+   listAllUsersWithAssignmentsRequired,
+   listUserByEmail
 }

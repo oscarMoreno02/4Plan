@@ -26,9 +26,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       newEmail: {
-        type: Sequelize.STRING
-      },
-      newPassword: {
+        unique:true,
         type: Sequelize.STRING
       },
       newHiredHours: {

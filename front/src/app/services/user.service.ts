@@ -62,6 +62,14 @@ export class UserService {
       })
     )
   }
+  getUserByEmail(email:string): Observable<any | undefined> {
+
+    return this.http.get<any>(this.baseUrl+'/email/'+email).pipe(
+      catchError((error) =>{
+        return of(undefined)
+      })
+    )
+  }
   deleteUser(id:number): Observable<any | undefined> {
 
     return this.http.delete<any>(this.baseUrl+'/'+id,{params: {auth: true}}).pipe(

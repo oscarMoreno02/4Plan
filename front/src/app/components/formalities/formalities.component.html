@@ -1,0 +1,111 @@
+<!-- 
+
+<app-new-area-position [areaList]="this.workAreasList" [positionList]="this.workPositionList" [visible]="newModalVisible.value" [typeElement]="this.selectedButton"  [tipo]="1" (cerrarModal)="newModalVisible.value=false"></app-new-area-position>
+<app-edit-area-position
+ #editar 
+ [areaList]="this.workAreasList"
+  [positionList]="this.workPositionList" 
+  [visible]="editModalVisible.value"
+   [typeElement]="this.selectedButton" 
+    [tipo]="1" 
+    (cerrarModal)="editModalVisible.value=false" 
+    (updateAreaList)="this.workAreasList=$event"
+    (updatePositionList)="this.workPositionList=$event"
+    >
+    
+   </app-edit-area-position> -->
+
+<!-- <app-edit-directive [tipo]="1" (cerrarModal)="changeEditModalVisibility()" #editar [idDirective]="editDirectiveId"></app-edit-directive>  -->
+<app-new-register-request [requestList]="registerRequestList" (sendMessage)="sendMessage.emit($event)" [visible]="newModalVisible.value"   [tipo]="1" (cerrarModal)="newModalVisible.value=false"></app-new-register-request>
+
+ <div class="card">
+   <div class="flex justify-content-center">
+       <p-button type="button"  (click)="showDialog()"  icon="pi pi-external-link" label="Tramites"></p-button>
+   </div>
+   <p-dialog [resizable]="false" [baseZIndex]="0" [modal]="true" [draggable]="false" [(visible)]="visible"  >
+       <ng-template pTemplate="header">
+
+           <div style="display: flex; gap: 30px;">
+   
+             <button pripple="" class="p-ripple p-element p-button p-component" type="button"
+             [ngClass]="{'buttonSelected': selectedButton == 1, 'regularButton': selectedButton != 1}"
+             (click)="changeButtonSelected(1)">
+             <span class="p-button-label">Altas</span>
+           </button>
+           
+           <button pripple="" class="p-ripple p-element p-button p-component" type="button"
+             [ngClass]="{'buttonSelected': selectedButton == 2, 'regularButton': selectedButton != 2}"
+             (click)="changeButtonSelected(2)">
+             <span class="p-button-label">Bajas</span>
+           </button>
+           
+       </div>
+         
+   
+         </ng-template>
+           <p-table [value]="this.selectedButton==1 ? registerRequestList : unregisterRequestList" [scrollable]="true" scrollHeight="flex" [tableStyle]="{'min-width': '20rem'}" >
+               <ng-template pTemplate="header">
+               <tr>
+   
+                   <th width="10">Nombre</th>
+                   <th width="10">Apellidos</th>
+                   <th width="10">Email</th>
+                   <th width="10">Estado</th>
+                   @if(this.selectedButton==1){
+
+                       <th width="10"><p-button label="Nueva" (onClick)="changeNewModalVisibility()"></p-button></th>
+                    }@else {
+                        <th></th>
+                    }
+               </tr>
+           </ng-template>
+           <ng-template pTemplate="body" let-iterator>
+               <tr>
+
+                   @if(this.selectedButton==2){
+                    <td>{{iterator.user.firstName}}</td>
+                    <td>{{iterator.user.lastName}}</td>
+                    <td>{{iterator.user.email}}</td>
+                    
+                }@else {
+                    <td>{{iterator.newFirstName}}</td>
+                    <td>{{iterator.newLastName}}</td>
+                    <td>{{iterator.newEmail}}</td>
+                }
+                @switch (iterator.status) {
+                    @case (-1) {
+                        <td>CANCELADA</td>
+                    }
+                    @case (0) {
+                        <td>PENDIENTE</td>
+
+                    }
+                    @case (1) {
+                        <td>EN TRÁMITE</td>
+
+                    }
+                    @case (2) {
+                        <td>APROBADA</td>
+
+                    }
+
+                }
+                @if(iterator.status==0 || iterator.status==1){
+
+                    <td > 
+                        <app-confirm tipo="Cancelar" icono="trash" mensaje="¿Deseas cancelar esta  solicitud?" color="danger" (confirmacion)="cancelar(iterator)"></app-confirm>
+                    </td>
+                }@else {
+                    <td></td>
+                }
+
+                   <!-- <td ><p-button label="Editar" severity="warning" (onClick)="editar.showDialog(iterator)"></p-button></td> -->
+               </tr>
+           </ng-template>
+       </p-table>
+  
+       <ng-template pTemplate="footer">
+           <button type="button" pButton pRipple icon="pi pi-times" (click)="visible=false" label="Cerrar" class="p-button-text"></button>
+       </ng-template>
+   </p-dialog>
+</div>

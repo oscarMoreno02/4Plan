@@ -1,0 +1,55 @@
+<p-toast></p-toast>
+
+<div  class="card flex justify-content-center">
+  @if(tipo==0){
+  <p-button  label="Añadir" severity="success" [raised]="true" [outlined]="true" (click)="showDialog()" icon="pi pi-plus" label="Nueva"></p-button>
+  }
+  
+  <p-dialog  header="Nueva Solicitud de Alta" [(visible)]="visible"  [modal]="true" 
+    [draggable]="false" (onHide)="cerrar();" [resizable]="false">
+
+
+    <div style="margin-top: 10px;" class="card flex justify-content-center" class="custom-dialog">
+        <div class="flex flex-row gap-4">
+
+            <div  class="flex flex-column">
+                <label for="username1">Nombre </label>
+                <input type="text" [class]="styleValidValue"  pInputText [(ngModel)]="newRequest.newFirstName" class="w-small"/>
+                <br>
+                <small style="margin-top: 20px;" id="username-help1">Introduce una nombre </small>
+            </div>
+        
+            <div  class="flex flex-column">
+                <label for="username1">Apellidos </label>
+                <input type="text" [class]="styleValidValue"  pInputText [(ngModel)]="newRequest.newLastName" class="w-small"/>
+                <br>
+                <small style="margin-top: 20px;" id="username-help1">Introduce los apellidos </small>
+            </div>
+            <div  class="flex flex-column">
+                <label for="username1">Email </label>
+                <input type="text" [class]="styleValidValue"  pInputText [(ngModel)]="newRequest.newEmail" class="w-small"/>
+                <br>
+                <small style="margin-top: 20px;" id="username-help1">Introduce un email </small>
+            </div>
+            <div  class="flex flex-column">
+                <label for="username1">Horas contratadas </label>
+                <p-inputNumber inputId="integeronly" [(ngModel)]="newRequest.newHiredHours"> </p-inputNumber>
+
+                <br>
+                <small style="margin-top: 20px;" id="username-help1">Introduce el número de horas contratadas </small>
+            </div>
+            <div  class="flex flex-column">
+                <label for="username1">Salario </label>
+                <p-inputNumber inputId="integeronly" [(ngModel)]="newRequest.newSalary"> </p-inputNumber>
+
+                <br>
+                <small style="margin-top: 20px;" id="username-help1">Introduce una salario </small>
+            </div>
+            </div>
+        </div>
+        <div style="margin-top: 20px;" >
+            <app-confirm tipo="Modificar" icono="plus" mensaje="¿Deseas crear esta solicitud?" color="success" (confirmacion)="crear($event)"></app-confirm>
+
+        </div>
+  </p-dialog>
+</div>

@@ -156,6 +156,22 @@ class UserConexion{
             this.con.desconectar()
         }
     }
+    getUserByEmail = async (email) => {
+        try{
+            let resultado = [];
+            this.con.conectar();
+            resultado = await models.User.findAll({
+                attributes: ['id','firstName','lastName','email','access','salary','hiredHours','idCompany'],
+                where:{email:email}});
+            
+            return resultado;
+        }catch(error){
+            throw error
+        }
+        finally{
+            this.con.desconectar()
+        }
+    }
     updateFullUser= async (id,body) => {
         try{
             let resultado = 0

@@ -18,6 +18,7 @@ module.exports = {
         allowNull: false,
       },
       email: {
+        unique:true,
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -31,7 +32,7 @@ module.exports = {
       },
       hiredHours: {
         type: Sequelize.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
       idCompany: {
         type: Sequelize.INTEGER,

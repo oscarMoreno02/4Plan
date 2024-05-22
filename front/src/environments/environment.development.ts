@@ -11,4 +11,7 @@ export const environment = {
     urlAssignments:'/assignments',
     urlVolume:'/volume',
     urlWorkAreas:'/area',
+    urlRegister:'/register',
+    urlUnregister:'/unregister',
+
 };

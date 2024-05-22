@@ -20,6 +20,11 @@ module.exports = (sequelize, DataTypes) => {
         as: 'processor'
       },
       );
+      this.belongsTo(models.User, {
+        foreignKey: 'idUser',
+        as: 'user'
+      },
+      );
     }
   }
   unregisterRequest.init({

@@ -63,10 +63,10 @@ export class NewAreaPositionComponent {
 
  ngOnInit(): void {
   this.subscription=this.positionService.getAllWorkPositionsOfCompany(this.authService.getCompany()).subscribe({
-    next:(data=>{
+    next:(data)=>{
       this.positionsList=data
       console.log(data)
-    }),
+    },
     error:(error=>{
       
     })

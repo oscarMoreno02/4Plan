@@ -1,4 +1,5 @@
 <app-cabecera></app-cabecera>
+<p-toast></p-toast>
 <div style="margin-top: 40px;" class="card">
     <p-table
         [value]="usersList"
@@ -25,8 +26,9 @@
                 <th style="width:10%">Salario</th>
                 <th style="width:10%">Acceso</th>
 
-                <th><app-list-areas-positions></app-list-areas-positions>
+                <th><app-list-areas-positions ></app-list-areas-positions>
                 </th>
+                <th><app-formalities (sendMessage)="showMessage($event)"></app-formalities></th>
             
             </tr>
         </ng-template>
@@ -47,8 +49,8 @@
                 }@else {
                     <td>[No especificado]</td>
                 }
-                <td>{{ translateAccess(user.access)}}</td>
-                <td>Editar</td>
+                <td colspan="2">{{ translateAccess(user.access)}}</td>
+                <td >Editar</td>
             </tr>
         </ng-template>
         <ng-template pTemplate="paginatorleft">
