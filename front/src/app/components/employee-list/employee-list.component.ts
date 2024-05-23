@@ -12,13 +12,14 @@ import { FormalitiesComponent } from '../formalities/formalities.component';
 import { Message, MessageService } from 'primeng/api';
 import { Messsage } from '../../interfaces/messsage';
 import { ToastModule } from 'primeng/toast';
+import { EditEmpoyeeComponent } from '../edit-empoyee/edit-empoyee.component';
 
 
 
 @Component({
   selector: 'app-employee-list',
   standalone: true,
-  imports: [CabeceraComponent,TableModule,ButtonModule,CommonModule,ListAreasPositionsComponent,FormalitiesComponent,ToastModule],
+  imports: [CabeceraComponent,TableModule,ButtonModule,CommonModule,ListAreasPositionsComponent,FormalitiesComponent,ToastModule,EditEmpoyeeComponent],
   providers:[MessageService],
 encapsulation:ViewEncapsulation.None,
   templateUrl: './employee-list.component.html',

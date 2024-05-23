@@ -5,7 +5,8 @@ const {
 const Conexion = require('../database/workDayConexion');
 const ConexionTimeZone = require('../database/timeZoneConexion');
 const ConexionVolumes = require('../database/workDayTimeZoneVolumeConexion');
-
+const ConexionRequest=require('../database/staffRequestConexion')
+const ConexionAssignment=require('../database/assignmentConexion')
 const listAllWorkDays = (req, res = response) => {
     const conexion = new Conexion()
     conexion.getAllWorkDays()
@@ -106,18 +107,40 @@ const createWorkDay = (req, res = response) => {
     const conexion = new Conexion()
     const conexionTimeZone = new ConexionTimeZone()
     const conexionVolume = new ConexionVolumes()
+    const conexionAssignment=new ConexionAssignment()
+    const conexionRequest=new ConexionRequest()
+    let id=0
     conexion.insertWorkDay(req.body)
         .then(async data => {
+            id=data
             timeZones = await conexionTimeZone.getAllTimeZonesOfCompanyByDayOfWeek(
                 req.body.idCompany, new Date(req.body.date).getDay())
 
             let list = []
             for (const t of timeZones) {
-                list.push({idWorkDay:data,idTimeZone:t.id})
+                list.push({idWorkDay:id,idTimeZone:t.id})
             }
-            conexionVolume.insertMultiple(list).then(data=>{
+            conexionVolume.insertMultiple(list).then(async data=>{
+                try{
+
+                    let awaitingRequests = await conexionRequest.getStaffRequestByDate(req.body.idCompany,req.body.date)
+                    let acceptedRequest=awaitingRequests.filter(req=>req.status==1)
+                    let assignmentList=[]
+                    for(const request of acceptedRequest){
+                        let newAssignment={
+                            idUser:request.idUser,
+                        idCompany:request.idCompany,
+                        idWorkDay:id,
+                        type:request.type
+                    }
+                    assignmentList.push(newAssignment)
+                }
+                let result= await conexionAssignment.insertMultiple(assignmentList)
                 res.status(201).json('Insertado correctamente')
-    
+            }catch(e){
+                res.status(201).json('Insertado correctamente')
+
+            }
             })
 
 

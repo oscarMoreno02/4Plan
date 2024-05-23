@@ -137,7 +137,9 @@ cerrar(): void {
  }
  }
  eliminar(b:Boolean){
-  this.messageService.add({ severity: 'info', summary: 'Eliminar Parametro', detail: 'En curso', life: 3000 });
+  if(b){
+
+    this.messageService.add({ severity: 'info', summary: 'Eliminar Parametro', detail: 'En curso', life: 3000 });
   this.workParameterService.deleteWorkParameter(this.editParameter.id!).subscribe({
     next:(data:any)=>{
       setTimeout(() => {
@@ -147,11 +149,12 @@ cerrar(): void {
               window.location.reload()
             }, 1000);
           }, 1000); 
-    },
-      error: (err) => {
-        this.messageService.add({ severity:'error', summary: 'Eliminar Parametro', detail: 'Cancelado', life: 3000 });
-      }
-  })
+        },
+        error: (err) => {
+          this.messageService.add({ severity:'error', summary: 'Eliminar Parametro', detail: 'Cancelado', life: 3000 });
+        }
+      })
+    }
 }
  validarCampos():Boolean{
    let valido = true

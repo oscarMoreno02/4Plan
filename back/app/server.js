@@ -19,7 +19,7 @@ class Server {
         this.workDayTimeZoneVolume = '/api/volume';
         this.registerRequest = '/api/register';
         this.unregisterRequest = '/api/unregister';
-
+        this.staffRequest = '/api/request';
         this.middlewares();
         this.routes();
 
@@ -46,6 +46,7 @@ class Server {
          this.app.use(this.workDayTimeZoneVolume,require('../routes/workDayTimeZoneVolumeRoutes'))
          this.app.use(this.unregisterRequest,require('../routes/unregisterRequestRoutes'))
          this.app.use(this.registerRequest,require('../routes/registerRequestRoutes'))
+         this.app.use(this.staffRequest,require('../routes/staffRequestRoutes'))
 
 
     }

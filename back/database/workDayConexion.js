@@ -79,6 +79,7 @@ class WorkDayConexion {
               });
             return resultado;
         } catch (error) {
+            console.log(error)
             throw error
         } finally {
             // this.con.desconectar();

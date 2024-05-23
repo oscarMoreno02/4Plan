@@ -30,6 +30,13 @@ export class UnregisterRequestService {
       })
     )
   }
+  getAllUnregisterRequestsActiveByUser(id:number): Observable<any | undefined> {
+    return this.http.get<any>(this.baseUrl+'/active/user/'+id).pipe(
+      catchError((error) =>{
+        return of(undefined)
+      })
+    )
+  }
   insertUnregisterRequest(unregisterRequest:UnregisterRequest): Observable<any | undefined> {
     let body={unregisterRequest:unregisterRequest}
   

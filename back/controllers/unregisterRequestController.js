@@ -28,6 +28,17 @@ const listUnregisterRequest= (req, res = response) => {
             res.status(404).json(err)
         })
 }
+const listUnregisterRequestActiveByUser= (req, res = response) => {
+    const conexion = new Conexion()
+    conexion.getUnregisterRequestActiveByIdUser(req.params.id)
+        .then(data => {
+            res.status(200).json( data)
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(404).json(err)
+        })
+}
 const listAllUnregisterRequestsOfCompany= (req, res = response) => {
     const conexion = new Conexion()
     conexion.getAllUnregisterRequestsOfCompany(req.params.id)
@@ -85,5 +96,6 @@ module.exports={
    createUnregisterRequest,
    listAllUnregisterRequests,
    listUnregisterRequest,
-   listAllUnregisterRequestsOfCompany
+   listAllUnregisterRequestsOfCompany,
+   listUnregisterRequestActiveByUser
 }

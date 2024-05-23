@@ -35,6 +35,9 @@ export class CabeceraComponent {
       {
         label: 'Peticiones',
         icon: 'pi pi-fw pi-book',
+        command: () => {
+          this.router.navigate(['/requests'])
+        }
       },
       {
         label: 'Vacantes',

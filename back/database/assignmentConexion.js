@@ -140,12 +140,30 @@ class AssignmentConexion{
             await Assignment.update(body)
             return resultado
         }catch(error){
+            console.log(error)
             throw error
         }finally{
             this.con.desconectar()
         }
     }
-   
+    insertMultiple = async (list) => {
+        let resultado = 0;
+        this.con.conectar();
+        try {
+            for (const a of list) {
+    
+                const assignment = new models.Assignment(a);
+                await assignment.save();
+            }
+            resultado = 1
+    
+            return resultado
+        } catch (error) {
+            throw error;
+        } finally {
+            this.con.desconectar();
+        }
+    }
 }
 
 module.exports = AssignmentConexion;

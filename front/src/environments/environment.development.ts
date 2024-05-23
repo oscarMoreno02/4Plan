@@ -13,5 +13,7 @@ export const environment = {
     urlWorkAreas:'/area',
     urlRegister:'/register',
     urlUnregister:'/unregister',
+    urlRequest:'/request',
+
 
 };

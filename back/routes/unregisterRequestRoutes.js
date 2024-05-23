@@ -2,7 +2,8 @@ require('express-group-routes')
 const {Router} = require('express');
 const router = Router();
 const controller=require('../controllers/unregisterRequestController')
-
+    
+    router.get('/active/user/:id',controller.listUnregisterRequestActiveByUser)
     router.get('/company/:id',controller.listAllUnregisterRequestsOfCompany)
     router.get('/:id',controller.listUnregisterRequest)
     router.get('/',controller.listAllUnregisterRequests)
