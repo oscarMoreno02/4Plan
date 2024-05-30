@@ -65,6 +65,24 @@ class WorkDayConexion {
                 include: [{
                   model: models.Assignment,
                   as: 'dayAssignments',
+                  include:[
+                    {
+                        attributes: ['id','firstName','lastName','email'],
+                        model: models.User,
+                        as: 'user',
+                        
+                    },
+                {
+                    
+                    model:models.WorkPosition,
+                    as:'position'
+                },
+                {
+           
+                    model:models.WorkArea,
+                    as:'area'
+                }
+            ]
                 }, {
                   model: models.WorkDayTimeZoneVolume,
                   as: 'volumes',

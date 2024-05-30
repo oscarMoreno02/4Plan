@@ -35,7 +35,6 @@ const listWorkDayOfCompanyByDate = (req, res = response) => {
     conexion.getWorkDayOfCompanyByDate(req.params.id, req.params.date)
         .then(data => {
 
-            console.log(data)
 
             res.status(200).json(data)
         })

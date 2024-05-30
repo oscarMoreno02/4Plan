@@ -1,3 +1,4 @@
+import { User } from "./user";
 import { WorkArea } from "./work-area";
 import { WorkDay } from "./work-day";
 import { WorkPosition } from "./work-position";
@@ -15,7 +16,8 @@ export interface Assignment {
     idArea:number | null,
     position?: WorkPosition ,
     area?:WorkArea,
-    workDay?:WorkDay
+    workDay?:WorkDay,
+    user?:User,
     type:number,
     createdAt?:string,
     updatedAt?:string,

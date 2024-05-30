@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CabeceraComponent } from '../cabecera/cabecera.component';
 import { AuthService } from '../../services/auth.service';
 import { StaffHomeComponent } from '../staff-home/staff-home.component';
+import { ManagementHomeComponent } from '../management-home/management-home.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CabeceraComponent,StaffHomeComponent],
+  imports: [CabeceraComponent,StaffHomeComponent,ManagementHomeComponent],
 
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
