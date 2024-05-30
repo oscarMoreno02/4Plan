@@ -25,7 +25,7 @@
           <td>{{ volume.timeZone.end }}</td>
           @if(tipo==0){
 
-            <td><app-insert-expected-volume  [tipo]="1" [visible]="editModalVisible" (cerrarModal)="editModalVisible=false" [volume]="volume"></app-insert-expected-volume></td>
+            <td><app-insert-expected-volume  [tipo]="0" [visible]="editModalVisible" (cerrarModal)="editModalVisible=false" [volume]="volume"></app-insert-expected-volume></td>
           }@else{
             <td>{{volume.volumeExpect}}</td>
             <td><app-insert-expected-volume [tipo]="1" textHeader="Modificar Volumen Obtenido" [visible]="editModalVisible" (cerrarModal)="editModalVisible=false" [volume]="volume"></app-insert-expected-volume></td>

@@ -98,7 +98,7 @@ class WorkDayConexion {
                 },
                 include: [{
                     where:{
-                        idUser:{ [Op.notIn]: [null]},
+                        idUser:{ [Op.ne]: null},
                     },
                     required:false,
                     model: models.Assignment,

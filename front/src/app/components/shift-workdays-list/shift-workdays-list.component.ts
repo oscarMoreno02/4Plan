@@ -195,7 +195,7 @@ export class ShiftWorkdaysListComponent {
 
       this.subscripcion = this.workDayService.getDayOfCompanyOfMonth(this.authService.getCompany(), date).subscribe({
         next: (data: Array<WorkDay>) => {
-          console.log(data)
+     
           this.workDaysList = data;
           this.updateCreatedDays();
           this.cdr.detectChanges();
@@ -208,7 +208,7 @@ export class ShiftWorkdaysListComponent {
     }else{
       this.subscripcion = this.workDayService.getDayOfUserOfMonth(this.authService.getUid(), date).subscribe({
         next: (data: Array<WorkDay>) => {
-          console.log(data)
+      
           this.workDaysList = data;
           this.updateCreatedDays();
           this.cdr.detectChanges();
@@ -268,10 +268,10 @@ export class ShiftWorkdaysListComponent {
     if (this.workDaysList.length > 0) {
       for (const day of this.workDaysList){
         let numberOfDay = new Date(day.date).getDate()
-        console.log(numberOfDay)
+    
         if(day.dayAssignments![0].type==0){
           listWorkdays.push(numberOfDay)
-          console.log('llega')
+       
         }
         if(day.dayAssignments![0].type==1){
           listFreeDays.push(numberOfDay)
@@ -284,7 +284,7 @@ export class ShiftWorkdaysListComponent {
     this.staffFreeDays=listFreeDays
     this.staffHolidays=listHolidays
     this.staffWorkDays=listWorkdays
-    console.log(this.staffFreeDays,this.staffWorkDays,this.staffHolidays)
+
   }
   }
 
@@ -408,11 +408,16 @@ export class ShiftWorkdaysListComponent {
       for (const assignment of day.dayAssignments) {
         if(assignment.type==0){
           if (assignment.valuation== null || assignment.valuation==0) {
+            console.log('llega all rates false')
+            console.log(day)
             return false
           }
         }
       }
     }
+    console.log('llega all rates true')
+    console.log(day)
+
     return true
   }
   checkAllVolumeInserted(day: WorkDay): boolean {
@@ -438,17 +443,20 @@ export class ShiftWorkdaysListComponent {
         }
       }
       if (sum / validAssignments <50 ) {
+        console.log('media inferior')
+        console.log(day)
         return false
       }
     }
+    console.log('media superior')
+    console.log(day)
     return true
   }
   hasCumplimentVolume(day: WorkDay): boolean {
-    console.log('llega')
-    console.log(day)
+  
     if (day.volumes) {
     
-      console.log('llega2')
+   
 
       let cumplimentVolume=0
       let notCumplimentVolume=0
@@ -456,10 +464,10 @@ export class ShiftWorkdaysListComponent {
       
         if(volume.reachedVolume>=volume.volumeExpect){
           cumplimentVolume++
-          console.log('cumple el volumen')
+         
         }else{
           notCumplimentVolume++
-          console.log('no cumple el volumen')
+         
 
         }
       }
