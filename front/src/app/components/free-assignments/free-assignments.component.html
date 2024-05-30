@@ -22,8 +22,11 @@
                 <th >Fecha</th>
                 <th>Inicio</th>
                 <th >Fin</th>
-                <th>Posicion<th>
-                <th>Area</th>
+                @if(adminAccess){
+
+                    <th>Posicion<th>
+                        <th>Area</th>
+                    }
                 @if(this.adminAccess){
 
                     <th><app-new-free-assignment [assignmentList]="assigmentsList" (sendMessage)="showMessage($event)"></app-new-free-assignment></th>
@@ -38,15 +41,15 @@
                 <td>{{assignment.start}}</td>
                 <td>{{assignment.end}}</td>
             
+                @if(this.adminAccess){
                 <td>{{assignment.position.description}}</td>
                 <td></td>
                 <td>{{assignment.area.description}}</td>
-                @if(this.adminAccess){
 
                     <td><app-confirm tipo="Borrar" icono="pi pi-trash" mensaje="¿Deseas eliminar esta vacante?" color="danger"
                     (confirmacion)="eliminar($event,assignment)"></app-confirm></td>
                 }@else{
-                    <td><app-confirm tipo="Aceptar" icono="pi pi-trash" mensaje="¿Deseas aceptar esta vacante?" color="danger"
+                    <td><app-confirm tipo="Aceptar" icono="pi pi-plus" mensaje="¿Deseas aceptar esta vacante?" color="success"
                         (confirmacion)="aceptar($event,assignment)"></app-confirm></td>
                 }
             </tr>

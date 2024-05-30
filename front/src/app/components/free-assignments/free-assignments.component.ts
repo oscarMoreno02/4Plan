@@ -27,7 +27,7 @@ import { MessageService } from 'primeng/api';
   styleUrl: './free-assignments.component.css'
 })
 export class FreeAssignmentsComponent {
-  constructor(public authService:AuthService,private assigmentService:AssignmentService,private messageService:MessageService){
+  constructor(public authService:AuthService,private assigmentService:AssignmentService,private messageService:MessageService,private userService:UserService){
   }
   selectedButton=1
   assigmentsList:Array<Assignment>=[]
@@ -40,8 +40,28 @@ export class FreeAssignmentsComponent {
     console.log(this.authService.getAccess())
     this.subscripcion=this.assigmentService.getAllFreeAssignmentsOfCompany(this.authService.getCompany()).subscribe({
       next:(data:Array<Assignment>)=>{
-        this.assigmentsList=data  
-        console.log(this.assigmentsList)
+        if(this.adminAccess){
+          
+          this.assigmentsList=data  
+
+        }else{
+          let auxList:Assignment[]=[]
+          for(const assignment of data){
+            this.userService.getUserWithAssignments(this.authService.getUid(),assignment.idWorkDay).subscribe({
+              next:(user:User)=>{
+                if(user.assignments){
+                  if(this.comprobarCompatibilidad(user.assignments,assignment)){
+                    auxList.push(assignment)
+                  }
+                }else{
+                  auxList.push(assignment)
+                }
+              }
+            })
+          }
+          this.assigmentsList=auxList
+        }
+        console.log(data)
       },
       
     })
@@ -64,35 +84,63 @@ export class FreeAssignmentsComponent {
     this.selectedButton=button
   }
   eliminar(b: Boolean,assigment:Assignment) {
-    this.assigmentService.deleteAssignment(assigment.id!).subscribe({
-      next: (data: any) => {
-        this.messageService.add({ severity: 'success', summary: 'Eliminar Vacante', detail: 'Completado', life: 3000 });
+    if(b){
 
-        setTimeout(() => {
-         this.assigmentsList=this.assigmentsList.filter((a=>a.id!=assigment.id))
-        }, 1);
+      this.assigmentService.deleteAssignment(assigment.id!).subscribe({
+        next: (data: any) => {
+          this.messageService.add({ severity: 'success', summary: 'Eliminar Vacante', detail: 'Completado', life: 3000 });
+          
+          setTimeout(() => {
+            this.assigmentsList=this.assigmentsList.filter((a=>a.id!=assigment.id))
+          }, 1);
       },
       error: (err) => {
       }
     })
   }
+  }
   aceptar(b: Boolean,assigment:Assignment) {
-    assigment.idUser=this.authService.getUid()
-    this.assigmentService.updateAssignment(assigment).subscribe({
-      next: (data: any) => {
-        this.messageService.add({ severity: 'success', summary: 'Aceptar Vacante', detail: 'Completado', life: 3000 });
 
-        setTimeout(() => {
-         this.assigmentsList=this.assigmentsList.filter((a=>a.id!=assigment.id))
-        }, 1);
-      },
-      error: (err) => {
-      }
-    })
+    if(b){
+
+      assigment.idUser=this.authService.getUid()
+      this.assigmentService.updateAssignment(assigment).subscribe({
+        next: (data: any) => {
+          this.messageService.add({ severity: 'success', summary: 'Aceptar Vacante', detail: 'Completado', life: 3000 });
+          
+          setTimeout(() => {
+            this.assigmentsList=this.assigmentsList.filter((a=>a.id!=assigment.id))
+          }, 1);
+        },
+        error: (err) => {
+        }
+      })
+    }
   }
 
   showMessage(message:any){
     this.messageService.add(message)
+  }
+
+  comprobarCompatibilidad(userAssignment:Array<Assignment>,newAssignment:Assignment): boolean {
+    let valido = true;
+    if (userAssignment.length>0) {
+      
+     
+
+      for (const assignment of userAssignment) {
+        if ((newAssignment.start >= assignment.start && newAssignment.start < assignment.end) ||
+          (newAssignment.end > assignment.start && newAssignment.end <= assignment.end) ||
+          (newAssignment.start <= assignment.start && newAssignment.end >= assignment.end)||
+          assignment.type!=0
+          ) {
+          valido = false;
+          break;
+        }
+       
+      }
+    }
+    return valido;
   }
 }
 

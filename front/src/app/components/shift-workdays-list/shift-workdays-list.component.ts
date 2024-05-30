@@ -14,7 +14,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { FormsModule } from '@angular/forms';
 import { ConfirmComponent } from '../confirm/confirm.component';
 import { DialogModule } from 'primeng/dialog'
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { ListWorkDayRatesComponent } from '../list-work-day-rates/list-work-day-rates.component';
@@ -54,7 +54,7 @@ export class ShiftWorkdaysListComponent {
     private elementRef: ElementRef,
     private cdr: ChangeDetectorRef,
     private userService: UserService,
-    private volumeService:VolumeService
+    private volumeService:VolumeService,
   ) { }
   visible = false
   visibleAlertPublishFalse = false
@@ -76,8 +76,13 @@ export class ShiftWorkdaysListComponent {
   daysHighRate: Array<number> = []
   daysAllVolumeInserted: Array<number> = []
   daysCumplimentVolume:Array<number>=[]
+  adminAccess=false
 
+  staffFreeDays:Array<number>=[]
+  staffWorkDays:Array<number>=[]
+  staffHolidays:Array<number>=[]
   ngOnInit(): void {
+    this.adminAccess=this.authService.getAccess()=='staff'?false:true
     let date = new Date()
     this.month = date.getMonth() + 1
     let parsedDate: string = date.getFullYear() + '-' + this.month
@@ -186,20 +191,38 @@ export class ShiftWorkdaysListComponent {
     this.updateMonthData(date)
   }
   updateMonthData(date: string) {
-    this.subscripcion = this.workDayService.getDayOfCompanyOfMonth(this.authService.getCompany(), date).subscribe({
-      next: (data: Array<WorkDay>) => {
-        console.log(data)
-        this.workDaysList = data;
-        this.updateCreatedDays();
-        this.cdr.detectChanges();
-        this.changeColor();
-      },
-      error: (err) => {
+    if(this.adminAccess){
 
-      }
-    });
+      this.subscripcion = this.workDayService.getDayOfCompanyOfMonth(this.authService.getCompany(), date).subscribe({
+        next: (data: Array<WorkDay>) => {
+          console.log(data)
+          this.workDaysList = data;
+          this.updateCreatedDays();
+          this.cdr.detectChanges();
+          this.changeColor();
+        },
+        error: (err) => {
+          
+        }
+      });
+    }else{
+      this.subscripcion = this.workDayService.getDayOfUserOfMonth(this.authService.getUid(), date).subscribe({
+        next: (data: Array<WorkDay>) => {
+          console.log(data)
+          this.workDaysList = data;
+          this.updateCreatedDays();
+          this.cdr.detectChanges();
+          this.changeColor();
+        },
+        error: (err) => {
+          
+        }
+      });
+    }
   }
   updateCreatedDays() {
+    if(this.adminAccess){
+
     let listCreated = []
     let listPublished = []
     let listBefore = []
@@ -238,6 +261,31 @@ export class ShiftWorkdaysListComponent {
     this.daysHighRate=listHighRate
     this.daysAllVolumeInserted=listAllVolumeInserted
     this.daysCumplimentVolume=listCumplimentVolume
+  }else{
+    let listHolidays=[]
+    let listWorkdays=[]
+    let listFreeDays=[]
+    if (this.workDaysList.length > 0) {
+      for (const day of this.workDaysList){
+        let numberOfDay = new Date(day.date).getDate()
+        console.log(numberOfDay)
+        if(day.dayAssignments![0].type==0){
+          listWorkdays.push(numberOfDay)
+          console.log('llega')
+        }
+        if(day.dayAssignments![0].type==1){
+          listFreeDays.push(numberOfDay)
+        }
+        if(day.dayAssignments![0].type==2){
+          listHolidays.push(numberOfDay)
+        }
+      }
+    }
+    this.staffFreeDays=listFreeDays
+    this.staffHolidays=listHolidays
+    this.staffWorkDays=listWorkdays
+    console.log(this.staffFreeDays,this.staffWorkDays,this.staffHolidays)
+  }
   }
 
 
@@ -420,6 +468,12 @@ export class ShiftWorkdaysListComponent {
       }
     }
     return true
+  }
+
+  navigateToWeek(event:any){
+    let date=event.year+'-'+event.month+'-'+event.day
+    
+    this.router.navigate(['/assignments/week'], { state: { data: event } });
   }
 }
 

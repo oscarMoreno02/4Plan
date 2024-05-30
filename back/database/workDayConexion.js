@@ -123,6 +123,34 @@ class WorkDayConexion {
             this.con.desconectar()
         }
     }
+    getWorkDayOfUserBetweenDates = async (id, first, last) => {
+        try {
+            let resultado = [];
+            this.con.conectar();
+    
+            resultado = await models.WorkDay.findAll({
+                where: {
+                    date: {[Op.between]: [first, last]}
+                },
+                order: [
+                    ['date', 'ASC'], 
+                ],
+                include: [{
+                    model: models.Assignment,
+                    as: 'dayAssignments',
+                    where: {
+                        idUser: id,
+                    },
+                 
+                }],
+            });
+            return resultado;
+        } catch (error) {
+            throw error;
+        } finally {
+            this.con.desconectar();
+        }
+    };
     getWorkDayById = async (id) => {
         try {
             let resultado = [];

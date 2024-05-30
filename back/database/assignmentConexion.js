@@ -56,28 +56,33 @@ class AssignmentConexion{
             try {
                 let resultado = [];
                 this.con.conectar();
-                
+                console.log(list)
                 resultado = await  models.Assignment.findAll({
                     where: {
-                        idWorkDay: [list],
+                        idWorkDay: {
+                            [Op.in]: list
+                        },
                         idUser: null ,
                         idCompany:id
                     },
                     include:[{
+                        
                         model:models.WorkDay,
                         as:'workDay'
                     },
                     {
+                        
                         model:models.WorkPosition,
                         as:'position'
                     },
                     {
+               
                         model:models.WorkArea,
                         as:'area'
                     }
                 ]
                 });
-                
+                console.log(resultado)
                 return resultado;
         }catch(error){
           throw error

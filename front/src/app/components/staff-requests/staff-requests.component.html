@@ -12,7 +12,7 @@
     >
     <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between">
-           Vacantes
+           Peticiones
   
         </div>
     </ng-template>
@@ -26,7 +26,7 @@
 
                     <th colspan="2">Solicitante</th>
                 }@else {
-                    <th><p-button label="Nueva"></p-button></th>
+                    <th><app-new-staff-request [requestList]="requestList" (sendMessage)="showMessage($event)"></app-new-staff-request></th>
                 }
             </tr>
         </ng-template>
@@ -34,10 +34,38 @@
             <tr class="">
                 <td>{{request.date}}</td>
                 <td>{{translateType(request.type)}}</td>
-                <td>{{translateStatus( request.status)}}</td>
-                <td>{{request.user.firstName+' '+request.user.lastName}}</td>
+                <td>
 
-                <td><p-button (onClick)="showDialog(request)" label="Ver Solicitud"></p-button></td>
+                    @switch (request.status) {
+                        @case (0) {
+                            <p-button [disabled]="true" severity="secondary" [label]="translateStatus( request.status)"></p-button>
+                        }
+                        @case (1) {
+                            <p-button [disabled]="true" severity="success" [label]="translateStatus( request.status)"></p-button>
+                        }
+                        @case (-1) {
+                            <p-button [disabled]="true" severity="danger" [label]="translateStatus( request.status)"></p-button>
+                        }
+                    }
+                </td>
+               
+                @if(this.adminAccess){
+
+                    <td>{{request.user.firstName+' '+request.user.lastName}}</td>
+                    
+                    <td><p-button (onClick)="showDialog(request)" label="Ver Solicitud"></p-button></td>
+                }@else {
+                    @if(request.status==0){
+
+                        <td>
+                            <app-confirm tipo="Eliminar" icono="pi pi-trash" mensaje="¿Deseas eliminar esta solicitud ?" color="danger"
+                            (confirmacion)="eliminar($event,request.id)"></app-confirm>   
+                        </td>
+                    }@else {
+                        <td></td>
+                    }
+                }
+                
 
             </tr>
         </ng-template>
@@ -50,7 +78,7 @@
 
 @if(requestSelected){
 
-    <p-dialog  header="Editar  Parametro" [(visible)]="visible" [modal]="true" 
+    <p-dialog  header="Editar  Solicitud" [(visible)]="visible" [modal]="true" 
     [draggable]="false" (onHide)="cerrar();" [resizable]="false">
 
 
@@ -89,7 +117,7 @@
 
                <app-confirm tipo="Aceptar" icono="pi pi-check" mensaje="¿Deseas aceptar esta solicitud ?" color="success"
                (confirmacion)="actualizar($event,true)"></app-confirm>
-               <app-confirm tipo="Denegar" icono="pi pi-trash" mensaje="¿Deseas denegar esta solicitud ?" color="danger"
+               <app-confirm tipo="Denegar" icono="pi pi-times" mensaje="¿Deseas denegar esta solicitud ?" color="danger"
                (confirmacion)="actualizar($event,false)"></app-confirm>   
             } 
     </div>

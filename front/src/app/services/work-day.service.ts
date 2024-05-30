@@ -25,8 +25,29 @@ export class WorkDayService {
       })
     )
   }
+  getDayOfUserOfMonth(idUser:number,date:string): Observable<any>{
+    return this.http.get<any>(this.baseUrl+'/user/'+idUser+'/month/'+date).pipe(
+      catchError((error) =>{
+        return of(undefined)
+      })
+    )
+  }
+  getDayOfUserOfWeek(idUser:number,date:string): Observable<any>{
+    return this.http.get<any>(this.baseUrl+'/user/'+idUser+'/week/'+date).pipe(
+      catchError((error) =>{
+        return of(undefined)
+      })
+    )
+  }
   getNextDays(idCompany:number): Observable<any>{
     return this.http.get<any>(this.baseUrl+'/company/'+idCompany+'/next/').pipe(
+      catchError((error) =>{
+        return of(undefined)
+      })
+    )
+  }
+  getNextDaysOfUser(idUser:number): Observable<any>{
+    return this.http.get<any>(this.baseUrl+'/user/'+idUser+'/next/').pipe(
       catchError((error) =>{
         return of(undefined)
       })

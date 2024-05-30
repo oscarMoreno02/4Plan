@@ -1,0 +1,71 @@
+<app-cabecera></app-cabecera>
+
+
+<div style="margin-top: 40px;" class="card">
+    <p-table
+        [value]="nextDays"
+       
+  
+        
+        [tableStyle]="{ 'min-width': '30rem' ,'max-width':'30rem','margin':'auto'}"
+ 
+    >
+    <ng-template pTemplate="caption">
+        <div style="display: flex; justify-content: center; gap: 20px;">
+  
+            <p-button id="title"  (onClick)="goBack()" [label]="label"></p-button>
+          </div>
+        
+    </ng-template>
+        <ng-template pTemplate="header">
+    
+        </ng-template>
+        <ng-template pTemplate="body" let-day>
+            <tr class="">
+                <td>{{day.dayOfWeek}}</td>
+                <td>{{day.day+' '+day.month}}</td>
+                <td>
+                    @if(day.msg.length>1){
+                        @for (msg of day.msg; track $index) {
+                            <!-- Solo entra aqui si tiene asignaciones de trabajo y no se controla el type -->
+                            <p-button [disabled]="true" [label]="msg" severity="warning"></p-button>   
+                            <br><br>
+                        }
+                    }@else {
+
+                        @switch (day.type) {
+                            @case (0) {
+                                <p-button [disabled]="true" [label]="day.msg[0]" severity="warning"></p-button>   
+
+                            }
+                            @case (1) {
+                                <p-button [disabled]="true" [label]="day.msg[0]" severity="success"></p-button>   
+
+                            }
+                            @case (2) {
+                                <p-button [disabled]="true" [label]="day.msg[0]" severity="danger"></p-button>   
+
+                            }
+                            @default {
+                                <p-button [disabled]="true" [label]="day.msg[0]" severity="secondary"></p-button>
+
+                            }
+                        }
+                    }
+                
+                </td>
+            
+
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <div class="flex align-items-center justify-content-between">
+      
+                <!-- NO BORRAR -->
+                         s 
+
+            </div>
+        </ng-template>
+      
+    </p-table>
+</div>

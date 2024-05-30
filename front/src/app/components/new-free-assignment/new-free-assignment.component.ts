@@ -139,6 +139,7 @@ export class NewFreeAssignmentComponent {
   }
 
   cerrar(): void {
+    this.newAssignment = { idCompany: this.authService.getCompany(), idPosition: 0, cost: 0, valuation: null, idUser: null, idWorkDay: 0, start: '', end: '', type: 0,idArea:0 }
     this.visible=false
     this.cerrarModal.emit();
   }
@@ -160,7 +161,7 @@ export class NewFreeAssignmentComponent {
                 this.sendMessage.emit({ severity: 'success', summary: 'Crear Asignación', detail: 'Completado', life: 3000 });
                 this.assignmentList.push(this.newAssignment)
                 setTimeout(() => {
-                 this.cerrar()
+                  this.cerrar()
                 }, 1);
               }, 1000);
 

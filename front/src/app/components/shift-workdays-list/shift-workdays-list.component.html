@@ -1,7 +1,9 @@
 <app-cabecera ></app-cabecera>
-<app-list-work-day-rates #ratesModal [userList]="userListWithAssignments" (cerrarModal)="modalListRatesVisible=false" (cerrarModal)="this.updateMonthData(this.lastDate)" [visible]="modalListRatesVisible"></app-list-work-day-rates>
-<app-list-expected-volume #volumeModal [withButton]="false" textHeader="Volumen Obtenido" [tipo]="1" [visible]="modalListVolumeVisible" (cerrarModal)="modalListVolumeVisible=false" (cerrarModal)="this.updateMonthData(this.lastDate)"  ></app-list-expected-volume>
-<div class="card">
+@if(adminAccess){
+
+  <app-list-work-day-rates #ratesModal [userList]="userListWithAssignments" (cerrarModal)="modalListRatesVisible=false" (cerrarModal)="this.updateMonthData(this.lastDate)" [visible]="modalListRatesVisible"></app-list-work-day-rates>
+  <app-list-expected-volume #volumeModal [withButton]="false" textHeader="Volumen Obtenido" [tipo]="1" [visible]="modalListVolumeVisible" (cerrarModal)="modalListVolumeVisible=false" (cerrarModal)="this.updateMonthData(this.lastDate)"  ></app-list-expected-volume>
+  <div class="card">
   <div class="" style="display: flex; justify-content: center; align-items: center;margin-top: 50px;">
     <p-calendar (onMonthChange)="monthChange($event)" 
     (onSelect)="checkDay($event,ratesModal,volumeModal)"  id="calendar" class="max-w-full"
@@ -168,25 +170,85 @@
 <p-dialog header="No se encontro el registro" (onHide)="cancelar()" [(visible)]="visible" [modal]="true" [draggable]="false"
   [resizable]="false">
   No se ha encontrado ningún registro para el dia seleccionado <br><br>¿Deseas crear un nuevo registro?
-
+  
   <div style="margin-top: 40px; display: flex;gap: 10px;">
     <p-button severity="warning" (onClick)="cancelar()" label="Cancelar"></p-button>
     <p-button severity="success" label="Crear" (onClick)="crear()"></p-button>
-
+    
   </div>
-
-
+  
+  
   
 </p-dialog>
 <p-dialog header="No se ha seleccionado ningun dia" (onHide)="visibleAlertPublishFalse=false" [(visible)]="visibleAlertPublishFalse" [modal]="true" [draggable]="false"
-  [resizable]="false">
-  Debe seleccionar al menos un dia de trabajo para publicar <br><br>
+[resizable]="false">
+Debe seleccionar al menos un dia de trabajo para publicar <br><br>
 
-  <div style="margin-top: 40px; display: flex;gap: 10px;">
-    <p-button severity="warning" (onClick)="visibleAlertPublishFalse=false" label="Aceptar"></p-button>
-  </div>
+<div style="margin-top: 40px; display: flex;gap: 10px;">
+  <p-button severity="warning" (onClick)="visibleAlertPublishFalse=false" label="Aceptar"></p-button>
+</div>
 
 
-  
+
 </p-dialog>
 <app-confirm #confirmPublish [mode]="2" tipo="Publicar" (confirmacion)="publishDaysSelected($event)" icono="calendar" mensaje="¿Deseas publicar las asignaciones de estos dias de trabajo?" color="success"></app-confirm>
+}@else {
+  <div class="card">
+    <div class="" style="display: flex; justify-content: center; align-items: center;margin-top: 50px;">
+      <p-calendar (onMonthChange)="monthChange($event)" 
+      (onSelect)="navigateToWeek($event)" 
+      id="calendar" class="max-w-full"
+        [showWeek]="false" 
+        [(ngModel)]="multipleDates" [selectionMode]="selectedButton == 2 ? 'multiple' : 'single'" 
+        [inline]="true" [showWeek]="false">
+        <ng-template pTemplate="header">
+  
+          <div style="display: flex; justify-content: center; gap: 20px;">
+  
+            Turnos de trabajo
+          </div>
+        
+  
+        </ng-template>
+        
+        <ng-template pTemplate="date" let-date>
+       
+               @if( date.month==(this.month-1)){
+                 @if(this.staffFreeDays.includes(date.day)){
+                   
+                   <span  class="bg-personal-green">
+                     {{date.day}}
+                    </span>
+                  }@else {
+                    @if(this.staffWorkDays.includes(date.day)){
+                      <span  class="bg-personal-orange">
+                        {{date.day}}
+                       </span>
+                    }@else {
+                      @if(this.staffHolidays.includes(date.day)){
+                        <span  class="bg-personal-red">
+                          {{date.day}}
+                         </span>
+                      }@else {
+                        <span  class="regular">
+                          {{date.day}}
+                        </span>
+                      }
+                    }
+                
+                }
+            }@else {
+              <span class="bg-personal-disabled" [ngStyle]="{textDecoration: 'inherit'}">
+                {{date.day}}
+              </span>
+            }
+            
+            
+            </ng-template>
+            <ng-template pTemplate="footer">
+      
+            </ng-template>
+      </p-calendar>
+    </div>
+  </div>
+}

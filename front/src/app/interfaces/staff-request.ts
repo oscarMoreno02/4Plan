@@ -8,7 +8,7 @@ export interface StaffRequest {
     date:      string;
     type:      number;
     status:    number;
-    createdAt: string;
-    updatedAt: string;
+    createdAt?: string;
+    updatedAt?: string;
     user?:User
 }

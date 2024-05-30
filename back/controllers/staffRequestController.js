@@ -150,5 +150,6 @@ module.exports={
    listStaffRequest,
    listAllStaffRequestsOfCompany,
    listStaffRequestByUser,
-   acceptStaffRequest
+   acceptStaffRequest,
+
 }

@@ -8,6 +8,8 @@ import { ShiftWorkdaysListComponent } from './components/shift-workdays-list/shi
 import { ShiftsDateComponent } from './components/shifts-date/shifts-date.component';
 import { FreeAssignmentsComponent } from './components/free-assignments/free-assignments.component';
 import { StaffRequestsComponent } from './components/staff-requests/staff-requests.component';
+import { HomeComponent } from './components/home/home.component';
+import { StaffWeekAssignmentsComponent } from './components/staff-week-assignments/staff-week-assignments.component';
 
 export const routes: Routes = [
 
@@ -18,7 +20,7 @@ export const routes: Routes = [
     },
     {
         path:'home',
-        component:CabeceraComponent
+        component:HomeComponent
     },
     {
         path:'parameters',
@@ -40,6 +42,11 @@ export const routes: Routes = [
         path:'assignments/free',
         component:FreeAssignmentsComponent
     },
+    {
+        path:'assignments/week',
+        component:StaffWeekAssignmentsComponent
+    },
+   
     {
         path:'requests',
         component:StaffRequestsComponent

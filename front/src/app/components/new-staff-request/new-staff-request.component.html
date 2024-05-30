@@ -1,0 +1,44 @@
+
+<div style=""  class=" card flex justify-content-center">
+    @if(tipo==0){
+    <p-button  [label]="buttonText" [severity]="buttonColor" [raised]="true" [outlined]="true" (click)="showDialog()" icon="pi pi-plus" label="Nueva"></p-button>
+    }
+    
+    <p-dialog  header="Nueva Petición" [(visible)]="visible"  [modal]="true" 
+      [draggable]="false" (onHide)="cerrar();" [resizable]="false">
+  
+  
+      <div style="margin-top: 10px;" class="card flex justify-content-center" class="custom-dialog">
+          <div class="flex flex-row gap-4">
+      
+              
+              <div class="flex flex-column subcategoria-seleccionada">
+                  <label for="username2">Fecha</label>
+
+                  <p-calendar 
+                  (onSelect)="expand=false"
+                 (onShow)="expand=true"
+                  [(ngModel)]="date" 
+                  [minDate]="maxDate" 
+                  [inline]="expand" 
+                  [readonlyInput]="true"
+                  class="{{dateStyle}}"
+                  />
+                </div>
+                <div class="flex flex-column subcategoria-seleccionada">
+                    <label for="username2">Solicitado</label>
+                    <p-dropdown class="{{typeStyle}}" [options]="typeList" [(ngModel)]="typeSelected" optionLabel="text" [showClear]="true" placeholder="Seleccionar"></p-dropdown>
+                  </div>
+
+                 
+  
+    
+              </div>
+          </div>
+          <div  class="flex flex-column " style="margin-top: 100px;" >
+  
+              <app-confirm tipo="Crear" icono="plus" mensaje="¿Deseas enviar esta nueva petición?" color="success" (confirmacion)="crear($event)"></app-confirm>
+          </div>
+    </p-dialog>
+  </div>
+  

@@ -16,13 +16,15 @@ import { MessageService } from 'primeng/api';
 import { StaffRequest } from '../../interfaces/staff-request';
 import { StaffRequestService } from '../../services/staff-request.service';
 import { DialogModule } from 'primeng/dialog';
+import { NewStaffRequestComponent } from '../new-staff-request/new-staff-request.component';
+import { DialogService } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-staff-requests',
   standalone: true,
-  imports: [CabeceraComponent,TableModule,ButtonModule,CommonModule,ListAreasPositionsComponent,ConfirmComponent,ToastModule,DialogModule],
+  imports: [CabeceraComponent,TableModule,ButtonModule,CommonModule,ListAreasPositionsComponent,ConfirmComponent,ToastModule,DialogModule,NewStaffRequestComponent],
   encapsulation:ViewEncapsulation.None,
-  providers:[MessageService],
+  providers:[MessageService,DialogService],
   templateUrl: './staff-requests.component.html',
   styleUrl: './staff-requests.component.css'
 })
@@ -52,7 +54,7 @@ export class StaffRequestsComponent {
         
       })
     }else{
-      this.subscripcion=this.requestService.getAllStaffRequestsOfCompany(this.authService.getUid()).subscribe({
+      this.subscripcion=this.requestService.getAllStaffRequestsByUser(this.authService.getUid()).subscribe({
         next:(data:Array<StaffRequest>)=>{
           this.requestList=data  
           console.log(this.requestList)

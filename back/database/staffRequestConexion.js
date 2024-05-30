@@ -108,6 +108,7 @@ class StaffRequestConexion{
             this.con.desconectar()
         }
     }
+
     getStaffRequestByIdUser = async (id) => {
         try{
             let resultado = [];

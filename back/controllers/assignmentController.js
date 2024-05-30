@@ -34,13 +34,16 @@ const listAllFreeAssignments= (req, res = response) => {
     let today=new Date()
     const date = new Date(today.getFullYear()+'-'+today.getMonth()+'-'+today.getDate());
     const firstDay = new Date(date.getFullYear(), date.getMonth()+1, date.getDate());
-    const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, date.getDate()+5);
+    const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, date.getDate());
+    lastDay.setDate(lastDay.getDate()+5)
+    
     conxWorkday.getWorkDayOfCompanyBetweenDates(req.params.id,firstDay,lastDay).then(workdays=>{
         console.log(workdays)
         let list=[]
         for(const workday of workdays){
            list.push( workday.id)
         }
+      
         conexion.getAllFreeAssignment(req.params.id,list)
         .then(data => {
             res.status(200).json(data)

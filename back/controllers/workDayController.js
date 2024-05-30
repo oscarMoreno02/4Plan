@@ -77,6 +77,85 @@ const listNextWorkDays = (req, res = response) => {
             res.status(404).json()
         })
 }
+const listWorkDayOfUserOfMonth = (req, res = response) => {
+    const conexion = new Conexion()
+
+    const date = new Date(req.params.date);
+    const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+    const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+    conexion.getWorkDayOfUserBetweenDates(req.params.id, firstDay, lastDay)
+        .then(data => {
+            let list= data.filter((workDay)=>workDay.published==1)
+            
+            res.status(200).json(list)
+          
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(404).json()
+        })
+}
+const listWorkDayOfUserOfWeek = (req, res = response) => {
+    const conexion = new Conexion()
+
+    const date = new Date(req.params.date);
+    const dayOfWeek = date.getDay();
+    
+    const diffDaysMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+    const diffDaysSunday = 7 - dayOfWeek;
+    const monday = new Date(date);
+    monday.setDate(date.getDate() + diffDaysMonday);
+    const sunday = new Date(date);
+    sunday.setDate(date.getDate() + diffDaysSunday);
+    // const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+    // const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+    conexion.getWorkDayOfUserBetweenDates(req.params.id, monday, sunday)
+        .then(data => {
+            data.forEach(workDay => {
+                workDay.dayAssignments.sort((a, b) => {
+                    if (a.start < b.start) return -1;
+                    if (a.start > b.start) return 1;
+                    return 0;
+                });
+            });
+           let list= data.filter((workDay)=>workDay.published==1)
+            
+            res.status(200).json(list)
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(404).json()
+        })
+}
+const listNextWorkDaysOfUser = (req, res = response) => {
+    const conexion = new Conexion()
+
+    let today=new Date()
+    const date = new Date(today.getFullYear()+'-'+today.getMonth()+'-'+today.getDate());
+    const firstDay = new Date(date.getFullYear(), date.getMonth()+1, date.getDate());
+    const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, date.getDate()+5);
+
+    conexion.getWorkDayOfUserBetweenDates(req.params.id, firstDay, lastDay)
+        .then(data => {
+            
+            data.forEach(workDay => {
+                workDay.dayAssignments.sort((a, b) => {
+                    if (a.start < b.start) return -1;
+                    if (a.start > b.start) return 1;
+                    return 0;
+                });
+            });
+          let list=  data.filter((workDay)=>workDay.published==1)
+        
+            res.status(200).json(list)
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(404).json()
+        })
+}
 const listWorkDay = (req, res = response) => {
     const conexion = new Conexion()
     conexion.getWorkDayById(req.params.id)
@@ -194,5 +273,8 @@ module.exports = {
     listWorkDayOfCompanyByDate,
     listWorkDayOfCompanyOfMonth,
     publish,
-    listNextWorkDays
+    listNextWorkDays,
+    listNextWorkDaysOfUser,
+    listWorkDayOfUserOfMonth,
+    listWorkDayOfUserOfWeek
 }
