@@ -1,6 +1,6 @@
 
-<app-new-time-zone [visible]="newModalVisible.value" [tipo]="1" (cerrarModal)="changeNewModalVisibility()"></app-new-time-zone>
-<app-edit-time-zone (cerrarModal)="changeEditModalVisibility()" #editar ></app-edit-time-zone> 
+<app-new-time-zone [visible]="newModalVisible.value" [tipo]="1" (updateEvent)="getUpdate()" (updateEvent)="editar.getUpdate()" (cerrarModal)="this.newModalVisible.value=false"></app-new-time-zone>
+<app-edit-time-zone  (updateEvent)="getUpdate()" (cerrarModal)="changeEditModalVisibility()" #editar ></app-edit-time-zone> 
   <div class="card">
     <div class="flex justify-content-center">
         <p-button type="button" badge="{{timezonesList.length}}" (click)="showDialog()"  [size]="'small'"  icon="pi pi-external-link" label="Franjas Horarias"></p-button>

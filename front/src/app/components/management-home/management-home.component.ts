@@ -29,13 +29,16 @@ ngOnInit(): void {
   let parsedDate=this.today.getFullYear()+'-'+(this.today.getMonth()+1)+'-'+this.today.getDate()
   this.subscription=this.workdayServie.getDayOfCompanyByDate(this.authService.getCompany(),parsedDate).subscribe({
     next:(workday)=>{
-      this.workday=workday
-      console.log(workday)
-      if(this.workday.dayAssignments){
-
-        this.eventList=this.orderEvents(this.workday.dayAssignments)
-        console.log(this.eventList)
+      if(workday){
+        this.workday=workday
+        console.log(workday)
+        if(this.workday.dayAssignments){
+          
+          this.eventList=this.orderEvents(this.workday.dayAssignments)
+  
       }
+    }
+
     },
     error:()=>{
       this.authService.logout()

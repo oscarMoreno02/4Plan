@@ -9,13 +9,14 @@ import { ConfirmComponent } from '../confirm/confirm.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { WorkParameter } from '../../interfaces/work-parameter';
-import { TimeZone } from '../../interfaces/time-zone';
+import { Day, TimeZone } from '../../interfaces/time-zone';
 import { Subscription } from 'rxjs';
 import { WorkParametersService } from '../../services/work-parameters.service';
 import { AuthService } from '../../services/auth.service';
 import { TimeZoneService } from '../../services/time-zone.service';
 import { MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
+import { Messsage } from '../../interfaces/messsage';
 
 @Component({
   selector: 'app-edit-work-pameter',
@@ -47,7 +48,8 @@ export class EditWorkPameterComponent {
  @Input() tipo=0
  @Output() cerrarModal = new EventEmitter<void>();
  editParameter:WorkParameter={expectedVolume:0,idCompany:this.authService.getCompany(),idTimeZone:0}
-
+@Output() updateEvent= new EventEmitter<void>();
+@Output() sendMessage = new EventEmitter<Messsage>();
  value=''
  subscription: Subscription=new Subscription;
  workParameterList:Array<WorkParameter>=[]
@@ -66,13 +68,9 @@ export class EditWorkPameterComponent {
       this.timeZoneService.getAllTimeZonesOfCompany(this.authService.getCompany()).subscribe({
        next:(data)=>{
          this.timeZoneList=data
-         for (const t of this.timeZoneList){
-           t.formated=t.start+' - '+t.end
-           if(t.id==this.editParameter.idTimeZone){
-             this.editParameter.timeZone=t
-           }
-         }
+         console.log(data)
          this.getParameter()
+        
        
        },
        error:(err)=>{
@@ -93,8 +91,16 @@ export class EditWorkPameterComponent {
   this.subscription=this.workParameterService.getWorkParameter(this.idParameter).subscribe({
     
     next:(data=>{
+
       this.editParameter=data
-      
+      for (const t of this.timeZoneList){
+        t.formated=t.start+' - '+t.end+' '+this.translateDays(t.days!)
+        console.log(this.editParameter)
+        if(t.id==this.editParameter.idTimeZone){
+          this.editParameter.timeZone=t
+          console.log('llega')
+        }
+      }
     }),
     error:(error=>{
 
@@ -115,22 +121,26 @@ cerrar(): void {
 
 
      if(this.validarCampos()){
-    this.editParameter.idTimeZone!=this.editParameter.timeZone!.id
-     this.messageService.add({ severity: 'info', summary: 'editar Parametro', detail: 'En curso', life: 3000 });
+    this.editParameter.idTimeZone=this.editParameter.timeZone!.id!
+    console.log(this.editParameter)
+     this.sendMessage.emit({ severity: 'info', summary: 'editar Parametro', detail: 'En curso', life: 3000 });
      this.workParameterService.updateWorkParameter(this.editParameter).subscribe({
        next: (u:any) => {
-        console.log(this.editParameter)
+
              setTimeout(() => {
-               this.messageService.add({ severity: 'success', summary: 'editar Parametro', detail: 'Completado', life: 3000 });
+               this.sendMessage.emit({ severity: 'success', summary: 'editar Parametro', detail: 'Completado', life: 3000 });
+               this.updateEvent.emit()
+           
                setTimeout(() => {
-                 window.location.reload()
-             }, 1000); 
-           }, 2000); 
+   
+                  this.cerrar()
+               }, 1)
+         }, 1000);
          
        },
        error: (err) => {
     
-         this.messageService.add({ severity:'error', summary: 'editar Parametro', detail: 'Cancelado', life: 3000 });
+         this.sendMessage.emit({ severity:'error', summary: 'editar Parametro', detail: 'Cancelado', life: 3000 });
        }
      })
    }
@@ -139,19 +149,22 @@ cerrar(): void {
  eliminar(b:Boolean){
   if(b){
 
-    this.messageService.add({ severity: 'info', summary: 'Eliminar Parametro', detail: 'En curso', life: 3000 });
+    this.sendMessage.emit({ severity: 'info', summary: 'Eliminar Parametro', detail: 'En curso', life: 3000 });
   this.workParameterService.deleteWorkParameter(this.editParameter.id!).subscribe({
     next:(data:any)=>{
       setTimeout(() => {
               this.visible=false
-              this.messageService.add({ severity: 'success', summary: 'Eliminar Parametro', detail: 'Completado', life: 3000 });
+              this.sendMessage.emit({ severity: 'success', summary: 'Eliminar Parametro', detail: 'Completado', life: 3000 });
+              this.updateEvent.emit()
+           
               setTimeout(() => {
-              window.location.reload()
-            }, 1000);
-          }, 1000); 
+  
+                 this.cerrar()
+              }, 1)
+        }, 1000);
         },
         error: (err) => {
-          this.messageService.add({ severity:'error', summary: 'Eliminar Parametro', detail: 'Cancelado', life: 3000 });
+          this.sendMessage.emit({ severity:'error', summary: 'Eliminar Parametro', detail: 'Cancelado', life: 3000 });
         }
       })
     }
@@ -161,20 +174,20 @@ cerrar(): void {
    if(this.editParameter.timeZone?.id==null){
      this.styleValidTimeZone='ng-invalid ng-dirty'
      valido=false
-     this.messageService.add({ severity: 'warn', summary: 'Editar Parametro', detail: 'Franja Horaria no especificada', life: 3000 });
+     this.sendMessage.emit({ severity: 'warn', summary: 'Editar Parametro', detail: 'Franja Horaria no especificada', life: 3000 });
    }else{
      this.styleValidTimeZone=''
      if(this.editParameter.expectedVolume==0){
         
      this.styleValidVolume='ng-invalid ng-dirty'
      valido=false
-     this.messageService.add({ severity: 'warn', summary: 'editar Parametro', detail: 'Debe introducir un volumen válido', life: 3000 });
+     this.sendMessage.emit({ severity: 'warn', summary: 'Editar Parametro', detail: 'Debe introducir un volumen válido', life: 3000 });
      }else{
       this.styleValidVolume=''
       this.styleValidTimeZone=''
        if(!this.checkUnico()){
          valido=false
-         this.messageService.add({ severity: 'warn', summary: 'editar Parametro', detail: 'Ya existe una parametro con esos valores', life: 3000 });
+         this.sendMessage.emit({ severity: 'warn', summary: 'Editar Parametro', detail: 'Ya existe una parametro con esos valores', life: 3000 });
          this.styleValidTimeZone='ng-invalid ng-dirty'
          this.styleValidVolume='ng-invalid ng-dirty'
         }else{
@@ -192,12 +205,46 @@ cerrar(): void {
    for(const parameter of this.workParameterList){
 
      if(parameter.expectedVolume==this.editParameter.expectedVolume 
-      && parameter.idTimeZone==this.editParameter.idTimeZone){
+      && parameter.idTimeZone==this.editParameter.idTimeZone && this.editParameter.id!=parameter.id){
        valido=false
       }
       
     }
     return valido
   }
+
+   translateDays(days:Day[]):string {
+    let str=[]
+  if(days.length==7){
+    return '[ TODOS] '
+  }
+  for (const day of days){
+    if(day.number==1){
+      str.push('D')
+    }
+    if(day.number==2){
+      str.push('L')
+    }
+    if(day.number==3){
+      str.push('M')
+    }
+    if(day.number==4){
+      str.push('X')
+    }
+    if(day.number==5){
+      str.push('J')
+    }
+    if(day.number==6){
+      str.push('V')
+    }
+    if(day.number==7){
+      str.push('S')
+    }
+
+  }
+  str.push()
+  
+ return '[ '+str.toString()+' ]'
+}
 
 }

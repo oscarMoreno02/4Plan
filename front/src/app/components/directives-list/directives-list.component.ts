@@ -9,6 +9,7 @@ import { DataViewModule } from 'primeng/dataview';
 import { TableModule } from 'primeng/table';
 import { NewDirectiveComponent } from '../new-directive/new-directive.component';
 import { EditDirectiveComponent } from '../edit-directive/edit-directive.component';
+import { Messsage } from '../../interfaces/messsage';
 @Component({
   selector: 'app-directives-list',
   standalone: true,
@@ -29,6 +30,7 @@ export class DirectivesListComponent {
   newModalVisible={value:false}
   editModalVisible={value:false}
   editDirectiveId=0
+  @Output() sendMessage = new EventEmitter<Messsage>();
   ngOnInit(): void {
     if(this.idParameter!=0){
 
@@ -60,5 +62,16 @@ export class DirectivesListComponent {
     this.editModalVisible.value=!this.editModalVisible.value
 
   }
-
+  getUpdates(){
+    this.subscripcion=this.directiveService.getAllDirectivesWithDataOfParameter(this.idParameter).subscribe({
+      next:(data:Array<WorkDirective>)=>{
+        this.directivesList=data
+        console.log(this.directivesList)
+  
+      },
+      error:(err)=>{
+        
+      }
+    })
+  }
 }

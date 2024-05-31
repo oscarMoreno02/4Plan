@@ -84,7 +84,7 @@ const removeTimeZone= (req, res = response) => {
             res.status(202).json('Exito en la eliminacion')
         })
         .catch(err => {
-      
+        
             res.status(203).json('Error en la eliminacion')
         })
 }

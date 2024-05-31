@@ -119,7 +119,7 @@ class TimeZoneConexion{
             if (!resultado) {
                 throw error;
             }
-            await resultado.destoy();
+            await resultado.destroy();
             return resultado;
         }catch(error){
             throw error

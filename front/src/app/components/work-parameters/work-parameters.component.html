@@ -1,3 +1,4 @@
+<p-toast></p-toast>
 <app-cabecera></app-cabecera>
 <div style="margin-top: 40px;" class="card">
     <p-table
@@ -22,8 +23,8 @@
                 <th style="width:10%">Hora Inicio</th>
                 <th style="width:10%">Hora fin</th>
                 <th style="width:40%">Dias de la semana</th>
-                <th><app-time-zone-list></app-time-zone-list></th>
-                <th style="width:10%"><app-new-work-pameter></app-new-work-pameter></th>
+                <th><app-time-zone-list  ></app-time-zone-list></th>
+                <th style="width:10%"><app-new-work-pameter (sendMessage)="this.showMessage($event)" (updateEvent)="getUpdate()"></app-new-work-pameter></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-parameter>
@@ -32,8 +33,8 @@
                 <td>{{ parameter.timeZone.start}}</td>
                 <td>{{ parameter.timeZone.end}}</td>
                 <td>{{getDays(parameter.timeZone.days)}}</td>
-                <td><app-directives-list [idParameter]="parameter.id"></app-directives-list></td>
-                <td><app-edit-work-pameter [idParameter]="parameter.id"></app-edit-work-pameter></td>
+                <td><app-directives-list (sendMessage)="this.showMessage($event)" [idParameter]="parameter.id"></app-directives-list></td>
+                <td><app-edit-work-pameter (sendMessage)="this.showMessage($event)" (updateEvent)="getUpdate()" [idParameter]="parameter.id"></app-edit-work-pameter></td>
             </tr>
         </ng-template>
         <ng-template pTemplate="paginatorleft">

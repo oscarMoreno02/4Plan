@@ -63,7 +63,7 @@ export class NewDirectiveComponent {
  subscription: Subscription=new Subscription;
  positionsList:Array<WorkPosition>=[]
  areasList:Array<WorkArea>=[]
-
+  @Input()directivesList:Array<WorkDirective>=[]
  newDirective:WorkDirective={expectedValuation:0,idCompany:this.authService.getCompany(),idPosition:0,idParameter:0,id:0,idArea:0}
  styleValidPosition=''
 
@@ -89,6 +89,8 @@ export class NewDirectiveComponent {
  }
 
 cerrar(): void {
+  this.visible = false;
+
  this.cerrarModal.emit();
 }
  crear(confirm:Boolean){
@@ -100,13 +102,14 @@ cerrar(): void {
       this.messageService.add({ severity: 'info', summary: 'Crear Directiva', detail: 'En curso', life: 3000 });
       this.directiveService.insertDirective(this.newDirective).subscribe({
        next: (u:any) => {
-        console.log(this.newDirective)
+        this.newDirective.id=u.id
              setTimeout(() => {
                this.messageService.add({ severity: 'success', summary: 'Crear Directiva', detail: 'Completado', life: 3000 });
+               this.directivesList.push(this.newDirective)
                setTimeout(() => {
-                 window.location.reload()
-             }, 1000); 
-           }, 2000); 
+                this.cerrar()
+             }, 1); 
+           }, 1000); 
          
        },
        error: (err) => {

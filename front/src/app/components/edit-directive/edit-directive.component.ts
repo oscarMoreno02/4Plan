@@ -59,6 +59,7 @@ export class EditDirectiveComponent {
   @Input() visible: boolean = false;
   @Input() tipo = 0
   @Output() cerrarModal = new EventEmitter<void>();
+  @Output() updateEvent = new EventEmitter<void>();
   @Input() idDirective: number = 0
   value = ''
   subscription: Subscription = new Subscription;
@@ -67,7 +68,8 @@ export class EditDirectiveComponent {
   editDirective: WorkDirective = { expectedValuation: 0, idCompany: this.authService.getCompany(), idPosition: 0, idParameter: 0, id: 0,idArea:0 }
   styleValidPosition = ''
   styleValidArea=''
-
+  @Output() sendMessage = new EventEmitter<Messsage>();
+  @Input() directiveList:Array<WorkDirective>=[]
   ngOnInit(): void {
     this.subscription = this.positionService.getAllWorkPositionsOfCompany(this.authService.getCompany()).subscribe({
       next: (data => {
@@ -98,25 +100,29 @@ export class EditDirectiveComponent {
   }
 
   cerrar(): void {
+    this.visible=false
     this.cerrarModal.emit();
   }
   guardar(confirm: Boolean) {
     if (confirm) {
       if (this.validarCampos()) {
+
         this.editDirective.idPosition = this.editDirective.position!.id!
-        this.editDirective.idArea=this.editDirective.position!.id!
+        this.editDirective.idArea=this.editDirective.area!.id!
+        console.log(this.editDirective)
         this.messageService.add({ severity: 'info', summary: 'Editar Directiva', detail: 'En curso', life: 3000 });
         this.directiveService.updateDirective(this.editDirective).subscribe({
           next: (u: any) => {
-            console.log(this.editDirective)
-            console.log(u)
+            
             setTimeout(() => {
               this.messageService.add({ severity: 'success', summary: 'Editar Directiva', detail: 'Completado', life: 3000 });
+              this.updateEvent.emit()
+           
               setTimeout(() => {
-                console.log(this.editDirective)
-                 window.location.reload()
-              }, 1000);
-            }, 2000);
+                
+                 this.cerrar()
+              }, 1)
+            }, 1000);
 
           },
           error: (err) => {
@@ -133,11 +139,14 @@ export class EditDirectiveComponent {
     this.directiveService.deleteDirective(this.editDirective.id!).subscribe({
       next: (data: any) => {
         setTimeout(() => {
-          this.visible = false
+        
           this.messageService.add({ severity: 'success', summary: 'Eliminar Directiva', detail: 'Completado', life: 3000 });
-          setTimeout(() => {
-            window.location.reload()
-          }, 1000);
+          this.updateEvent.emit()
+           
+              setTimeout(() => {
+  
+                 this.cerrar()
+              }, 1)
         }, 1000);
       },
       error: (err) => {

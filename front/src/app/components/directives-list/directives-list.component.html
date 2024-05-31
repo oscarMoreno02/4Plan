@@ -1,7 +1,7 @@
 
 
-<app-new-directive [visible]="newModalVisible.value" [idParameter]="idParameter" [tipo]="1" (cerrarModal)="changeNewModalVisibility()"></app-new-directive>
-<app-edit-directive [tipo]="1" (cerrarModal)="changeEditModalVisibility()" #editar [idDirective]="editDirectiveId"></app-edit-directive>
+<app-new-directive [visible]="newModalVisible.value" [directivesList]="this.directivesList" [idParameter]="idParameter" [tipo]="1" (cerrarModal)="this.newModalVisible.value=false"></app-new-directive>
+<app-edit-directive  (updateEvent)="this.getUpdates()" [directiveList]="this.directivesList" [tipo]="1" (cerrarModal)="changeEditModalVisibility()" #editar [idDirective]="editDirectiveId"></app-edit-directive>
   <div class="card">
     <div class="flex justify-content-center">
         <p-button type="button" badge="{{directivesList.length}}" (click)="showDialog()"  icon="pi pi-external-link" label="Directivas"></p-button>

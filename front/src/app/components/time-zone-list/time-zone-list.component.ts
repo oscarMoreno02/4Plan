@@ -34,16 +34,7 @@ export class TimeZoneListComponent {
 
 
   ngOnInit(): void {
-    this.subscripcion=this.timeZone.getAllTimeZonesOfCompany(this.authService.getCompany()).subscribe({
-      next:(data:Array<TimeZone>)=>{
-        this.timezonesList=data
-        console.log(this.timezonesList)
-  
-      },
-      error:(err)=>{
-        
-      }
-    })
+    this.getUpdate()
   }
 
 
@@ -80,5 +71,18 @@ export class TimeZoneListComponent {
   }
 
   return dayStr
+ }
+
+ getUpdate(){
+  this.subscripcion=this.timeZone.getAllTimeZonesOfCompany(this.authService.getCompany()).subscribe({
+    next:(data:Array<TimeZone>)=>{
+      this.timezonesList=data
+      console.log(this.timezonesList)
+
+    },
+    error:(err)=>{
+      
+    }
+  })
  }
 }

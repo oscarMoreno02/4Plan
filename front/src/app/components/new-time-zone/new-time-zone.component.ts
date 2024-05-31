@@ -25,6 +25,7 @@ import { PositionService } from '../../services/position.service';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import {MultiSelect, MultiSelectModule} from 'primeng/multiselect';
 import { CheckboxModule } from 'primeng/checkbox';
+import { Messsage } from '../../interfaces/messsage';
 @Component({
   selector: 'app-new-time-zone',
   standalone: true,
@@ -66,7 +67,8 @@ export class NewTimeZoneComponent {
       {name: 'Domingo', number: 1}]
  
    }
-   
+  @Output() updateEvent= new EventEmitter<void>();
+  @Output() sendMessage = new EventEmitter<Messsage>();
   @Input() visible: boolean = false;
   @Input() tipo = 0
   @Output() cerrarModal = new EventEmitter<void>();
@@ -132,6 +134,12 @@ mostrar(event:any){
   }
 
   cerrar(): void {
+    this.selectedDays=[];
+
+    this.horaInicio = { hora: { valor: '00', numero: 0 }, minuto: { valor: '00', numero: 0 } }
+    this.horaFin = { hora: { valor: '00', numero: 0 }, minuto: { valor: '00', numero: 0 } }
+    this.newTimeZone = { start: '00', end: '00', idCompany: this.authService.getCompany() }
+    this.visible=false
     this.cerrarModal.emit();
   }
   crear(confirm: Boolean) {
@@ -149,10 +157,14 @@ mostrar(event:any){
 
               setTimeout(() => {
                 this.messageService.add({ severity: 'success', summary: 'Crear Franja Horaria', detail: 'Completado', life: 3000 });
+                
+                this.updateEvent.emit()
                 setTimeout(() => {
-                   window.location.reload()
-                }, 1000);
-              }, 2000);
+    
+             
+                   this.cerrar()
+                }, 100)
+          }, 1000);
 
             },
             error: (err) => {
