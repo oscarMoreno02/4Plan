@@ -15,45 +15,54 @@
         </div>
     </ng-template>
         <ng-template pTemplate="header">
-    
-        </ng-template>
-        @if(this.workday && this.workday.dayAssignments){
+            <tr>
+                <th>
 
-            <ng-template pTemplate="body" let-event>
-                <tr class="">
-                
-                @if(event.type==0){
-                    
-                    <td><p-button [disabled]="true" severity="success" label="Entrada"></p-button></td>
-                }@else {
-                    <td><p-button [disabled]="true" severity="danger" label="Salida"></p-button></td>
-
-                }
-                <td>{{event.time}}</td>
-                <td>{{event.user}}</td>
-                <td>{{event.area}}</td>
-                <td>{{event.position}}</td>
-
-
+                </th>
+                <th>
+                    Hora
+                </th>
+                <th>
+                   Empleado 
+                </th>
+                <th>
+                    Area
+                </th>
+                <th>
+                    Posición
+                </th>
             </tr>
+        </ng-template>
+        
+        <ng-template pTemplate="body" let-event>
+            @if(this.eventList.length>0){
+
+                <tr class="">
+                    
+                    @if(event.type==0){
+                        
+                        <td><p-button [disabled]="true" severity="success" label="Entrada"></p-button></td>
+                    }@else {
+                        <td><p-button [disabled]="true" severity="danger" label="Salida"></p-button></td>
+
+                    }
+                    <td>{{event.time}}</td>
+                    <td>{{event.user}}</td>
+                    <td>{{event.area}}</td>
+                <td>{{event.position}}</td>
+                
+                
+            </tr>
+        }@else {}
         </ng-template>
         <ng-template pTemplate="footer">
             <div class="flex align-items-center justify-content-between">
       
                 <!-- NO BORRAR -->
-                s 
-                
+                         s 
+
             </div>
         </ng-template>
-        
-    }@else {
-   
-            <tr class="">
-            
-                <td>SIN REGISTROS</td>
-
-            </tr>
-   
-    }
+      
     </p-table>
 </div>

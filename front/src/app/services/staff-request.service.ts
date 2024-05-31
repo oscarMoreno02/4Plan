@@ -63,4 +63,11 @@ export class StaffRequestService {
       })
      )
    }
+   acceptStaffRequest(StaffRequest:StaffRequest): Observable<any | undefined> {
+    return this.http.put<any>(this.baseUrl+'/accept/'+StaffRequest.id,StaffRequest,{params: {auth: true}}).pipe(
+     catchError((error) =>{
+       return of(undefined)
+     })
+    )
+  }
 }

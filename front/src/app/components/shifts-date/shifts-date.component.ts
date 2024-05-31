@@ -54,6 +54,29 @@ export class ShiftsDateComponent  implements OnInit{
   workDay!:WorkDay
   employees:Array<User>=[]
   ngOnInit(): void {
+   this.getUpdate()
+  }
+  showMessage(message:Messsage){
+    this.messageService.add(message)
+  }
+  totalHoursWorked(assignments:Array<Assignment>):number{
+    let total:any=0
+
+    for (const assignment of assignments){
+      let start=new Date('2024-05-15T'+assignment.start)
+      let end =new Date('2024-05-15T'+assignment.end)
+      total+=end.getTime()-start.getTime();
+  
+    }
+    
+    return total / (1000 * 60 * 60);
+
+
+  }
+   truncateNumber() {
+    return Math.trunc(this.hours * 100) / 100;
+  }
+  getUpdate(){
     this.date = this.activatedRoute.snapshot.params['date']
 
     this.subscripion=this.workDayService.getDayOfCompanyByDate(this.authService.getCompany(),this.date).subscribe({
@@ -97,25 +120,5 @@ export class ShiftsDateComponent  implements OnInit{
       
       }
     })
-  }
-  showMessage(message:Messsage){
-    this.messageService.add(message)
-  }
-  totalHoursWorked(assignments:Array<Assignment>):number{
-    let total:any=0
-
-    for (const assignment of assignments){
-      let start=new Date('2024-05-15T'+assignment.start)
-      let end =new Date('2024-05-15T'+assignment.end)
-      total+=end.getTime()-start.getTime();
-  
-    }
-    
-    return total / (1000 * 60 * 60);
-
-
-  }
-   truncateNumber() {
-    return Math.trunc(this.hours * 100) / 100;
   }
 }

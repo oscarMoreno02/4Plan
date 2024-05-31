@@ -64,6 +64,7 @@ export class EditAssignmentComponent {
   @Input() tipo = 0
   @Output() cerrarModal = new EventEmitter<void>();
   @Output() sendMessage = new EventEmitter<Messsage>();
+  @Output() updateEvent = new EventEmitter<void>();
 
 
   value = ''
@@ -140,6 +141,7 @@ export class EditAssignmentComponent {
   }
 
   cerrar(): void {
+    this.visible=false
     this.cerrarModal.emit();
   }
   editar(confirm: Boolean) {
@@ -171,10 +173,13 @@ export class EditAssignmentComponent {
               console.log(this.editAssignment)
               setTimeout(() => {
                 this.sendMessage.emit({ severity: 'success', summary: 'Modificar Asignación', detail: 'Completado', life: 3000 });
+                this.updateEvent.emit()
                 setTimeout(() => {
-                  window.location.reload()
-                }, 1000);
-              }, 2000);
+    
+             
+                   this.cerrar()
+                }, 100)
+          }, 1000);
 
             },
             error: (err) => {
@@ -197,10 +202,11 @@ export class EditAssignmentComponent {
         setTimeout(() => {
           this.visible = false
           this.sendMessage.emit({ severity: 'success', summary: 'Eliminar Asignación', detail: 'Completado', life: 3000 });
+          this.updateEvent.emit()
           setTimeout(() => {
-            window.location.reload()
-          }, 1000);
-        }, 1000);
+             this.cerrar()
+          }, 100)
+    }, 1000);
       },
       error: (err) => {
         this.sendMessage.emit({ severity: 'error', summary: 'Eliminar asignación', detail: 'Cancelado', life: 3000 });

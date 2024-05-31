@@ -208,6 +208,8 @@ const createWorkDay = (req, res = response) => {
                         let newAssignment={
                             idUser:request.idUser,
                         idCompany:request.idCompany,
+                        start:'00',
+                        end:'00',
                         idWorkDay:id,
                         type:request.type
                     }

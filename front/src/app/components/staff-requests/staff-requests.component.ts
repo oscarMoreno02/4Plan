@@ -99,7 +99,7 @@ export class StaffRequestsComponent {
       if(result){
 
         this.requestSelected.status=1
-        this.requestService.updateStaffRequest(this.requestSelected).subscribe({
+        this.requestService.acceptStaffRequest(this.requestSelected).subscribe({
           next: (data: any) => {
             this.messageService.add({ severity: 'success', summary:  'Actualizar Estado de Solicitud', detail: 'Completado', life: 3000 });
             

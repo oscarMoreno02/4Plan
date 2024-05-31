@@ -1,5 +1,5 @@
 <p-toast></p-toast>
-<app-edit-assignment (sendMessage)="showMessage($event)" [visible]="editVisible" [date]="date"
+<app-edit-assignment (updateEvent)="this.getUpdate()" (sendMessage)="showMessage($event)" [visible]="editVisible" [date]="date"
   (cerrarModal)="editVisible=false" #editar></app-edit-assignment>
 
 <div style="" class=" card flex justify-content-center">

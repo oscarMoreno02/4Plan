@@ -78,8 +78,9 @@ const acceptStaffRequest= (req, res = response)=>{
                     idUser:request.idUser,
                     idCompany:request.idCompany,
                     idWorkDay:data.id,
-                    type:request.type
-                
+                    type:request.type,
+                    start:'00',
+                    end:'00'
                 }
                 let result =await assignmentConexion.insertAssignment(newAssignment)
                 res.status(202).json('Actualizado Correctamente')

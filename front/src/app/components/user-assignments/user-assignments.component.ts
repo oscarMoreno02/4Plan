@@ -82,14 +82,7 @@ export class UserAssignmentsComponent {
 
   ngOnInit(): void {
  
-  this.subscription=this.userService.getUserWithAssignments(this.idUser, this.idWorkDay).subscribe({
-    next: (user) => {
-      console.log(user)
-      this.user=user
-      console.log(this.user)
-    }
-  })
-
+this.getUpdate()
 
   }
   showDialog() {
@@ -102,6 +95,15 @@ export class UserAssignmentsComponent {
 
 showMessage(message:Messsage){
   this.messageService.add(message)
+}
+getUpdate(){
+  this.subscription=this.userService.getUserWithAssignments(this.idUser, this.idWorkDay).subscribe({
+    next: (user) => {
+      console.log(user)
+      this.user=user
+      console.log(this.user)
+    }
+  })
 }
 
 }

@@ -384,7 +384,7 @@ export class ShiftWorkdaysListComponent {
       }
       this.workDayService.publishWorkDays(publishList).subscribe({
         next: (data) => {
-          window.location.reload()
+          this.updateMonthData(this.lastDate)
         },
         error: () => {
         }

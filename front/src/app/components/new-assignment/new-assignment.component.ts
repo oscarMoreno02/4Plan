@@ -84,7 +84,7 @@ export class NewAssignmentComponent {
   estiloValidacionMinutos = ''
   estilosValidacionesTipo: string = '';
   estilosValidacionesAreas: string = '';
-    
+  @Output() updateEvent = new EventEmitter<void>();
   types = [{ text: 'Turno de trabajo', value: 0 }, { text: 'Dia Libre', value: 1 }, { text: 'Vacaciones', value: 2 }]
   typeSelected = this.types[0]
 
@@ -139,6 +139,7 @@ export class NewAssignmentComponent {
   }
 
   cerrar(): void {
+    this.visible=false
     this.cerrarModal.emit();
   }
   crear(confirm: Boolean) {
@@ -169,10 +170,13 @@ export class NewAssignmentComponent {
               console.log(this.newAssignment)
               setTimeout(() => {
                 this.sendMessage.emit({ severity: 'success', summary: 'Crear Asignación', detail: 'Completado', life: 3000 });
+                this.updateEvent.emit()
                 setTimeout(() => {
-                  window.location.reload()
-                }, 1000);
-              }, 2000);
+    
+             
+                   this.cerrar()
+                }, 100)
+          }, 1000);
 
             },
             error: (err) => {
