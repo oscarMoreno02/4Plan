@@ -38,7 +38,7 @@ const listAllFreeAssignments= (req, res = response) => {
     lastDay.setDate(lastDay.getDate()+5)
     
     conxWorkday.getWorkDayOfCompanyBetweenDates(req.params.id,firstDay,lastDay).then(workdays=>{
-        console.log(workdays)
+        
         let list=[]
         for(const workday of workdays){
            list.push( workday.id)
@@ -49,11 +49,11 @@ const listAllFreeAssignments= (req, res = response) => {
             res.status(200).json(data)
         })
         .catch(err => {
-            console.log(err)
+       
             res.status(404).json()
         })
     }).catch(err => {
-            console.log(err)
+            
             res.status(404).json()
         })
 }
@@ -64,7 +64,7 @@ const listAssignment= (req, res = response) => {
             res.status(200).json( data)
         })
         .catch(err => {
-            console.log(err)
+           
             res.status(404).json(err)
         })
 }

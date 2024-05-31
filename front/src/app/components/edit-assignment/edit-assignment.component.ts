@@ -124,7 +124,7 @@ export class EditAssignmentComponent {
   showDialog(assignment: Assignment) {
     this.subscription = this.userService.getUserWithAssignments(assignment.idUser!, assignment.idWorkDay).subscribe({
       next: (user) => {
-        console.log(user)
+        
         this.user = user
         for (const a of user.assignments) {
           if (assignment.id == a.id) {
@@ -133,7 +133,6 @@ export class EditAssignmentComponent {
             break
           }
         }
-        console.log(this.editAssignment)
 
         this.visible = true;
       }
@@ -170,7 +169,6 @@ export class EditAssignmentComponent {
           this.sendMessage.emit({ severity: 'info', summary: 'Modificar Asignación', detail: 'En curso', life: 3000 });
           this.assignmentService.updateAssignment(this.editAssignment).subscribe({
             next: (u: any) => {
-              console.log(this.editAssignment)
               setTimeout(() => {
                 this.sendMessage.emit({ severity: 'success', summary: 'Modificar Asignación', detail: 'Completado', life: 3000 });
                 this.updateEvent.emit()

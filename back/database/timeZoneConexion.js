@@ -105,7 +105,7 @@ class TimeZoneConexion{
 
             return TimeZone.id
         } catch (error) {
-            console.log(error)
+            
             throw error;
         } finally {
             this.con.desconectar();
@@ -150,7 +150,7 @@ class TimeZoneConexion{
             }
             return resultado
         }catch(error){
-            console.log(error)
+            
             throw error
         }finally{
             this.con.desconectar()

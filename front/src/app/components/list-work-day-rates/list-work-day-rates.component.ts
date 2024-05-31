@@ -45,7 +45,6 @@ export class ListWorkDayRatesComponent {
 
    showDialog() {
     
-    console.log(this.userList)
     setTimeout(() => {
 
       this.visible = true;

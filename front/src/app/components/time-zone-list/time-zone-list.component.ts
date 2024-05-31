@@ -77,7 +77,6 @@ export class TimeZoneListComponent {
   this.subscripcion=this.timeZone.getAllTimeZonesOfCompany(this.authService.getCompany()).subscribe({
     next:(data:Array<TimeZone>)=>{
       this.timezonesList=data
-      console.log(this.timezonesList)
 
     },
     error:(err)=>{

@@ -33,7 +33,7 @@ ngOnInit(){
       for (let i =0 ; i<5;i++){
         let day=new Date(today.getFullYear()+'-'+(today.getMonth()+1)+'-'+(today.getDate()))
         day.setDate(day.getDate() + i);
-        console.log(day)
+        
         let msg=['Sin Asignaciones']
         let date=day.getFullYear()+'-'+(day.getMonth()+1)+'-'+(day.getDate())
         let exist=false
@@ -68,7 +68,6 @@ ngOnInit(){
          
         }
       }
-      console.log(this.nextDays)
     }
   }
   )

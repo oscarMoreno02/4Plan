@@ -86,8 +86,7 @@ export class ShiftsDateComponent  implements OnInit{
               this.router.navigate(['/shifts'])
           }
           this.workDay=day
-          console.log(day)
-          console.log(this.workDay)
+          
           this.userService.getUsersWithAssignmens(this.workDay.id!).subscribe({
             next:(users)=>{
               this.employees=users
@@ -109,7 +108,6 @@ export class ShiftsDateComponent  implements OnInit{
                   }
                 }
               }
-              console.log(this.employees)
             },
             error:(error)=>{
 

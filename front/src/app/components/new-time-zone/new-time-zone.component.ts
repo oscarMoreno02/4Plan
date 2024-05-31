@@ -93,7 +93,6 @@ export class NewTimeZoneComponent {
 
 
 mostrar(event:any){
-  console.log(event)
 }
 
 
@@ -121,7 +120,7 @@ mostrar(event:any){
     this.subscription = this.timezoneService.getAllTimeZonesOfCompany(this.authService.getCompany()).subscribe({
       next: (data => {
         this.timeZoneList = data
-        console.log(data)
+        
       }),
       error: (error => {
 

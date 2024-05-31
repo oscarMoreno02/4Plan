@@ -408,15 +408,13 @@ export class ShiftWorkdaysListComponent {
       for (const assignment of day.dayAssignments) {
         if(assignment.type==0){
           if (assignment.valuation== null || assignment.valuation==0) {
-            console.log('llega all rates false')
-            console.log(day)
+            
             return false
           }
         }
       }
     }
-    console.log('llega all rates true')
-    console.log(day)
+    
 
     return true
   }
@@ -443,13 +441,11 @@ export class ShiftWorkdaysListComponent {
         }
       }
       if (sum / validAssignments <50 ) {
-        console.log('media inferior')
-        console.log(day)
+        
         return false
       }
     }
-    console.log('media superior')
-    console.log(day)
+    
     return true
   }
   hasCumplimentVolume(day: WorkDay): boolean {

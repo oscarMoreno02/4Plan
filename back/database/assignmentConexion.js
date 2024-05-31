@@ -56,7 +56,7 @@ class AssignmentConexion{
             try {
                 let resultado = [];
                 this.con.conectar();
-                console.log(list)
+                
                 resultado = await  models.Assignment.findAll({
                     where: {
                         idWorkDay: {
@@ -82,7 +82,6 @@ class AssignmentConexion{
                     }
                 ]
                 });
-                console.log(resultado)
                 return resultado;
         }catch(error){
           throw error
@@ -145,7 +144,7 @@ class AssignmentConexion{
             await Assignment.update(body)
             return resultado
         }catch(error){
-            console.log(error)
+            
             throw error
         }finally{
             this.con.desconectar()

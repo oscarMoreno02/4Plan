@@ -36,7 +36,6 @@ export class EmployeeListComponent {
     this.subscripcion=this.userService.getAllUsersOfCompany(this.authService.getCompany()).subscribe({
       next:(data:Array<User>)=>{
         this.usersList=data
-        console.log(this.usersList)
   
       },
       

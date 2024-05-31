@@ -40,16 +40,14 @@ export class StaffRequestsComponent {
   requestSelected!:StaffRequest
   ngOnInit(): void {
     this.adminAccess=this.accessTypes.includes(this.authService.getAccess())
-    console.log(this.adminAccess)
-    console.log(this.authService.getAccess())
+
 
     if(this.adminAccess){
 
       this.subscripcion=this.requestService.getAllStaffRequestsOfCompany(this.authService.getCompany()).subscribe({
         next:(data:Array<StaffRequest>)=>{
           this.requestList=data  
-          console.log(data)
-          console.log(this.requestList)
+          
         },
         
       })
@@ -57,7 +55,6 @@ export class StaffRequestsComponent {
       this.subscripcion=this.requestService.getAllStaffRequestsByUser(this.authService.getUid()).subscribe({
         next:(data:Array<StaffRequest>)=>{
           this.requestList=data  
-          console.log(this.requestList)
         },
         
       })

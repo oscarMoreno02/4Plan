@@ -81,8 +81,7 @@ export class FormalitiesComponent {
         this.unregisterRequestService.getAllUnregisterRequestsOfCompany(this.authService.getCompany()).subscribe({
           next:(unregister:Array<UnregisterRequest>)=>{
             this.unregisterRequestList=unregister
-            console.log(this.unregisterRequestList)
-            console.log(this.registerRequestList)
+       
           },
           error:(error)=>{
           }

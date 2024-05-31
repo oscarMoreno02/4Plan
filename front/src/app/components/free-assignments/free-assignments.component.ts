@@ -36,8 +36,7 @@ export class FreeAssignmentsComponent {
   accessTypes=['owner','manager']
   ngOnInit(): void {
     this.adminAccess=this.accessTypes.includes(this.authService.getAccess())
-    console.log(this.adminAccess)
-    console.log(this.authService.getAccess())
+
     this.subscripcion=this.assigmentService.getAllFreeAssignmentsOfCompany(this.authService.getCompany()).subscribe({
       next:(data:Array<Assignment>)=>{
         if(this.adminAccess){
@@ -61,7 +60,7 @@ export class FreeAssignmentsComponent {
           }
           this.assigmentsList=auxList
         }
-        console.log(data)
+        
       },
       
     })

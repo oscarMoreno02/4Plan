@@ -25,12 +25,12 @@ const login =  (req, res = response) => {
 
             })
             .catch( err => {
-                console.log(err)
+                
                 res.status(500).json({'msg':'Login incorrecto.'});
             });
     }
     catch(error){
-        console.log(error)
+        
         res.status(500).json({'msg':'Error en el servidor.'});
     }
     

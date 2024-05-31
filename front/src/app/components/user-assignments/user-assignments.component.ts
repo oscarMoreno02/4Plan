@@ -99,9 +99,8 @@ showMessage(message:Messsage){
 getUpdate(){
   this.subscription=this.userService.getUserWithAssignments(this.idUser, this.idWorkDay).subscribe({
     next: (user) => {
-      console.log(user)
+      
       this.user=user
-      console.log(this.user)
     }
   })
 }

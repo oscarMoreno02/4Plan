@@ -34,11 +34,11 @@ export class DirectivesListComponent {
   ngOnInit(): void {
     if(this.idParameter!=0){
 
-      console.log(this.idParameter)
+
       this.subscripcion=this.directiveService.getAllDirectivesWithDataOfParameter(this.idParameter).subscribe({
       next:(data:Array<WorkDirective>)=>{
         this.directivesList=data
-        console.log(this.directivesList)
+        
   
       },
       error:(err)=>{
@@ -66,7 +66,7 @@ export class DirectivesListComponent {
     this.subscripcion=this.directiveService.getAllDirectivesWithDataOfParameter(this.idParameter).subscribe({
       next:(data:Array<WorkDirective>)=>{
         this.directivesList=data
-        console.log(this.directivesList)
+        
   
       },
       error:(err)=>{

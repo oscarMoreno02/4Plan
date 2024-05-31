@@ -121,7 +121,6 @@ cerrar(): void {
  async validarUnico():Promise<boolean>{
   let userRegistered= await this.getUserRegistered(this.newRequest.newEmail)
     if(userRegistered.length>0){
-      console.log(userRegistered)
       return false
     }
   return true

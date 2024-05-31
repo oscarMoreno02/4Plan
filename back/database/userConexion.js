@@ -193,7 +193,7 @@ class UserConexion{
             await User.save();
             return User.id
         } catch (error) {
-            console.log(error)
+            
             throw error;
         } finally {
             this.con.desconectar();

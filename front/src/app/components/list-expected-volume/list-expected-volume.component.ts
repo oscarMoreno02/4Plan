@@ -40,7 +40,6 @@ export class ListExpectedVolumeComponent {
     this.cerrarModal.emit();
    }
    showDialog() {
-    console.log(this.volumeList)
     setTimeout(() => {
 
       this.visible = true;

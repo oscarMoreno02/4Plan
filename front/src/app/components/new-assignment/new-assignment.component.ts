@@ -121,7 +121,7 @@ export class NewAssignmentComponent {
         
         this.userService.getUserWithAssignments(this.idUser, this.idWorkDay).subscribe({
           next: (user) => {
-            console.log(user)
+            
             this.user = user
 
           }
@@ -167,7 +167,6 @@ export class NewAssignmentComponent {
           this.sendMessage.emit({ severity: 'info', summary: 'Crear Asignación', detail: 'En curso', life: 3000 });
           this.assignmentService.insertAssignment(this.newAssignment).subscribe({
             next: (u: any) => {
-              console.log(this.newAssignment)
               setTimeout(() => {
                 this.sendMessage.emit({ severity: 'success', summary: 'Crear Asignación', detail: 'Completado', life: 3000 });
                 this.updateEvent.emit()
@@ -254,7 +253,6 @@ export class NewAssignmentComponent {
     let valido = true;
     if (this.user.assignments!.length>0) {
       
-      console.log(this.user.assignments)
       if(this.newAssignment.type!=0){
         return false
       }

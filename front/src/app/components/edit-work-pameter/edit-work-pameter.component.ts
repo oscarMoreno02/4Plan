@@ -68,7 +68,7 @@ export class EditWorkPameterComponent {
       this.timeZoneService.getAllTimeZonesOfCompany(this.authService.getCompany()).subscribe({
        next:(data)=>{
          this.timeZoneList=data
-         console.log(data)
+         
          this.getParameter()
         
        
@@ -95,10 +95,9 @@ export class EditWorkPameterComponent {
       this.editParameter=data
       for (const t of this.timeZoneList){
         t.formated=t.start+' - '+t.end+' '+this.translateDays(t.days!)
-        console.log(this.editParameter)
         if(t.id==this.editParameter.idTimeZone){
           this.editParameter.timeZone=t
-          console.log('llega')
+          
         }
       }
     }),
@@ -122,7 +121,6 @@ cerrar(): void {
 
      if(this.validarCampos()){
     this.editParameter.idTimeZone=this.editParameter.timeZone!.id!
-    console.log(this.editParameter)
      this.sendMessage.emit({ severity: 'info', summary: 'editar Parametro', detail: 'En curso', life: 3000 });
      this.workParameterService.updateWorkParameter(this.editParameter).subscribe({
        next: (u:any) => {

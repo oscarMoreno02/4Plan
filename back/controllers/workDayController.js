@@ -39,7 +39,7 @@ const listWorkDayOfCompanyByDate = (req, res = response) => {
             res.status(200).json(data)
         })
         .catch(err => {
-            console.log(err)
+            
             res.status(404).json()
         })
 }
@@ -55,7 +55,7 @@ const listWorkDayOfCompanyOfMonth = (req, res = response) => {
             res.status(200).json(data)
         })
         .catch(err => {
-            console.log(err)
+            
             res.status(404).json()
         })
 }
@@ -72,7 +72,7 @@ const listNextWorkDays = (req, res = response) => {
             res.status(200).json(data)
         })
         .catch(err => {
-            console.log(err)
+            
             res.status(404).json()
         })
 }
@@ -91,7 +91,7 @@ const listWorkDayOfUserOfMonth = (req, res = response) => {
           
         })
         .catch(err => {
-            console.log(err)
+            
             res.status(404).json()
         })
 }
@@ -124,7 +124,7 @@ const listWorkDayOfUserOfWeek = (req, res = response) => {
             res.status(200).json(list)
         })
         .catch(err => {
-            console.log(err)
+            
             res.status(404).json()
         })
 }
@@ -151,7 +151,7 @@ const listNextWorkDaysOfUser = (req, res = response) => {
             res.status(200).json(list)
         })
         .catch(err => {
-            console.log(err)
+            
             res.status(404).json()
         })
 }
@@ -162,7 +162,7 @@ const listWorkDay = (req, res = response) => {
             res.status(200).json(data)
         })
         .catch(err => {
-            console.log(err)
+            
             res.status(404).json(err)
         })
 }
@@ -226,7 +226,7 @@ const createWorkDay = (req, res = response) => {
 
         })
         .catch(err => {
-            console.log(err)
+            
             res.status(203).json(err)
         })
 }

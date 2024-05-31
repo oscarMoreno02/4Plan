@@ -48,7 +48,7 @@ class WorkParameterConexion{
             });
             return resultado;
         }catch(error){
-            console.log(error)
+            
           throw error
         }finally{
      

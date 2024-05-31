@@ -102,7 +102,6 @@ cerrar(): void {
      this.sendMessage.emit({ severity: 'info', summary: 'Crear Parametro', detail: 'En curso', life: 3000 });
      this.workParameterService.insertWorkParameter(this.newParameter).subscribe({
        next: (u:any) => {
-        console.log(this.newParameter)
              setTimeout(() => {
                this.sendMessage.emit({ severity: 'success', summary: 'Crear Parametro', detail: 'Completado', life: 3000 });
                this.updateEvent.emit()

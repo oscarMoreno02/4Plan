@@ -44,7 +44,6 @@ export class StaffWeekAssignmentsComponent implements OnInit {
     }
 
     let parsedDate=state.data.getFullYear()+'-'+(state.data.getMonth()+1)+'-'+state.data.getDate()
-    console.log(parsedDate)
     this.subscription=this.workDayService.getDayOfUserOfWeek(this.authService.getUid(),parsedDate).subscribe({
 
       next:(workdays)=>{
@@ -59,7 +58,7 @@ export class StaffWeekAssignmentsComponent implements OnInit {
         for (let i =0 ; i<7;i++){
           let day=new Date(monday.getFullYear()+'-'+(monday.getMonth()+1)+'-'+(monday.getDate()))
           day.setDate(day.getDate() + i);
-          console.log(day)
+          
           let msg=['Sin Asignaciones']
           let date=day.getFullYear()+'-'+(day.getMonth()+1)+'-'+(day.getDate())
           let exist=false

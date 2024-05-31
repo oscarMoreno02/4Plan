@@ -122,7 +122,6 @@ export class NewFreeAssignmentComponent {
    
         this.workDayService.getNextDays(this.authService.getCompany()).subscribe({
           next:(workdays)=>{
-            console.log(workdays)
             this.workDayList=workdays
           }
         })

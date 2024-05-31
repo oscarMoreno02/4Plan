@@ -89,7 +89,6 @@ export class EditDirectiveComponent {
     this.directiveService.getDirective(id).subscribe({
       next: (data => {
         this.editDirective = data
-        console.log(this.editDirective)
         this.visible = true;
 
       }),
@@ -109,7 +108,6 @@ export class EditDirectiveComponent {
 
         this.editDirective.idPosition = this.editDirective.position!.id!
         this.editDirective.idArea=this.editDirective.area!.id!
-        console.log(this.editDirective)
         this.messageService.add({ severity: 'info', summary: 'Editar Directiva', detail: 'En curso', life: 3000 });
         this.directiveService.updateDirective(this.editDirective).subscribe({
           next: (u: any) => {

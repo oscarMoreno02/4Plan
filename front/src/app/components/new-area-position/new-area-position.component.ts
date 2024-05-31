@@ -65,7 +65,7 @@ export class NewAreaPositionComponent {
   this.subscription=this.positionService.getAllWorkPositionsOfCompany(this.authService.getCompany()).subscribe({
     next:(data)=>{
       this.positionsList=data
-      console.log(data)
+      
     },
     error:(error=>{
       
@@ -77,7 +77,7 @@ export class NewAreaPositionComponent {
  }
 
 cerrar(): void {
-  console.log('llega')
+  
     this.value=''
  this.cerrarModal.emit();
 }

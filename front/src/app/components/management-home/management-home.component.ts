@@ -31,9 +31,8 @@ ngOnInit(): void {
     next:(workday)=>{
     
         this.workday=workday
-        console.log(workday)
         if(this.workday  &&this.workday.dayAssignments){
-          console.log('llega')
+          
           this.eventList=this.orderEvents(this.workday.dayAssignments)
   
       }
@@ -51,7 +50,6 @@ orderEvents(assignments:Array<Assignment>){
   let list:Array<{time:string,type:number,user:string,position:string,area:string}>=[]
   let filterAssignments=assignments.filter((assignment)=>assignment.idUser!=null &&assignment.type==0)
   if(filterAssignments.length>0){
-    console.log(filterAssignments)
     for(const assignment of filterAssignments){
       list.push({time:assignment.start,type:0,user:assignment.user!.firstName+' '+assignment.user!.lastName,position:assignment.position!.description,area:assignment.area!.description})
       list.push({time:assignment.end,type:1,user:assignment.user!.firstName,position:assignment.position!.description,area:assignment.area!.description})
