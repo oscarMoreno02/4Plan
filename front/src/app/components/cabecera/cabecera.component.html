@@ -3,9 +3,6 @@
         @if (authService.hasRol(['owner','staff','manager'])) {
 
             <p-menubar [model]="items">
-                <ng-template pTemplate="start">
-                    <img  src="https://primefaces.org/cdn/primeng/images/primeng.svg" height="40" class="mr-2" />
-                </ng-template>
                 <ng-template pTemplate="end">
                 <app-profile-icon></app-profile-icon>
                 </ng-template>
