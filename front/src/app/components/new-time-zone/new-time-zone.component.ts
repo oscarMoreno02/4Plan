@@ -117,15 +117,7 @@ mostrar(event:any){
     }
     this.minutos = listaMinutos
 
-    this.subscription = this.timezoneService.getAllTimeZonesOfCompany(this.authService.getCompany()).subscribe({
-      next: (data => {
-        this.timeZoneList = data
-        
-      }),
-      error: (error => {
-
-      })
-    })
+  this.getData()
   }
   showDialog() {
     this.newTimeZone = { start: '00', end: '00', idCompany: this.authService.getCompany() }
@@ -154,6 +146,7 @@ mostrar(event:any){
           this.timezoneService.insertTimeZone(this.newTimeZone).subscribe({
             next: (u: any) => {
 
+              this.getData()
               setTimeout(() => {
                 this.messageService.add({ severity: 'success', summary: 'Crear Franja Horaria', detail: 'Completado', life: 3000 });
                 
@@ -225,20 +218,27 @@ mostrar(event:any){
   comprobarCompatibilidad(): boolean {
     let valido = true;
     for (const t of this.timeZoneList) {
-      if(this.hasSameDay(t.days!)){
-
-        if ((this.newTimeZone.start >= t.start && this.newTimeZone.start < t.end) ||
-        (this.newTimeZone.end > t.start && this.newTimeZone.end <= t.end) ||
-        (this.newTimeZone.start <= t.start && this.newTimeZone.end >= t.end)) {
+      if (this.hasSameDay(t.days!)) {
+        let [newStartHour, newStartMinute] = this.newTimeZone.start.split(':').map(Number);
+        let [newEndHour, newEndMinute] = this.newTimeZone.end.split(':').map(Number);
+        let [existingStartHour, existingStartMinute] = t.start.split(':').map(Number);
+        let [existingEndHour, existingEndMinute] = t.end.split(':').map(Number);
+  
+        let newStartTime = newStartHour * 60 + newStartMinute;
+        let newEndTime = newEndHour * 60 + newEndMinute;
+        let existingStartTime = existingStartHour * 60 + existingStartMinute;
+        let existingEndTime = existingEndHour * 60 + existingEndMinute;
+  
+        if ((newStartTime < existingEndTime && newEndTime > existingStartTime) &&
+            !((newStartTime === existingEndTime || newEndTime === existingStartTime))) {
           valido = false;
           break;
         }
       }
     }
-
-
     return valido;
-}
+  }
+  
   hasSameDay(list:Array<Day>):Boolean{
     let result = false
     let i =0
@@ -262,4 +262,16 @@ mostrar(event:any){
 
     return numbers
   }
+  getData(){
+    this.subscription = this.timezoneService.getAllTimeZonesOfCompany(this.authService.getCompany()).subscribe({
+      next: (data => {
+        this.timeZoneList = data
+        
+      }),
+      error: (error => {
+
+      })
+    })
+  }
+
 }

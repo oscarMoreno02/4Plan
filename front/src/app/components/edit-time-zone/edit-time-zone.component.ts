@@ -154,7 +154,7 @@ export class EditTimeZoneComponent {
           this.messageService.add({ severity: 'info', summary: 'Editar Franja Horaria', detail: 'En curso', life: 3000 });
           this.timezoneService.updateTimeZone(this.editTimeZone).subscribe({
             next: (u: any) => {
-
+                this.getUpdate()
               setTimeout(() => {
                 this.messageService.add({ severity: 'success', summary: 'Editar Franja Horaria', detail: 'Completado', life: 3000 });
                 this.updateEvent.emit()
@@ -228,19 +228,24 @@ export class EditTimeZoneComponent {
   comprobarCompatibilidad(): boolean {
     let valido = true;
     for (const t of this.timeZoneList) {
-      if (t.id! != this.editTimeZone.id) {
-        if (this.hasSameDay(t.days!)) {
-          if ((this.editTimeZone.start >= t.start && this.editTimeZone.start < t.end) ||
-            (this.editTimeZone.end > t.start && this.editTimeZone.end <= t.end) ||
-            (this.editTimeZone.start <= t.start && this.editTimeZone.end >= t.end)) {
-            valido = false;
-            break;
-          }
+      if (this.hasSameDay(t.days!)) {
+        let [newStartHour, newStartMinute] = this.editTimeZone.start.split(':').map(Number);
+        let [newEndHour, newEndMinute] = this.editTimeZone.end.split(':').map(Number);
+        let [existingStartHour, existingStartMinute] = t.start.split(':').map(Number);
+        let [existingEndHour, existingEndMinute] = t.end.split(':').map(Number);
+  
+        let newStartTime = newStartHour * 60 + newStartMinute;
+        let newEndTime = newEndHour * 60 + newEndMinute;
+        let existingStartTime = existingStartHour * 60 + existingStartMinute;
+        let existingEndTime = existingEndHour * 60 + existingEndMinute;
+  
+        if ((newStartTime < existingEndTime && newEndTime > existingStartTime) &&
+            !((newStartTime === existingEndTime || newEndTime === existingStartTime))) {
+          valido = false;
+          break;
         }
       }
     }
-
-
     return valido;
   }
   hasSameDay(list: Array<Day>): Boolean {
@@ -270,13 +275,13 @@ export class EditTimeZoneComponent {
     this.messageService.add({ severity: 'info', summary: 'Eliminar Franja Horaria', detail: 'En curso', life: 3000 });
     this.timezoneService.deleteTimeZone(this.editTimeZone.id!).subscribe({
       next: (data: any) => {
+        this.getUpdate()
         setTimeout(() => {
           this.visible = false
           this.messageService.add({ severity: 'success', summary: 'Eliminar Franja Horaria', detail: 'Completado', life: 3000 });
           this.updateEvent.emit()
 
           setTimeout(() => {
-
             this.cerrar()
           }, 1)
         }, 1000);

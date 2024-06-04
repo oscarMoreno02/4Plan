@@ -61,28 +61,7 @@ export class EditWorkPameterComponent {
  ngOnInit(): void {
   if(this.idParameter!=0){
 
-    this.subscription = this.workParameterService.getAllWorkParametersWithTimeZoneOfCompany(this.authService.getCompany()).subscribe({
-      next: (data: any) => {
-      this.workParameterList=data
-
-      this.timeZoneService.getAllTimeZonesOfCompany(this.authService.getCompany()).subscribe({
-       next:(data)=>{
-         this.timeZoneList=data
-         
-         this.getParameter()
-        
-       
-       },
-       error:(err)=>{
-         
-       }
-      })
-    },
-    error: (err) => {
-
-    }
-    
-  });
+   this.getData()
 }
 
  }
@@ -107,7 +86,7 @@ export class EditWorkPameterComponent {
   })
  }
  showDialog() {
-  this.getParameter()
+  this.getData()
      this.visible = true;
  }
 
@@ -244,5 +223,28 @@ cerrar(): void {
   
  return '[ '+str.toString()+' ]'
 }
+getData(){
+  this.subscription = this.workParameterService.getAllWorkParametersWithTimeZoneOfCompany(this.authService.getCompany()).subscribe({
+    next: (data: any) => {
+    this.workParameterList=data
 
+    this.timeZoneService.getAllTimeZonesOfCompany(this.authService.getCompany()).subscribe({
+     next:(data)=>{
+       this.timeZoneList=data
+       
+       this.getParameter()
+      
+     
+     },
+     error:(err)=>{
+       
+     }
+    })
+  },
+  error: (err) => {
+
+  }
+  
+});
+}
 }

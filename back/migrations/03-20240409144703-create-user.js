@@ -32,7 +32,7 @@ module.exports = {
       },
       hiredHours: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       idCompany: {
         type: Sequelize.INTEGER,
