@@ -79,7 +79,7 @@
 </td>
 @if(employee.assignments.length>0){
     
-    <td><app-user-assignments [idWorkDay]="workDay.id!" [date]="this.workDay.date.toString()" [idUser]="employee.id" buttonColor="warning" buttonText="Asignaciones"></app-user-assignments></td>
+    <td><app-user-assignments (updateEvent)="this.getUpdate()" [idWorkDay]="workDay.id!" [date]="this.workDay.date.toString()" [idUser]="employee.id" buttonColor="warning" buttonText="Asignaciones"></app-user-assignments></td>
 }@else {
     <td><app-new-assignment (updateEvent)="this.getUpdate()" (sendMessage)="showMessage($event)" [idWorkDay]="workDay.id!" [date]="this.workDay.date.toString()" [idUser]="employee.id" buttonColor="danger" buttonText=" Sin Asignaciones"></app-new-assignment></td>
 }

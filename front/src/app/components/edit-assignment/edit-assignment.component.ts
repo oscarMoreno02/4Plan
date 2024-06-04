@@ -173,9 +173,9 @@ export class EditAssignmentComponent {
                 this.sendMessage.emit({ severity: 'success', summary: 'Modificar Asignación', detail: 'Completado', life: 3000 });
                 this.updateEvent.emit()
                 setTimeout(() => {
-    
+                  
+                  this.cerrar()
              
-                   this.cerrar()
                 }, 100)
           }, 1000);
 
@@ -194,15 +194,15 @@ export class EditAssignmentComponent {
     }
   }
   eliminar(b: Boolean) {
-    this.sendMessage.emit({ severity: 'info', summary: 'Eliminar Directiva', detail: 'En curso', life: 3000 });
+    this.sendMessage.emit({ severity: 'info', summary: 'Eliminar Asignación', detail: 'En curso', life: 3000 });
     this.assignmentService.deleteAssignment(this.editAssignment.id!).subscribe({
       next: (data: any) => {
         setTimeout(() => {
           this.visible = false
           this.sendMessage.emit({ severity: 'success', summary: 'Eliminar Asignación', detail: 'Completado', life: 3000 });
-          this.updateEvent.emit()
+          this.cerrar()
           setTimeout(() => {
-             this.cerrar()
+            this.updateEvent.emit()
           }, 100)
     }, 1000);
       },

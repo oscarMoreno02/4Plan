@@ -32,7 +32,7 @@
           <br>
         </div>
         }
-        @if(user){
+        @if(user && user.assignments!=undefined && user.assignments[0]!=undefined){
 
         @switch (user.assignments![0].type) {
 

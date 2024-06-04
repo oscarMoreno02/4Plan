@@ -79,7 +79,7 @@ export class UserAssignmentsComponent {
   estiloValidacionHoras = ''
   estiloValidacionMinutos = ''
   estilosValidacionesDias: string='';
-
+  @Output() updateEvent = new EventEmitter<void>();
   ngOnInit(): void {
  
 this.getUpdate()
@@ -90,6 +90,7 @@ this.getUpdate()
   }
 
   cerrar(): void {
+    this.visible=false
     this.cerrarModal.emit();
   }
 
@@ -99,8 +100,15 @@ showMessage(message:Messsage){
 getUpdate(){
   this.subscription=this.userService.getUserWithAssignments(this.idUser, this.idWorkDay).subscribe({
     next: (user) => {
+      console.log('llega')
+      console.log(user)
+      if(user.assignments!.length==0){
+        this.updateEvent.emit()
+        this.cerrar()
+      }
+
+        this.user=user
       
-      this.user=user
     }
   })
 }

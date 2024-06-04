@@ -152,12 +152,12 @@ export class NewFreeAssignmentComponent {
           this.newAssignment.idPosition = this.newAssignment.position!.id!
           this.newAssignment.idArea=this.newAssignment.area!.id!
       
-          this.sendMessage.emit({ severity: 'info', summary: 'Crear Asignación', detail: 'En curso', life: 3000 });
+          this.sendMessage.emit({ severity: 'info', summary: 'Crear Vacante', detail: 'En curso', life: 3000 });
           this.assignmentService.insertAssignment(this.newAssignment).subscribe({
             next: (u: any) => {
               this.newAssignment.id=u.id
               setTimeout(() => {
-                this.sendMessage.emit({ severity: 'success', summary: 'Crear Asignación', detail: 'Completado', life: 3000 });
+                this.sendMessage.emit({ severity: 'success', summary: 'Crear Vacante', detail: 'Completado', life: 3000 });
                 this.assignmentList.push(this.newAssignment)
                 setTimeout(() => {
                   this.cerrar()
@@ -167,7 +167,7 @@ export class NewFreeAssignmentComponent {
             },
             error: (err) => {
 
-              this.sendMessage.emit({ severity: 'error', summary: 'Crear Asignación', detail: 'Cancelado', life: 3000 });
+              this.sendMessage.emit({ severity: 'error', summary: 'Crear Vacante', detail: 'Cancelado', life: 3000 });
             }
           })
         
@@ -181,46 +181,46 @@ export class NewFreeAssignmentComponent {
     let valido = true
       if(!this.newAssignment.workDay){
         valido=false
-        this.sendMessage.emit({ severity: 'warn', summary: 'Crear Asignación', detail: 'Dia de trabajo no especificado', life: 3000 });
+        this.sendMessage.emit({ severity: 'warn', summary: 'Crear Vacante', detail: 'Dia de trabajo no especificado', life: 3000 });
 
       }else{
 
         if (!this.newAssignment.position) {
           this.styleValidPosition = 'ng-invalid ng-dirty'
           valido = false
-          this.sendMessage.emit({ severity: 'warn', summary: 'Crear Asignación', detail: 'Posicion de trabajo no especificada', life: 3000 });
+          this.sendMessage.emit({ severity: 'warn', summary: 'Crear Vacante', detail: 'Posicion de trabajo no especificada', life: 3000 });
         } else {
           this.styleValidPosition=''
           if (!this.newAssignment.area) {
             this.estilosValidacionesAreas = 'ng-invalid ng-dirty'
             valido = false
-            this.sendMessage.emit({ severity: 'warn', summary: 'Crear Asignación', detail: 'Area de trabajo no especificada', life: 3000 });
+            this.sendMessage.emit({ severity: 'warn', summary: 'Crear Vacante', detail: 'Area de trabajo no especificada', life: 3000 });
           } else {
             this.estilosValidacionesAreas=''
           if (this.horaInicio.hora == null || this.horaFin.hora == null) {
             this.estiloValidacionHoras = 'ng-invalid ng-dirty'
             valido = false
-            this.sendMessage.emit({ severity: 'warn', summary: 'Crear  Asignación', detail: 'Horas introdudas incorrectamente', life: 3000 });
+            this.sendMessage.emit({ severity: 'warn', summary: 'Crear  Vacante', detail: 'Horas introdudas incorrectamente', life: 3000 });
           }
           if (this.horaInicio.minuto == null || this.horaFin.minuto == null) {
             this.estiloValidacionHoras = 'ng-invalid ng-dirty'
             valido = false
-            this.sendMessage.emit({ severity: 'warn', summary: 'Crear  Asignación', detail: 'Minutos introducidos incorrectamente', life: 3000 });
+            this.sendMessage.emit({ severity: 'warn', summary: 'Crear  Vacante', detail: 'Minutos introducidos incorrectamente', life: 3000 });
           }
           if (this.horaInicio.hora.numero > this.horaFin.hora.numero) {
             this.estiloValidacionHoras = 'ng-invalid ng-dirty'
             valido = false
-            this.sendMessage.emit({ severity: 'warn', summary: 'Crear  Asignación', detail: 'Horas introdudas incorrectamente', life: 3000 });
+            this.sendMessage.emit({ severity: 'warn', summary: 'Crear  Vacante', detail: 'Horas introdudas incorrectamente', life: 3000 });
           } else {
             if (this.horaInicio.hora.numero == this.horaFin.hora.numero && this.horaInicio.minuto.numero > this.horaFin.minuto.numero) {
               this.estiloValidacionMinutos = 'ng-invalid ng-dirty'
               valido = false
-              this.sendMessage.emit({ severity: 'warn', summary: 'Crear  Asignación', detail: 'Minutos introdudos incorrectamente', life: 3000 });
+              this.sendMessage.emit({ severity: 'warn', summary: 'Crear  Vacante', detail: 'Minutos introdudos incorrectamente', life: 3000 });
             } else {
               if (this.horaInicio.hora.numero == this.horaFin.hora.numero && this.horaInicio.minuto.numero == this.horaFin.minuto.numero) {
                 this.estiloValidacionMinutos = 'ng-invalid ng-dirty'
                 valido = false
-                this.sendMessage.emit({ severity: 'warn', summary: 'Crear  Asignación', detail: 'Minutos introdudos incorrectamente', life: 3000 });
+                this.sendMessage.emit({ severity: 'warn', summary: 'Crear  Vacante', detail: 'Minutos introdudos incorrectamente', life: 3000 });
               } else {
                 this.estiloValidacionMinutos = ''
                 this.estiloValidacionHoras = ''

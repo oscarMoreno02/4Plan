@@ -37,33 +37,7 @@ export class FreeAssignmentsComponent {
   ngOnInit(): void {
     this.adminAccess=this.accessTypes.includes(this.authService.getAccess())
 
-    this.subscripcion=this.assigmentService.getAllFreeAssignmentsOfCompany(this.authService.getCompany()).subscribe({
-      next:(data:Array<Assignment>)=>{
-        if(this.adminAccess){
-          
-          this.assigmentsList=data  
-
-        }else{
-          let auxList:Assignment[]=[]
-          for(const assignment of data){
-            this.userService.getUserWithAssignments(this.authService.getUid(),assignment.idWorkDay).subscribe({
-              next:(user:User)=>{
-                if(user.assignments){
-                  if(this.comprobarCompatibilidad(user.assignments,assignment)){
-                    auxList.push(assignment)
-                  }
-                }else{
-                  auxList.push(assignment)
-                }
-              }
-            })
-          }
-          this.assigmentsList=auxList
-        }
-        
-      },
-      
-    })
+    this.getData()
   }
   translateAccess(access:String):string{
     let translate=''
@@ -106,10 +80,8 @@ export class FreeAssignmentsComponent {
       this.assigmentService.updateAssignment(assigment).subscribe({
         next: (data: any) => {
           this.messageService.add({ severity: 'success', summary: 'Aceptar Vacante', detail: 'Completado', life: 3000 });
-          
-          setTimeout(() => {
-            this.assigmentsList=this.assigmentsList.filter((a=>a.id!=assigment.id))
-          }, 1);
+          this.getData()
+         
         },
         error: (err) => {
         }
@@ -140,6 +112,36 @@ export class FreeAssignmentsComponent {
       }
     }
     return valido;
+  }
+  getData(){
+
+    this.subscripcion=this.assigmentService.getAllFreeAssignmentsOfCompany(this.authService.getCompany()).subscribe({
+      next:(data:Array<Assignment>)=>{
+        if(this.adminAccess){
+          
+          this.assigmentsList=data  
+
+        }else{
+          let auxList:Assignment[]=[]
+          for(const assignment of data){
+            this.userService.getUserWithAssignments(this.authService.getUid(),assignment.idWorkDay).subscribe({
+              next:(user:User)=>{
+                if(user.assignments){
+                  if(this.comprobarCompatibilidad(user.assignments,assignment)){
+                    auxList.push(assignment)
+                  }
+                }else{
+                  auxList.push(assignment)
+                }
+              }
+            })
+          }
+          this.assigmentsList=auxList
+        }
+        
+      },
+      
+    })
   }
 }
 
