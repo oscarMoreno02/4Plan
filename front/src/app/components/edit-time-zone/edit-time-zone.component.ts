@@ -228,24 +228,28 @@ export class EditTimeZoneComponent {
   comprobarCompatibilidad(): boolean {
     let valido = true;
     for (const t of this.timeZoneList) {
-      if (this.hasSameDay(t.days!)) {
-        let [newStartHour, newStartMinute] = this.editTimeZone.start.split(':').map(Number);
-        let [newEndHour, newEndMinute] = this.editTimeZone.end.split(':').map(Number);
-        let [existingStartHour, existingStartMinute] = t.start.split(':').map(Number);
-        let [existingEndHour, existingEndMinute] = t.end.split(':').map(Number);
-  
-        let newStartTime = newStartHour * 60 + newStartMinute;
-        let newEndTime = newEndHour * 60 + newEndMinute;
-        let existingStartTime = existingStartHour * 60 + existingStartMinute;
-        let existingEndTime = existingEndHour * 60 + existingEndMinute;
-  
-        if ((newStartTime < existingEndTime && newEndTime > existingStartTime) &&
-            !((newStartTime === existingEndTime || newEndTime === existingStartTime))) {
-          valido = false;
-          break;
+      if (t.id! != this.editTimeZone.id) {
+        if (this.hasSameDay(t.days!)) {
+          let [newStartHour, newStartMinute] = this.editTimeZone.start.split(':').map(Number);
+          let [newEndHour, newEndMinute] = this.editTimeZone.end.split(':').map(Number);
+          let [existingStartHour, existingStartMinute] = t.start.split(':').map(Number);
+          let [existingEndHour, existingEndMinute] = t.end.split(':').map(Number);
+    
+          let newStartTime = newStartHour * 60 + newStartMinute;
+          let newEndTime = newEndHour * 60 + newEndMinute;
+          let existingStartTime = existingStartHour * 60 + existingStartMinute;
+          let existingEndTime = existingEndHour * 60 + existingEndMinute;
+    
+          if ((newStartTime < existingEndTime && newEndTime > existingStartTime) &&
+              !((newStartTime === existingEndTime || newEndTime === existingStartTime))) {
+            valido = false;
+            break;
+          }
         }
       }
     }
+
+
     return valido;
   }
   hasSameDay(list: Array<Day>): Boolean {
