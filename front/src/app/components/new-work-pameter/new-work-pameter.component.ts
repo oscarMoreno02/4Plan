@@ -62,29 +62,10 @@ export class NewWorkPameterComponent {
  @Output() updateEvent= new EventEmitter<void>();
  @Output() sendMessage = new EventEmitter<Messsage>();
  ngOnInit(): void {
-   this.subscription = this.workParameterService.getAllWorkParametersWithTimeZoneOfCompany(this.authService.getCompany()).subscribe({
-     next: (data: any) => {
-       this.workParameterList=data
-
-       this.timeZoneService.getAllTimeZonesOfCompany(this.authService.getCompany()).subscribe({
-        next:(data)=>{
-          this.timeZoneList=data
-          for (const t of this.timeZoneList){
-            t.formated=t.start+' - '+t.end+' '+this.translateDays(t.days!)
-          }
-        },
-        error:(err)=>{
-          
-        }
-       })
-     },
-     error: (err) => {
-
-     }
-     
-   });
+  this.getData()
  }
  showDialog() {
+  this.getData()
   this.newParameter={expectedVolume:0,idCompany:this.authService.getCompany(),idTimeZone:0}
      this.visible = true;
  }
@@ -197,6 +178,30 @@ cerrar(): void {
   str.push()
   
  return '[ '+str.toString()+' ]'
+}
+
+getData(){
+  this.subscription = this.workParameterService.getAllWorkParametersWithTimeZoneOfCompany(this.authService.getCompany()).subscribe({
+    next: (data: any) => {
+      this.workParameterList=data
+
+      this.timeZoneService.getAllTimeZonesOfCompany(this.authService.getCompany()).subscribe({
+       next:(data)=>{
+         this.timeZoneList=data
+         for (const t of this.timeZoneList){
+           t.formated=t.start+' - '+t.end+' '+this.translateDays(t.days!)
+         }
+       },
+       error:(err)=>{
+         
+       }
+      })
+    },
+    error: (err) => {
+
+    }
+    
+  });
 }
 }
 

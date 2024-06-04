@@ -26,7 +26,6 @@ module.exports = {
         type: Sequelize.STRING
       },
       newEmail: {
-        unique:true,
         type: Sequelize.STRING
       },
       newHiredHours: {

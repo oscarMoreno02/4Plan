@@ -68,20 +68,11 @@ export class EditEmpoyeeComponent {
     for(const access of this.accessList){
       if (access.value==this.user.access) this.newAccess=access
     }
-    this.subscription=this.unregisterService.getAllUnregisterRequestsActiveByUser(this.user.id).subscribe({
-      next:(request)=>{
-        if(request.length>0){
-          this.unregisterRequestActive=request
-        }
-
-      },
-      error:(err)=>{
-
-      }
-    })
+ 
   }
 
   showDialog() {
+    this.getData()
     this.visible = true;
   }
 
@@ -165,6 +156,21 @@ export class EditEmpoyeeComponent {
     return true
   }
 
+getData(){
+this.unregisterService.getAllUnregisterRequestsActiveByUser(this.user.id).subscribe({
+    next:(request)=>{
+      if(request.length>0){
+        this.unregisterRequestActive=request
+        console.log(this.unregisterRequestActive)
+      }else{
+        this.unregisterRequestActive=null
+      }
 
+    },
+    error:(err)=>{
+
+    }
+  })
+}
 
 }

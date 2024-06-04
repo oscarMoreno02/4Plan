@@ -93,7 +93,7 @@
                 @if(iterator.status==0 || iterator.status==1){
 
                     <td > 
-                        <app-confirm tipo="Cancelar" icono="trash" mensaje="¿Deseas cancelar esta  solicitud?" color="danger" (confirmacion)="cancelar(iterator)"></app-confirm>
+                        <app-confirm tipo="Cancelar" icono="trash" mensaje="¿Deseas cancelar esta  solicitud?" color="danger" (confirmacion)="cancelar($event,iterator)"></app-confirm>
                     </td>
                 }@else {
                     <td></td>

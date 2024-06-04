@@ -92,11 +92,13 @@ export class FormalitiesComponent {
     })
   }
 
-  cancelar(request:RegisterRequest|UnregisterRequest){
-    let aux=request.status
-    request.status=-1
-    if(this.selectedButton==1 && request){
-      this.registerRequestService.updateRegisterRequest(request as RegisterRequest).subscribe({
+  cancelar(confirm:boolean, request:RegisterRequest|UnregisterRequest){
+    if(confirm){
+
+      let aux=request.status
+      request.status=-1
+      if(this.selectedButton==1 && request){
+        this.registerRequestService.updateRegisterRequest(request as RegisterRequest).subscribe({
           next:(data)=>{
             this.sendMessage.emit({ severity: 'success', summary: 'Cancelar solicitud', detail: 'Completado', life: 3000 });
 
@@ -115,7 +117,8 @@ export class FormalitiesComponent {
           request.status=aux
 
         }
-    })
+      })
     }
+  }
   }
 }
