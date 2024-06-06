@@ -77,7 +77,7 @@ export class NewStaffRequestComponent {
   maxDate = new Date()
   date!: Date|null
   typeSelected!:any
-  typeList=[{text:'Dia Libre',value:1},{text:'Vacaciones',value:0}]
+  typeList=[{text:'Dia Libre',value:1},{text:'Vacaciones',value:2}]
   ngOnInit(): void {
     this.maxDate.setDate(this.maxDate.getDate() + 1)
 
