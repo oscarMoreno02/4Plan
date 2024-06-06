@@ -106,6 +106,7 @@ cerrar(): void {
              setTimeout(() => {
                this.messageService.add({ severity: 'success', summary: 'Crear Directiva', detail: 'Completado', life: 3000 });
                this.directivesList.push(this.newDirective)
+               this.newDirective={expectedValuation:0,idCompany:this.authService.getCompany(),idParameter:0,idPosition:0,idArea:0}
                setTimeout(() => {
                 this.cerrar()
              }, 1); 
