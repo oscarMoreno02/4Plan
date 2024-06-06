@@ -196,25 +196,25 @@ cerrar(): void {
     return '[ TODOS] '
   }
   for (const day of days){
-    if(day.number==1){
+    if(day.number==0){
       str.push('D')
     }
-    if(day.number==2){
+    if(day.number==1){
       str.push('L')
     }
-    if(day.number==3){
+    if(day.number==2){
       str.push('M')
     }
-    if(day.number==4){
+    if(day.number==3){
       str.push('X')
     }
-    if(day.number==5){
+    if(day.number==4){
       str.push('J')
     }
-    if(day.number==6){
+    if(day.number==5){
       str.push('V')
     }
-    if(day.number==7){
+    if(day.number==6){
       str.push('S')
     }
 
