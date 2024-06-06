@@ -19,7 +19,7 @@
                   <tr>
                       <td>{{ assignment.start }}</td>
                     <td>{{ assignment.end }}</td>
-                    <td>{{ assignment.position?.name }}</td>
+                    <td>{{ assignment.position!.description }}</td>
                     <td><app-rate-user-assingment [assignment]="assignment"></app-rate-user-assingment></td>
                  
                 </tr>
