@@ -139,6 +139,8 @@ export class NewFreeAssignmentComponent {
 
   cerrar(): void {
     this.newAssignment = { idCompany: this.authService.getCompany(), idPosition: 0, cost: 0, valuation: null, idUser: null, idWorkDay: 0, start: '', end: '', type: 0,idArea:0 }
+    this.horaInicio = { hora: { valor: '00', numero: 0 }, minuto: { valor: '00', numero: 0 } }
+    this.horaFin = { hora: { valor: '00', numero: 0 }, minuto: { valor: '00', numero: 0 } }
     this.visible=false
     this.cerrarModal.emit();
   }
@@ -156,9 +158,13 @@ export class NewFreeAssignmentComponent {
           this.assignmentService.insertAssignment(this.newAssignment).subscribe({
             next: (u: any) => {
               this.newAssignment.id=u.id
+              this.newAssignment.start+=':00'
+              this.newAssignment.end+=':00'
+
               setTimeout(() => {
                 this.sendMessage.emit({ severity: 'success', summary: 'Crear Vacante', detail: 'Completado', life: 3000 });
                 this.assignmentList.push(this.newAssignment)
+                this.newAssignment = { idCompany: this.authService.getCompany(), idPosition: 0, cost: 0, valuation: null, idUser: null, idWorkDay: 0, start: '', end: '', type: 0,idArea:0 }
                 setTimeout(() => {
                   this.cerrar()
                 }, 1);
