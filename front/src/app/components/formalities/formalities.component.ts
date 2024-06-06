@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DataViewModule } from 'primeng/dataview';
 import { DialogModule } from 'primeng/dialog';
@@ -35,6 +35,7 @@ import { NewRegisterRequestComponent } from '../new-register-request/new-registe
     ConfirmComponent,
     NewRegisterRequestComponent
   ],
+  encapsulation:ViewEncapsulation.None,
   providers: [DialogService, MessageService],
   templateUrl: './formalities.component.html',
   styleUrl: './formalities.component.css'

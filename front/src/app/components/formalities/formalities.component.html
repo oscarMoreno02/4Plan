@@ -74,18 +74,32 @@
                 }
                 @switch (iterator.status) {
                     @case (-1) {
-                        <td>CANCELADA</td>
+                        <td>
+                        <p-button [disabled]="true" severity="danger" label="CANCELADA"></p-button>
+
+                        </td>
                     }
                     @case (0) {
-                        <td>PENDIENTE</td>
+                        
+                        <td>
+                            <p-button [disabled]="true" severity="secondary" label="PENDIENTE"></p-button>
+
+                        </td>
 
                     }
                     @case (1) {
-                        <td>EN TRÁMITE</td>
+                        <td>
+
+                            <p-button [disabled]="true" severity="warning" label="EN TRÁMITE"></p-button>
+                        </td>
 
                     }
                     @case (2) {
-                        <td>APROBADA</td>
+                        <td>
+                        <p-button [disabled]="true" severity="success" label="APROBADA"></p-button>
+
+
+                        </td>
 
                     }
 

@@ -57,3 +57,11 @@ span.regular{
     pointer-events: none;
     background: #2ebe35;
 }
+
+.p-disabled, .p-component:disabled {
+  opacity: 1.0;
+}
+.p-disabled, .p-component:disabled {
+  opacity: 1.0;
+}
+
