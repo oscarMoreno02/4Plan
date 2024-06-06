@@ -62,13 +62,13 @@ export class EditTimeZoneComponent {
   editTimeZone: TimeZone = { start: '00', end: '00', idCompany: this.authService.getCompany() }
   days!: Day[];
   backUp: Day[] = [
-    { name: 'Lunes', number: 2, checked: false },
-    { name: 'Martes', number: 3, checked: false },
-    { name: 'Miercoles', number: 4, checked: false },
-    { name: 'Jueves', number: 5, checked: false },
-    { name: 'Viernes', number: 6, checked: false },
-    { name: 'Sabado', number: 7, checked: false },
-    { name: 'Domingo', number: 1, checked: false }];
+    { name: 'Lunes', number: 1, checked: false },
+    { name: 'Martes', number: 2, checked: false },
+    { name: 'Miercoles', number: 3, checked: false },
+    { name: 'Jueves', number: 4, checked: false },
+    { name: 'Viernes', number: 5, checked: false },
+    { name: 'Sabado', number: 6, checked: false },
+    { name: 'Domingo', number: 0, checked: false }];
   selectedDays: Day[] = [];
 
   horaInicio = { hora: { valor: '00', numero: 0 }, minuto: { valor: '00', numero: 0 } }
@@ -112,6 +112,7 @@ export class EditTimeZoneComponent {
 
   }
   showDialog(id: number) {
+    this.getUpdate()
     this.days = this.backUp
     this.selectedDays = []
     for (const t of this.timeZoneList) {

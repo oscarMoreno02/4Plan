@@ -58,13 +58,13 @@ export class NewTimeZoneComponent {
   ) {
 
     this.days = [
-      {name: 'Lunes', number: 2 },
-      {name: 'Martes', number: 3},
-      {name: 'Miercoles', number: 4},
-      {name: 'Jueves', number: 5},
-      {name: 'Viernes', number: 6},
-      {name: 'Sabado', number: 7},
-      {name: 'Domingo', number: 1}]
+      {name: 'Lunes', number: 1 },
+      {name: 'Martes', number: 2},
+      {name: 'Miercoles', number: 3},
+      {name: 'Jueves', number: 4},
+      {name: 'Viernes', number: 5},
+      {name: 'Sabado', number: 6},
+      {name: 'Domingo', number: 0}]
  
    }
   @Output() updateEvent= new EventEmitter<void>();

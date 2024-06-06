@@ -27,7 +27,7 @@ module.exports = {
           },
           key: 'id'
         },
-        onDelete:'SET NULL'
+        onDelete:'CASCADE'
       },
       volumeExpect: {
         type: Sequelize.INTEGER,

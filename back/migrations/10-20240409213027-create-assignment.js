@@ -37,7 +37,7 @@ module.exports = {
           },
           key: 'id'
         },
-        onDelete:'SET NULL'
+        onDelete:'CASCADE'
       },
       idArea: {
         type: Sequelize.INTEGER,
@@ -47,7 +47,7 @@ module.exports = {
           },
           key: 'id'
         },
-        onDelete:'SET NULL'
+        onDelete:'CASCADE'
       },
       idPosition: {
         type: Sequelize.INTEGER,
@@ -57,7 +57,7 @@ module.exports = {
           },
           key: 'id'
         },
-        onDelete:'SET NULL'
+        onDelete:'CASCADE'
       },
       start: {
         type: Sequelize.TIME
