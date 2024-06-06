@@ -110,7 +110,7 @@ const createStaffRequest= (req, res = response) => {
     const conexion = new Conexion()
     conexion.insertStaffRequest(req.body)
         .then(data => {
-            res.status(201).json({id:data})
+            res.status(201).json(data)
         })
         .catch(err => {
         

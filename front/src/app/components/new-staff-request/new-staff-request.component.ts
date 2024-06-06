@@ -108,8 +108,8 @@ export class NewStaffRequestComponent {
           this.staffRequestService.insertStaffRequest( request  ).subscribe({
               next:(data)=>{
                   request=data
-
                   this.requestList.push(request)
+                  console.log(this.requestList)
                   this.sendMessage.emit({ severity: 'success', summary: 'Nueva Petición', detail: 'Completada', life: 3000 });
                   this.cerrar()
 
