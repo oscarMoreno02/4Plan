@@ -52,7 +52,7 @@ orderEvents(assignments:Array<Assignment>){
   if(filterAssignments.length>0){
     for(const assignment of filterAssignments){
       list.push({time:assignment.start,type:0,user:assignment.user!.firstName+' '+assignment.user!.lastName,position:assignment.position!.description,area:assignment.area!.description})
-      list.push({time:assignment.end,type:1,user:assignment.user!.firstName,position:assignment.position!.description,area:assignment.area!.description})
+      list.push({time:assignment.end,type:1,user:assignment.user!.firstName+' '+assignment.user!.lastName,position:assignment.position!.description,area:assignment.area!.description})
       
     }
   }
