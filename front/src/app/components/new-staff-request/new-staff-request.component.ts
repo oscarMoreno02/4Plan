@@ -110,7 +110,7 @@ export class NewStaffRequestComponent {
                   request.id=data.id
 
                   this.requestList.push(request)
-                  this.sendMessage.emit({ severity: 'warn', summary: 'Nueva Petición', detail: 'Completada', life: 3000 });
+                  this.sendMessage.emit({ severity: 'success', summary: 'Nueva Petición', detail: 'Completada', life: 3000 });
                   this.cerrar()
 
               },

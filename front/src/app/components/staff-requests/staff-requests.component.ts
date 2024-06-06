@@ -79,7 +79,7 @@ export class StaffRequestsComponent {
   }
   eliminar(confirm: Boolean,request:StaffRequest) {
     if(confirm){
-      console.log(request)
+    
       this.requestService.deleteStaffRequest(request.id!).subscribe({
       next: (data: any) => {
         this.messageService.add({ severity: 'success', summary: 'Eliminar Solicitud', detail: 'Completado', life: 3000 });
