@@ -77,8 +77,10 @@ export class StaffRequestsComponent {
   changeButtonSelected(button:number){
     this.selectedButton=button
   }
-  eliminar(b: Boolean,request:StaffRequest) {
-    this.requestService.deleteStaffRequest(request.id!).subscribe({
+  eliminar(confirm: Boolean,request:StaffRequest) {
+    if(confirm){
+      console.log(request)
+      this.requestService.deleteStaffRequest(request.id!).subscribe({
       next: (data: any) => {
         this.messageService.add({ severity: 'success', summary: 'Eliminar Solicitud', detail: 'Completado', life: 3000 });
 
@@ -89,6 +91,7 @@ export class StaffRequestsComponent {
       error: (err) => {
       }
     })
+    }
   }
   actualizar(confirm:boolean,result: Boolean) {
 
