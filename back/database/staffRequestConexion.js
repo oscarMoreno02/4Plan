@@ -53,7 +53,7 @@ class StaffRequestConexion{
         try {
             const StaffRequest = new models.StaffRequest(body);
             await StaffRequest.save();
-            return StaffRequest.id
+            return StaffRequest
         } catch (error) {
             throw error;
         } finally {
